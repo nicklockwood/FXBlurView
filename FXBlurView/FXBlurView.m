@@ -163,6 +163,12 @@
     }
 }
 
+- (void)setNeedsDisplay
+{
+    [super setNeedsDisplay];
+    [self.layer setNeedsDisplay];
+}
+
 - (void)displayLayer:(CALayer *)layer
 {
     if (self.superview)
