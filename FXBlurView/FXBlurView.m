@@ -1,7 +1,7 @@
 //
 //  FXBlurView.m
 //
-//  Version 1.0
+//  Version 1.1
 //
 //  Created by Nick Lockwood on 25/08/2013.
 //  Copyright (c) 2013 Charcoal Design
@@ -38,53 +38,60 @@
 
 @implementation UIImage (FXBlurView)
 
-- (UIImage *)blurredImageWithRadius:(CGFloat)radius
+- (UIImage *)blurredImageWithRadius:(CGFloat)radius iterations:(NSUInteger)iterations
 {
     //image must be nonzero size
-    if (CGSizeEqualToSize(self.size, CGSizeZero)) return self;
+    if (floorf(self.size.width) * floorf(self.size.height) <= 0.0f) return self;
     
     //boxsize must be an odd integer
     int boxSize = radius * self.scale;
     if (boxSize % 2 == 0) boxSize ++;
     
-    //get image data
-    CGImageRef imageRef = self.CGImage;
-    CFDataRef inputData = CGDataProviderCopyData(CGImageGetDataProvider(imageRef));
-    
     //create image buffers
-    vImage_Buffer inputBuffer, outputBuffer;
-    inputBuffer.width = outputBuffer.width = CGImageGetWidth(imageRef);
-    inputBuffer.height = outputBuffer.height = CGImageGetHeight(imageRef);
-    inputBuffer.rowBytes = outputBuffer.rowBytes = CGImageGetBytesPerRow(imageRef);
+    CGImageRef imageRef = self.CGImage;
+    vImage_Buffer buffer1, buffer2;
+    buffer1.width = buffer2.width = CGImageGetWidth(imageRef);
+    buffer1.height = buffer2.height = CGImageGetHeight(imageRef);
+    buffer1.rowBytes = buffer2.rowBytes = CGImageGetBytesPerRow(imageRef);
+    CFIndex bytes = buffer1.rowBytes * buffer1.height;
+    buffer1.data = malloc(bytes);
+    buffer2.data = malloc(bytes);
+    
+    //create temp buffer
+    void *tempBuffer = malloc(vImageBoxConvolve_ARGB8888(&buffer1, &buffer2, NULL, 0, 0, boxSize, boxSize,
+                                                         NULL, kvImageEdgeExtend + kvImageGetTempBufferSize));
+    
+    //copy image data
+    CFDataRef dataSource = CGDataProviderCopyData(CGImageGetDataProvider(imageRef));
+    memcpy(buffer1.data, CFDataGetBytePtr(dataSource), bytes);
+    CFRelease(dataSource);
 
-    //perform blur
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < iterations; i++)
     {
-        CFMutableDataRef outputData = CFDataCreateMutable(NULL, inputBuffer.rowBytes * inputBuffer.height);
-        outputBuffer.data = (void *)CFDataGetBytePtr(outputData);
-        inputBuffer.data = (void *)CFDataGetBytePtr(inputData);
-        vImageBoxConvolve_ARGB8888(&inputBuffer, &outputBuffer, NULL, 0, 0, boxSize, boxSize, NULL, kvImageEdgeExtend);
+        //perform blur
+        vImageBoxConvolve_ARGB8888(&buffer1, &buffer2, tempBuffer, 0, 0, boxSize, boxSize, NULL, kvImageEdgeExtend);
         
-        CFRelease(inputData);
-        inputData = outputData;
+        //swap buffers
+        void *temp = buffer1.data;
+        buffer1.data = buffer2.data;
+        buffer2.data = temp;
     }
+    
+    //free buffers
+    free(buffer2.data);
+    free(tempBuffer);
 
-    //create image context
-    CGContextRef ctx = CGBitmapContextCreate(outputBuffer.data,
-                                             outputBuffer.width,
-                                             outputBuffer.height,
-                                             8,
-                                             outputBuffer.rowBytes,
-                                             CGImageGetColorSpace(imageRef),
+    //create image context from buffer
+    CGContextRef ctx = CGBitmapContextCreate(buffer1.data, buffer1.width, buffer1.height,
+                                             8, buffer1.rowBytes, CGImageGetColorSpace(imageRef),
                                              CGImageGetBitmapInfo(imageRef));
     
+    //create image from context
     imageRef = CGBitmapContextCreateImage(ctx);
-    CGContextRelease(ctx);
-    CFRelease(inputData);
-
     UIImage *image = [UIImage imageWithCGImage:imageRef scale:self.scale orientation:self.imageOrientation];
     CGImageRelease(imageRef);
-
+    CGContextRelease(ctx);
+    free(buffer1.data);
     return image;
 }
 
@@ -94,6 +101,7 @@
 @interface FXBlurView ()
 
 @property (nonatomic, assign) BOOL updating;
+@property (nonatomic, assign) BOOL iterationsSet;
 @property (nonatomic, assign) BOOL blurRadiusSet;
 @property (nonatomic, assign) BOOL dynamicSet;
 
@@ -104,6 +112,7 @@
 
 - (void)setUp
 {
+    if (!_iterationsSet) _iterations = 3;
     if (!_blurRadiusSet) _blurRadius = 40.0f;
     if (!_dynamicSet) _dynamic = YES;
 }
@@ -127,10 +136,18 @@
     return self;
 }
 
+- (void)setIterations:(NSUInteger)iterations
+{
+    _iterationsSet = YES;
+    _iterations = iterations;
+    [self setNeedsDisplay];
+}
+
 - (void)setBlurRadius:(CGFloat)blurRadius
 {
     _blurRadiusSet = YES;
     _blurRadius = blurRadius;
+    [self setNeedsDisplay];
 }
 
 - (void)setDynamic:(BOOL)dynamic
@@ -149,7 +166,7 @@
     if (superview)
     {
         UIImage *snapshot = [self snapshotOfSuperview:superview];
-        UIImage *blurredImage = [snapshot blurredImageWithRadius:self.blurRadius];
+        UIImage *blurredImage = [snapshot blurredImageWithRadius:self.blurRadius iterations:self.iterations];
         self.layer.contents = (id)blurredImage.CGImage;
     }
 }
@@ -177,7 +194,7 @@
         self.hidden = YES;
         UIImage *snapshot = [self snapshotOfSuperview:self.superview];
         self.hidden = wasHidden;
-        UIImage *blurredImage = [snapshot blurredImageWithRadius:self.blurRadius];
+        UIImage *blurredImage = [snapshot blurredImageWithRadius:self.blurRadius iterations:self.iterations];
         self.layer.contents = (id)blurredImage.CGImage;
     }
 }
@@ -205,7 +222,7 @@
         self.updating = YES;
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
             
-            UIImage *blurredImage = [snapshot blurredImageWithRadius:self.blurRadius];
+            UIImage *blurredImage = [snapshot blurredImageWithRadius:self.blurRadius iterations:self.iterations];
             dispatch_sync(dispatch_get_main_queue(), ^{
                 
                 self.layer.contents = (id)blurredImage.CGImage;

@@ -33,9 +33,10 @@ UIImage extensions
 
 FXBlurView extends UIImage with the following method:
 
-    - (UIImage *)blurredImageWithRadius:(CGFloat)radius;
+    - (UIImage *)blurredImageWithRadius:(CGFloat)radius
+                             iterations:(NSUInteger)iterations;
 
-This method applies a blur effect and returns the resultant blurred image without modifying the original. The radius property controls the extent of the blur effect.
+This method applies a blur effect and returns the resultant blurred image without modifying the original. The radius property controls the extent of the blur effect. The iterations property controls the number of iterations. More iterations means higher quality.
 
 
 FXBlurView properties
@@ -43,8 +44,12 @@ FXBlurView properties
 
 	@property (nonatomic, getter = isDynamic) BOOL dynamic;
 	
-This property controls whether the blurView updates dynamically, or only once when the view is added to its superview. Defaults to YES. Note that is dynamic is set to NO, you can still force the view to update by calling setNeedsRedraw.
-	
+This property controls whether the blurView updates dynamically, or only once when the view is added to its superview. Defaults to YES. Note that is dynamic is set to NO, you can still force the view to update by calling setNeedsDisplay.
+
+    @property (nonatomic, assign) NSUInteger iterations;
+
+The number of blur iterations. More iterations improves the quality but reduces the performance. Defaults to 3 iterations.
+
     @property (nonatomic, assign) CGFloat blurRadius;	
 
 This property controls the radius of the blur effect (in points). Defaults to a 40 point radius.

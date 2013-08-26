@@ -1,7 +1,7 @@
 //
 //  FXBlurView.h
 //
-//  Version 1.0
+//  Version 1.1
 //
 //  Created by Nick Lockwood on 25/08/2013.
 //  Copyright (c) 2013 Charcoal Design
@@ -37,7 +37,7 @@
 
 @interface UIImage (FXBlurView)
 
-- (UIImage *)blurredImageWithRadius:(CGFloat)radius;
+- (UIImage *)blurredImageWithRadius:(CGFloat)radius iterations:(NSUInteger)iterations;
 
 @end
 
@@ -45,6 +45,7 @@
 @interface FXBlurView : UIView
 
 @property (nonatomic, getter = isDynamic) BOOL dynamic;
+@property (nonatomic, assign) NSUInteger iterations;
 @property (nonatomic, assign) CGFloat blurRadius;
 
 @end

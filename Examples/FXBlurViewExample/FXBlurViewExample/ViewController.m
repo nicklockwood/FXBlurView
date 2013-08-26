@@ -20,9 +20,14 @@
 
 @implementation ViewController
 
-- (IBAction)updateBlur:(UISlider *)slider
+- (IBAction)toggleDynamic:(UISwitch *)sender
 {
-    self.blurView.blurRadius = slider.value;
+    self.blurView.dynamic = sender.on;
+}
+
+- (IBAction)updateBlur:(UISlider *)sender
+{
+    self.blurView.blurRadius = sender.value;
 }
 
 @end
