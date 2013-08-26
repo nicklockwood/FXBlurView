@@ -20,21 +20,9 @@
 
 @implementation ViewController
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    
-    self.blurView.dynamic = NO;
-}
-
 - (IBAction)updateBlur:(UISlider *)slider
 {
     self.blurView.blurRadius = slider.value;
-}
-
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    [self.blurView setNeedsDisplay];
 }
 
 @end
