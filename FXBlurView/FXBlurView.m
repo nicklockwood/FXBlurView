@@ -1,7 +1,7 @@
 //
 //  FXBlurView.m
 //
-//  Version 1.1
+//  Version 1.2
 //
 //  Created by Nick Lockwood on 25/08/2013.
 //  Copyright (c) 2013 Charcoal Design
@@ -65,7 +65,7 @@
     CFDataRef dataSource = CGDataProviderCopyData(CGImageGetDataProvider(imageRef));
     memcpy(buffer1.data, CFDataGetBytePtr(dataSource), bytes);
     CFRelease(dataSource);
-
+    
     for (int i = 0; i < iterations; i++)
     {
         //perform blur
@@ -80,7 +80,7 @@
     //free buffers
     free(buffer2.data);
     free(tempBuffer);
-
+    
     //create image context from buffer
     CGContextRef ctx = CGBitmapContextCreate(buffer1.data, buffer1.width, buffer1.height,
                                              8, buffer1.rowBytes, CGImageGetColorSpace(imageRef),
@@ -98,6 +98,9 @@
 @end
 
 
+NSString *const FXBlurViewUpdatesEnabledNotification = @"FXBlurViewUpdatesEnabledNotification";
+
+
 @interface FXBlurView ()
 
 @property (nonatomic, assign) BOOL updating;
@@ -110,11 +113,32 @@
 
 @implementation FXBlurView
 
+static NSInteger updatesEnabled = 1;
+
++ (void)setUpdatesEnabled
+{
+    updatesEnabled ++;
+    if (updatesEnabled > 0)
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:FXBlurViewUpdatesEnabledNotification object:nil];
+    }
+}
+
++ (void)setUpdatesDisabled
+{
+    updatesEnabled --;
+}
+
 - (void)setUp
 {
     if (!_iterationsSet) _iterations = 3;
     if (!_blurRadiusSet) _blurRadius = 40.0f;
     if (!_dynamicSet) _dynamic = YES;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateAsynchronously)
+                                                 name:FXBlurViewUpdatesEnabledNotification
+                                               object:nil];
 }
 
 - (id)initWithFrame:(CGRect)frame
@@ -136,6 +160,11 @@
     return self;
 }
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)setIterations:(NSUInteger)iterations
 {
     _iterationsSet = YES;
@@ -154,10 +183,7 @@
 {
     _dynamicSet = YES;
     _dynamic = dynamic;
-    if (_dynamic && self.superview)
-    {
-        [self updateAsynchronously];
-    }
+    [self updateAsynchronously];
 }
 
 - (void)willMoveToSuperview:(UIView *)superview
@@ -171,13 +197,10 @@
     }
 }
 
-- (void)didMoveToSuperview
+- (void)didMoveToWindow
 {
     [super didMoveToSuperview];
-    if (self.superview && self.dynamic)
-    {
-        [self updateAsynchronously];
-    }
+    [self updateAsynchronously];
 }
 
 - (void)setNeedsDisplay
@@ -212,7 +235,7 @@
 
 - (void)updateAsynchronously
 {
-    if (self.superview && !self.updating)
+    if (self.dynamic && !self.updating  && self.window && updatesEnabled > 0)
     {
         BOOL wasHidden = self.hidden;
         self.hidden = YES;
@@ -227,11 +250,15 @@
                 
                 self.layer.contents = (id)blurredImage.CGImage;
                 self.updating = NO;
-                if (self.dynamic)
+                if (self.updateInterval)
                 {
-                    [self performSelectorOnMainThread:@selector(updateAsynchronously)
-                                           withObject:nil
-                                        waitUntilDone:NO];
+                    [self performSelector:@selector(updateAsynchronously) withObject:nil
+                               afterDelay:self.updateInterval inModes:@[NSDefaultRunLoopMode, UITrackingRunLoopMode]];
+                }
+                else
+                {
+                    [self performSelectorOnMainThread:@selector(updateAsynchronously) withObject:nil
+                                    waitUntilDone:NO modes:@[NSDefaultRunLoopMode, UITrackingRunLoopMode]];
                 }
             });
         });
