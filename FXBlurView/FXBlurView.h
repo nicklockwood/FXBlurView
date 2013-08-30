@@ -51,5 +51,7 @@
 @property (nonatomic, assign) NSUInteger iterations;
 @property (nonatomic, assign) NSTimeInterval updateInterval;
 @property (nonatomic, assign) CGFloat blurRadius;
+@property (nonatomic, copy) UIColor *tintColor;
+@property (nonatomic, assign) CGFloat saturationDeltaFactor;
 
 @end
