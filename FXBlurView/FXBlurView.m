@@ -208,7 +208,7 @@ static NSInteger updatesEnabled = 1;
 {
     _dynamicSet = YES;
     _dynamic = dynamic;
-    if (!dynamic)
+    if (dynamic)
     {
         [self updateAsynchronously];
     }
