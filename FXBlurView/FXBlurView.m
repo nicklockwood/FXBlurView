@@ -38,7 +38,7 @@
 
 @implementation UIImage (FXBlurView)
 
-- (UIImage *)blurredImageWithRadius:(CGFloat)radius iterations:(NSUInteger)iterations tintColor:(UIColor *)tintColor saturationDelta:(CGFloat)saturationDelta
+- (UIImage *)blurredImageWithRadius:(CGFloat)radius iterations:(NSUInteger)iterations overlayColor:(UIColor *)overlayColor saturationDelta:(CGFloat)saturationDelta
 {
     //image must be nonzero size
     if (floorf(self.size.width) * floorf(self.size.height) <= 0.0f) return self;
@@ -103,9 +103,9 @@
                                              8, buffer1.rowBytes, CGImageGetColorSpace(imageRef),
                                              CGImageGetBitmapInfo(imageRef));
     
-    if (tintColor) {
+    if (overlayColor) {
         CGContextSaveGState(ctx);
-        CGContextSetFillColorWithColor(ctx, tintColor.CGColor);
+        CGContextSetFillColorWithColor(ctx, overlayColor.CGColor);
         CGContextFillRect(ctx, CGRectMake(0, 0, self.size.width, self.size.height));
         CGContextRestoreGState(ctx);
     }
@@ -133,6 +133,8 @@ NSString *const FXBlurViewUpdatesEnabledNotification = @"FXBlurViewUpdatesEnable
 @property (nonatomic, assign) BOOL blurRadiusSet;
 @property (nonatomic, assign) BOOL dynamicSet;
 @property (nonatomic, assign) BOOL saturationDeltaSet;
+@property (nonatomic, assign) BOOL backgroundAlphaSet;
+@property (nonatomic, copy) UIColor *overlayColor;
 
 @end
 
@@ -161,6 +163,7 @@ static NSInteger updatesEnabled = 1;
     if (!_blurRadiusSet) _blurRadius = 40.0f;
     if (!_dynamicSet) _dynamic = YES;
     if (!_saturationDeltaSet) _saturationDeltaFactor = 0;
+    if (!_backgroundAlpha) _backgroundAlpha = 0;
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(updateAsynchronously)
@@ -199,6 +202,14 @@ static NSInteger updatesEnabled = 1;
     [self setNeedsDisplay];
 }
 
+- (void)setBackgroundAlpha:(CGFloat)backgroundAlpha
+{
+    _backgroundAlphaSet = YES;
+    _backgroundAlpha = backgroundAlpha;
+    self.overlayColor = nil;
+    [self setNeedsDisplay];
+}
+
 - (void)setIterations:(NSUInteger)iterations
 {
     _iterationsSet = YES;
@@ -220,13 +231,39 @@ static NSInteger updatesEnabled = 1;
     [self updateAsynchronously];
 }
 
+- (UIColor *)overlayColor
+{
+    if (!_overlayColor) {
+        
+        int componentCount = CGColorGetNumberOfComponents(self.backgroundColor.CGColor);
+        if (componentCount == 2)
+        {
+            CGFloat b;
+            if ([self.backgroundColor getWhite:&b alpha:NULL])
+            {
+                self.overlayColor = [UIColor colorWithWhite:b alpha:self.backgroundAlpha];
+            }
+        }
+        else
+        {
+            CGFloat r, g, b;
+            if ([self.backgroundColor getRed:&r green:&g blue:&b alpha:NULL])
+            {
+                self.overlayColor = [UIColor colorWithRed:r green:g blue:b alpha:self.backgroundAlpha];
+            }
+        }
+    }
+    
+    return _overlayColor;
+}
+
 - (void)willMoveToSuperview:(UIView *)superview
 {
     [super willMoveToSuperview:superview];
     if (superview)
     {
         UIImage *snapshot = [self snapshotOfSuperview:superview];
-        UIImage *blurredImage = [snapshot blurredImageWithRadius:self.blurRadius iterations:self.iterations tintColor:self.tintColor saturationDelta:self.saturationDeltaFactor];
+        UIImage *blurredImage = [snapshot blurredImageWithRadius:self.blurRadius iterations:self.iterations overlayColor:[self overlayColor] saturationDelta:self.saturationDeltaFactor];
         self.layer.contents = (id)blurredImage.CGImage;
     }
 }
@@ -251,7 +288,7 @@ static NSInteger updatesEnabled = 1;
         self.hidden = YES;
         UIImage *snapshot = [self snapshotOfSuperview:self.superview];
         self.hidden = wasHidden;
-        UIImage *blurredImage = [snapshot blurredImageWithRadius:self.blurRadius iterations:self.iterations tintColor:self.tintColor saturationDelta:self.saturationDeltaFactor];
+        UIImage *blurredImage = [snapshot blurredImageWithRadius:self.blurRadius iterations:self.iterations overlayColor:[self overlayColor] saturationDelta:self.saturationDeltaFactor];
         self.layer.contents = (id)blurredImage.CGImage;
     }
 }
@@ -279,7 +316,7 @@ static NSInteger updatesEnabled = 1;
         self.updating = YES;
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
             
-            UIImage *blurredImage = [snapshot blurredImageWithRadius:self.blurRadius iterations:self.iterations tintColor:self.tintColor saturationDelta:self.saturationDeltaFactor];
+            UIImage *blurredImage = [snapshot blurredImageWithRadius:self.blurRadius iterations:self.iterations overlayColor:[self overlayColor] saturationDelta:self.saturationDeltaFactor];
             dispatch_sync(dispatch_get_main_queue(), ^{
                 
                 self.layer.contents = (id)blurredImage.CGImage;
