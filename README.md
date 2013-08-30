@@ -17,7 +17,9 @@ NOTE: 'Supported' means that the library has been tested with this version. 'Com
 ARC Compatibility
 ------------------
 
-FXBlurView currently works either with or without ARC enabled.
+As of version 1.3, FXBlurView requires ARC. If you wish to use FXBlurView in a non-ARC project, just add the -fobjc-arc compiler flag to the FXBlurView.m class. To do this, go to the Build Phases tab in your target settings, open the Compile Sources group, double-click FXBlurView.m in the list and type -fobjc-arc into the popover.
+
+If you wish to convert your whole project to ARC, comment out the #error line in FXBlurView.m, then run the Edit > Refactor > Convert to Objective-C ARC... tool in Xcode and make sure all files that you wish to use ARC for (including FXBlurView.m) are checked.
 
 
 Installation
@@ -34,9 +36,10 @@ UIImage extensions
 FXBlurView extends UIImage with the following method:
 
     - (UIImage *)blurredImageWithRadius:(CGFloat)radius
-                             iterations:(NSUInteger)iterations;
+                             iterations:(NSUInteger)iterations
+                             tintColor:(UIColor *)tintColor;
 
-This method applies a blur effect and returns the resultant blurred image without modifying the original. The radius property controls the extent of the blur effect. The iterations property controls the number of iterations. More iterations means higher quality.
+This method applies a blur effect and returns the resultant blurred image without modifying the original. The radius property controls the extent of the blur effect. The iterations property controls the number of iterations. More iterations means higher quality. The tintColor is an optional color that will be blended with the resultant image. Note that the alpha component of the tintColor is ignored.
 
 
 FXBlurView methods
@@ -61,7 +64,7 @@ This property controls whether the FXBlurView updates dynamically, or only once 
 
     @property (nonatomic, assign) NSUInteger iterations;
 
-The number of blur iterations. More iterations improves the quality but reduces the performance. Defaults to 3 iterations.
+The number of blur iterations. More iterations improves the quality but reduces the performance. Defaults to 2 iterations.
 
     @property (nonatomic, assign) NSTimeInterval updateInterval;
     
@@ -70,3 +73,7 @@ This controls the interval (in seconds) between successive updates when the FXBl
     @property (nonatomic, assign) CGFloat blurRadius;	
 
 This property controls the radius of the blur effect (in points). Defaults to a 40 point radius, which is similar to the iOS 7 blur effect.
+
+    @property (nonatomic, strong) UIColor *tintColor;
+    
+This in an optional tint color to be applied to the FXBlurView. The RGB components of the color will be blended with the blurred image, resulting in a gentle tint. To vary the intensity of the tint effect, use brighter or darker colors. The alpha component of the tintColor is ignored. If you do not wish to apply a tint, set this value to nil or [UIColor clearColor]. Note that if you are using Xcode 5 or above, FXBlurViews created in Interface Builder will have a blue tint by default.
