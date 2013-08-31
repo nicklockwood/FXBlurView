@@ -260,13 +260,44 @@ static NSInteger updatesEnabled = 1;
 
 - (UIImage *)snapshotOfSuperview:(UIView *)superview
 {
+    UIImage *snapshot = nil;
     CGFloat scale = (self.iterations > 0)? 4.0f/MAX(8, floor(self.blurRadius)): 1.0f;
+    
+    int retinaScale = ([[UIScreen mainScreen] respondsToSelector:@selector(displayLinkWithTarget:selector:)] && ([UIScreen mainScreen].scale == 2.0)) ? 1 : 2;
+    
     UIGraphicsBeginImageContextWithOptions(self.bounds.size, YES, scale);
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextTranslateCTM(context, -self.frame.origin.x, -self.frame.origin.y);
-    [superview.layer renderInContext:context];
-    UIImage *snapshot = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
+    if ([superview.layer isKindOfClass:[CAEAGLLayer class]]) {
+        int superHeight = superview.frame.size.height * retinaScale;
+        unsigned int w = (int)self.frame.size.width * retinaScale;
+        unsigned int h = (int)self.frame.size.height * retinaScale;
+        unsigned char buffer[w * h * 4];
+        glReadPixels(self.frame.origin.x * retinaScale,
+                     superHeight - self.frame.origin.y * retinaScale - self.frame.size.height * retinaScale,
+                     w, h, GL_RGBA,GL_UNSIGNED_BYTE, &buffer);
+        CGDataProviderRef ref = CGDataProviderCreateWithData(NULL, &buffer, w * h * 4, NULL);
+        CGImageRef iref = CGImageCreate(w, h, 8, 32, w * 4,
+                                        CGColorSpaceCreateDeviceRGB(),
+                                        kCGBitmapByteOrderDefault,
+                                        ref, NULL, true, kCGRenderingIntentDefault);
+        size_t width = CGImageGetWidth(iref);
+        size_t height = CGImageGetHeight(iref);
+        size_t length = width * height * 4;
+        uint32_t *pixels = (uint32_t *)malloc(length);
+        CGContextRef context = CGBitmapContextCreate(pixels, width, height, 8, width * 4,
+                                                     CGImageGetColorSpace(iref),
+                                                     kCGImageAlphaNoneSkipFirst | kCGBitmapByteOrder32Big);
+        CGContextTranslateCTM(context, 0.0, height);
+        CGContextScaleCTM(context, 1.0, -1.0);
+        CGContextDrawImage(context, CGRectMake(0.0, 0.0, width, height), iref);
+        CGImageRef outputRef = CGBitmapContextCreateImage(context);
+        snapshot = [UIImage imageWithCGImage:outputRef];
+    } else {
+        [superview.layer renderInContext:context];
+        snapshot = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+    }
     return snapshot;
 }
 
