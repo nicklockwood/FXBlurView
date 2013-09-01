@@ -1,7 +1,7 @@
 //
 //  FXBlurView.m
 //
-//  Version 1.3
+//  Version 1.3.1
 //
 //  Created by Nick Lockwood on 25/08/2013.
 //  Copyright (c) 2013 Charcoal Design
@@ -260,7 +260,7 @@ static NSInteger updatesEnabled = 1;
 
 - (UIImage *)snapshotOfSuperview:(UIView *)superview
 {
-    CGFloat scale = (self.iterations > 0)? 4.0f/MAX(8, floor(self.blurRadius)): 1.0f;
+    CGFloat scale = (self.iterations > 0)? 8.0f/MAX(8, floor(self.blurRadius)): 1.0f;
     UIGraphicsBeginImageContextWithOptions(self.bounds.size, YES, scale);
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextTranslateCTM(context, -self.frame.origin.x, -self.frame.origin.y);

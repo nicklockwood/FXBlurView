@@ -1,3 +1,7 @@
+Version 1.3.1
+
+- Improved blur quality (1.3 was slightly blocky)
+
 Version 1.3
 
 - Added tintColor property
