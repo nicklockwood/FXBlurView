@@ -1,3 +1,8 @@
+Version 1.3.2
+
+- Fixed issue with pixelation on non-Retina devices
+- Tweaked performance/quality tradeoff
+
 Version 1.3.1
 
 - Improved blur quality (1.3 was slightly blocky)

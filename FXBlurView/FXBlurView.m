@@ -1,7 +1,7 @@
 //
 //  FXBlurView.m
 //
-//  Version 1.3.1
+//  Version 1.3.2
 //
 //  Created by Nick Lockwood on 25/08/2013.
 //  Copyright (c) 2013 Charcoal Design
@@ -207,14 +207,17 @@ static NSInteger updatesEnabled = 1;
 - (void)setDynamic:(BOOL)dynamic
 {
     _dynamicSet = YES;
-    _dynamic = dynamic;
-    if (dynamic)
+    if (_dynamic != dynamic)
     {
-        [self updateAsynchronously];
-    }
-    else
-    {
-        [self setNeedsDisplay];
+        _dynamic = dynamic;
+        if (dynamic)
+        {
+            [self updateAsynchronously];
+        }
+        else
+        {
+            [self setNeedsDisplay];
+        }
     }
 }
 
@@ -246,12 +249,9 @@ static NSInteger updatesEnabled = 1;
 {
     if (self.superview)
     {
-        NSArray *hiddenViews = [self prepareSuperviewForSnapshot:self.superview];
         UIImage *snapshot = [self snapshotOfSuperview:self.superview];
-        [self restoreSuperviewAfterSnapshot:hiddenViews];
-        NSUInteger iterations = MAX(0, (NSInteger)self.iterations - 1);
         UIImage *blurredImage = [snapshot blurredImageWithRadius:self.blurRadius
-                                                      iterations:iterations
+                                                      iterations:self.iterations
                                                        tintColor:self.tintColor];
         self.layer.contents = (id)blurredImage.CGImage;
         self.layer.contentsScale = blurredImage.scale;
@@ -260,11 +260,18 @@ static NSInteger updatesEnabled = 1;
 
 - (UIImage *)snapshotOfSuperview:(UIView *)superview
 {
-    CGFloat scale = (self.iterations > 0)? 8.0f/MAX(8, floor(self.blurRadius)): 1.0f;
+    CGFloat scale = 0.5;
+    if (self.iterations > 0 && ([UIScreen mainScreen].scale > 1 || self.contentMode == UIViewContentModeScaleAspectFill))
+    {
+        CGFloat blockSize = 12.0f/self.iterations;
+        scale = blockSize/MAX(blockSize * 2, floor(self.blurRadius));
+    }
     UIGraphicsBeginImageContextWithOptions(self.bounds.size, YES, scale);
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextTranslateCTM(context, -self.frame.origin.x, -self.frame.origin.y);
+    NSArray *hiddenViews = [self prepareSuperviewForSnapshot:superview];
     [superview.layer renderInContext:context];
+    [self restoreSuperviewAfterSnapshot:hiddenViews];
     UIImage *snapshot = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     return snapshot;
@@ -301,16 +308,12 @@ static NSInteger updatesEnabled = 1;
 {
     if (self.dynamic && !self.updating  && self.window && updatesEnabled > 0)
     {
-        NSArray *hiddenViews = [self prepareSuperviewForSnapshot:self.superview];
-        UIImage *snapshot = [self snapshotOfSuperview:self.superview];
-        [self restoreSuperviewAfterSnapshot:hiddenViews];
-        
         self.updating = YES;
+        UIImage *snapshot = [self snapshotOfSuperview:self.superview];
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
             
-            NSUInteger iterations = MAX(0, (NSInteger)self.iterations - 1);
             UIImage *blurredImage = [snapshot blurredImageWithRadius:self.blurRadius
-                                                          iterations:iterations
+                                                          iterations:self.iterations
                                                            tintColor:self.tintColor];
             dispatch_sync(dispatch_get_main_queue(), ^{
                 
