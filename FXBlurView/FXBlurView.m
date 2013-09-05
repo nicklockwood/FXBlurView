@@ -107,7 +107,29 @@
     CGImageRelease(imageRef);
     CGContextRelease(ctx);
     free(buffer1.data);
+    
     return image;
+}
+
+- (UIImage*) maskwithMask:(UIImage *)maskImage {
+    
+    CGImageRef srcImg  = self.CGImage;
+	CGImageRef maskRef = maskImage.CGImage;
+    
+	CGImageRef mask = CGImageMaskCreate(CGImageGetWidth(maskRef),
+                                        CGImageGetHeight(maskRef),
+                                        CGImageGetBitsPerComponent(maskRef),
+                                        CGImageGetBitsPerPixel(maskRef),
+                                        CGImageGetBytesPerRow(maskRef),
+                                        CGImageGetDataProvider(maskRef), NULL, false);
+    
+	CGImageRef masked = CGImageCreateWithMask(srcImg, mask);
+    UIImage *result = [UIImage imageWithCGImage:masked];
+    
+    CGImageRelease(masked);
+    CGImageRelease(mask);
+    
+	return result;
 }
 
 @end
@@ -253,6 +275,9 @@ static NSInteger updatesEnabled = 1;
         UIImage *blurredImage = [snapshot blurredImageWithRadius:self.blurRadius
                                                       iterations:self.iterations
                                                        tintColor:self.tintColor];
+        if(_imageMask) {
+            blurredImage = [blurredImage maskwithMask:_imageMask];
+        }
         self.layer.contents = (id)blurredImage.CGImage;
         self.layer.contentsScale = blurredImage.scale;
     }
@@ -315,6 +340,9 @@ static NSInteger updatesEnabled = 1;
             UIImage *blurredImage = [snapshot blurredImageWithRadius:self.blurRadius
                                                           iterations:self.iterations
                                                            tintColor:self.tintColor];
+            if(_imageMask) {
+                blurredImage = [blurredImage maskwithMask:_imageMask];
+            }
             dispatch_sync(dispatch_get_main_queue(), ^{
                 
                 self.updating = NO;
