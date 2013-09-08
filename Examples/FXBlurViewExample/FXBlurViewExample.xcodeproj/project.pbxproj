@@ -22,6 +22,7 @@
 		01F311BC17CA5DE600C54664 /* Grass.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 01F311BB17CA5DE600C54664 /* Grass.jpg */; };
 		01F311BF17CA5E5600C54664 /* FXBlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01F311BE17CA5E5600C54664 /* FXBlurView.m */; };
 		01F311C117CA5ECA00C54664 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01F311C017CA5ECA00C54664 /* Accelerate.framework */; };
+		D90F2C4517D8FA5500F639DA /* mask.png in Resources */ = {isa = PBXBuildFile; fileRef = D90F2C4417D8FA5500F639DA /* mask.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +47,7 @@
 		01F311BD17CA5E5600C54664 /* FXBlurView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FXBlurView.h; sourceTree = "<group>"; };
 		01F311BE17CA5E5600C54664 /* FXBlurView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FXBlurView.m; sourceTree = "<group>"; };
 		01F311C017CA5ECA00C54664 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		D90F2C4417D8FA5500F639DA /* mask.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mask.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,6 +114,7 @@
 				01F3119C17CA5C4600C54664 /* InfoPlist.strings */,
 				01F3119F17CA5C4600C54664 /* main.m */,
 				01F311A117CA5C4600C54664 /* FXBlurViewExample-Prefix.pch */,
+				D90F2C4417D8FA5500F639DA /* mask.png */,
 				01F311A517CA5C4600C54664 /* Default.png */,
 				01F311A717CA5C4600C54664 /* Default@2x.png */,
 				01F311A917CA5C4600C54664 /* Default-568h@2x.png */,
@@ -189,6 +192,7 @@
 				01F311B017CA5C4600C54664 /* ViewController.xib in Resources */,
 				01F311BA17CA5D7E00C54664 /* Grass@2x.jpg in Resources */,
 				01F311BC17CA5DE600C54664 /* Grass.jpg in Resources */,
+				D90F2C4517D8FA5500F639DA /* mask.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

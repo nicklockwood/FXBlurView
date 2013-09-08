@@ -20,6 +20,11 @@
 
 @implementation ViewController
 
+-(void) viewDidLoad{
+    [super viewDidLoad];
+    self.blurView.imageMask = [UIImage imageNamed:@"mask.png"];
+}
+
 - (IBAction)toggleDynamic:(UISwitch *)sender
 {
     self.blurView.dynamic = sender.on;
