@@ -1,3 +1,7 @@
+Version 1.3.3
+
+- Fixed console warning when adding an FXBlurView of zero size to the window
+
 Version 1.3.2
 
 - Fixed issue with pixelation on non-Retina devices

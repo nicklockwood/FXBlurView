@@ -1,7 +1,7 @@
 //
 //  FXBlurView.m
 //
-//  Version 1.3.2
+//  Version 1.3.3
 //
 //  Created by Nick Lockwood on 25/08/2013.
 //  Copyright (c) 2013 Charcoal Design
@@ -247,7 +247,7 @@ static NSInteger updatesEnabled = 1;
 
 - (void)displayLayer:(CALayer *)layer
 {
-    if (self.superview)
+    if (self.superview && !CGRectIsEmpty(self.bounds) && !CGRectIsEmpty(self.superview.bounds))
     {
         UIImage *snapshot = [self snapshotOfSuperview:self.superview];
         UIImage *blurredImage = [snapshot blurredImageWithRadius:self.blurRadius
@@ -306,7 +306,8 @@ static NSInteger updatesEnabled = 1;
 
 - (void)updateAsynchronously
 {
-    if (self.dynamic && !self.updating  && self.window && updatesEnabled > 0)
+    if (self.dynamic && !self.updating  && self.window && updatesEnabled > 0 &&
+        !CGRectIsEmpty(self.bounds) && !CGRectIsEmpty(self.superview.bounds))
     {
         self.updating = YES;
         UIImage *snapshot = [self snapshotOfSuperview:self.superview];
