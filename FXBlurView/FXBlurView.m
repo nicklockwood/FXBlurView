@@ -1,7 +1,7 @@
 //
 //  FXBlurView.m
 //
-//  Version 1.3.3
+//  Version 1.4 beta
 //
 //  Created by Nick Lockwood on 25/08/2013.
 //  Copyright (c) 2013 Charcoal Design
@@ -113,35 +113,164 @@
 @end
 
 
-NSString *const FXBlurViewUpdatesEnabledNotification = @"FXBlurViewUpdatesEnabledNotification";
+@interface FXBlurScheduler : NSObject
+
+@property (nonatomic, strong) NSMutableArray *views;
+@property (nonatomic, assign) NSInteger viewIndex;
+@property (nonatomic, assign) NSInteger updatesEnabled;
+@property (nonatomic, assign) BOOL blurEnabled;
+@property (nonatomic, assign) BOOL updating;
+
+@end
 
 
 @interface FXBlurView ()
 
-@property (nonatomic, assign) BOOL updating;
 @property (nonatomic, assign) BOOL iterationsSet;
 @property (nonatomic, assign) BOOL blurRadiusSet;
 @property (nonatomic, assign) BOOL dynamicSet;
+@property (nonatomic, assign) BOOL blurEnabledSet;
+@property (nonatomic, strong) NSDate *lastUpdate;
+
+- (UIImage *)snapshotOfSuperview:(UIView *)superview;
+
+@end
+
+
+@implementation FXBlurScheduler
+
++ (instancetype)sharedInstance
+{
+    static FXBlurScheduler *sharedInstance = nil;
+    if (!sharedInstance)
+    {
+        sharedInstance = [[FXBlurScheduler alloc] init];
+    }
+    return sharedInstance;
+}
+
+- (instancetype)init
+{
+    if (self = [super init])
+    {
+        _updatesEnabled = 1;
+        _blurEnabled = YES;
+        _views = [[NSMutableArray alloc] init];
+    }
+    return self;
+}
+
+- (void)setBlurEnabled:(BOOL)blurEnabled
+{
+    _blurEnabled = blurEnabled;
+    if (blurEnabled)
+    {
+        for (FXBlurView *view in self.views)
+        {
+            [view setNeedsDisplay];
+        }
+        [self updateAsynchronously];
+    }
+}
+
+- (void)setUpdatesEnabled
+{
+    _updatesEnabled ++;
+    [self updateAsynchronously];
+}
+
+- (void)setUpdatesDisabled
+{
+    _updatesEnabled --;
+}
+
+- (void)addView:(FXBlurView *)view
+{
+    if (![self.views containsObject:view])
+    {
+        [self.views addObject:view];
+        [self updateAsynchronously];
+    }
+}
+
+- (void)removeView:(FXBlurView *)view
+{
+    NSInteger index = [self.views indexOfObject:view];
+    if (index != NSNotFound)
+    {
+        if (index <= self.viewIndex)
+        {
+            self.viewIndex --;
+        }
+        [self.views removeObjectAtIndex:index];
+    }
+}
+
+- (void)updateAsynchronously
+{
+    if (self.blurEnabled && !self.updating && self.updatesEnabled > 0 && [self.views count])
+    {        
+        //loop through until we find a view that's ready to be drawn
+        self.viewIndex = self.viewIndex % [self.views count];
+        for (int i = self.viewIndex; i < [self.views count]; i++)
+        {
+            FXBlurView *view = self.views[i];
+            if (view.blurEnabled && view.dynamic && view.window &&
+                (!view.lastUpdate || [view.lastUpdate timeIntervalSinceNow] < -view.updateInterval) &&
+                !CGRectIsEmpty(view.bounds) && !CGRectIsEmpty(view.superview.bounds))
+            {
+                self.updating = YES;
+                UIImage *snapshot = [view snapshotOfSuperview:view.superview];
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+                    
+                    UIImage *blurredImage = [snapshot blurredImageWithRadius:view.blurRadius
+                                                                  iterations:view.iterations
+                                                                   tintColor:view.tintColor];
+                    dispatch_sync(dispatch_get_main_queue(), ^{
+                        
+                        //set image
+                        self.updating = NO;
+                        if (view.dynamic)
+                        {
+                            view.layer.contents = (id)blurredImage.CGImage;
+                            view.layer.contentsScale = blurredImage.scale;
+                        }
+                        
+                        //render next view
+                        self.viewIndex = i + 1;
+                        [self performSelectorOnMainThread:@selector(updateAsynchronously) withObject:nil
+                                            waitUntilDone:NO modes:@[NSDefaultRunLoopMode, UITrackingRunLoopMode]];
+                    });
+                });
+                return;
+            }
+        }
+        
+        //try again
+        self.viewIndex = 0;
+        [self performSelectorOnMainThread:@selector(updateAsynchronously) withObject:nil
+                            waitUntilDone:NO modes:@[NSDefaultRunLoopMode, UITrackingRunLoopMode]];
+    }
+}
 
 @end
 
 
 @implementation FXBlurView
 
-static NSInteger updatesEnabled = 1;
++ (void)setBlurEnabled:(BOOL)blurEnabled
+{
+    [FXBlurScheduler sharedInstance].blurEnabled = blurEnabled;
+}
 
 + (void)setUpdatesEnabled
 {
-    updatesEnabled ++;
-    if (updatesEnabled > 0)
-    {
-        [[NSNotificationCenter defaultCenter] postNotificationName:FXBlurViewUpdatesEnabledNotification object:nil];
-    }
+    [[FXBlurScheduler sharedInstance] setUpdatesEnabled];
 }
 
 + (void)setUpdatesDisabled
 {
-    updatesEnabled --;
+    [[FXBlurScheduler sharedInstance] setUpdatesDisabled];
 }
 
 - (void)setUp
@@ -149,6 +278,7 @@ static NSInteger updatesEnabled = 1;
     if (!_iterationsSet) _iterations = 3;
     if (!_blurRadiusSet) _blurRadius = 40.0f;
     if (!_dynamicSet) _dynamic = YES;
+    if (!_blurEnabledSet) _blurEnabled = YES;
     
     int unsigned numberOfMethods;
     Method *methods = class_copyMethodList([UIView class], &numberOfMethods);
@@ -159,11 +289,6 @@ static NSInteger updatesEnabled = 1;
             _tintColor = super.tintColor;
         }
     }
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(updateAsynchronously)
-                                                 name:FXBlurViewUpdatesEnabledNotification
-                                               object:nil];
 }
 
 - (id)initWithFrame:(CGRect)frame
@@ -204,17 +329,28 @@ static NSInteger updatesEnabled = 1;
     [self setNeedsDisplay];
 }
 
+- (void)setBlurEnabled:(BOOL)blurEnabled
+{
+    _blurEnabledSet = YES;
+    if (_blurEnabled != blurEnabled)
+    {
+        _blurEnabled = blurEnabled;
+        [self schedule];
+        if (_blurEnabled)
+        {
+            [self setNeedsDisplay];
+        }
+    }
+}
+
 - (void)setDynamic:(BOOL)dynamic
 {
     _dynamicSet = YES;
     if (_dynamic != dynamic)
     {
         _dynamic = dynamic;
-        if (dynamic)
-        {
-            [self updateAsynchronously];
-        }
-        else
+        [self schedule];
+        if (!dynamic)
         {
             [self setNeedsDisplay];
         }
@@ -236,7 +372,19 @@ static NSInteger updatesEnabled = 1;
 - (void)didMoveToWindow
 {
     [super didMoveToWindow];
-    [self updateAsynchronously];
+    [self schedule];
+}
+
+- (void)schedule
+{
+    if (self.window && self.dynamic && self.blurEnabled)
+    {
+        [[FXBlurScheduler sharedInstance] addView:self];
+    }
+    else
+    {
+        [[FXBlurScheduler sharedInstance] removeView:self];
+    }
 }
 
 - (void)setNeedsDisplay
@@ -247,7 +395,8 @@ static NSInteger updatesEnabled = 1;
 
 - (void)displayLayer:(CALayer *)layer
 {
-    if (self.superview && !CGRectIsEmpty(self.bounds) && !CGRectIsEmpty(self.superview.bounds))
+    if ([FXBlurScheduler sharedInstance].blurEnabled && self.blurEnabled && self.superview &&
+        !CGRectIsEmpty(self.bounds) && !CGRectIsEmpty(self.superview.bounds))
     {
         UIImage *snapshot = [self snapshotOfSuperview:self.superview];
         UIImage *blurredImage = [snapshot blurredImageWithRadius:self.blurRadius
@@ -260,6 +409,7 @@ static NSInteger updatesEnabled = 1;
 
 - (UIImage *)snapshotOfSuperview:(UIView *)superview
 {
+    self.lastUpdate = [NSDate date];
     CGFloat scale = 0.5;
     if (self.iterations > 0 && ([UIScreen mainScreen].scale > 1 || self.contentMode == UIViewContentModeScaleAspectFill))
     {
@@ -301,41 +451,6 @@ static NSInteger updatesEnabled = 1;
     for (UIView *view in hiddenViews)
     {
         view.hidden = NO;
-    }
-}
-
-- (void)updateAsynchronously
-{
-    if (self.dynamic && !self.updating  && self.window && updatesEnabled > 0 &&
-        !CGRectIsEmpty(self.bounds) && !CGRectIsEmpty(self.superview.bounds))
-    {
-        self.updating = YES;
-        UIImage *snapshot = [self snapshotOfSuperview:self.superview];
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-            
-            UIImage *blurredImage = [snapshot blurredImageWithRadius:self.blurRadius
-                                                          iterations:self.iterations
-                                                           tintColor:self.tintColor];
-            dispatch_sync(dispatch_get_main_queue(), ^{
-                
-                self.updating = NO;
-                if (self.dynamic)
-                {
-                    self.layer.contents = (id)blurredImage.CGImage;
-                    self.layer.contentsScale = blurredImage.scale;
-                    if (self.updateInterval)
-                    {
-                        [self performSelector:@selector(updateAsynchronously) withObject:nil
-                                   afterDelay:self.updateInterval inModes:@[NSDefaultRunLoopMode, UITrackingRunLoopMode]];
-                    }
-                    else
-                    {
-                        [self performSelectorOnMainThread:@selector(updateAsynchronously) withObject:nil
-                                            waitUntilDone:NO modes:@[NSDefaultRunLoopMode, UITrackingRunLoopMode]];
-                    }
-                }
-            });
-        });
     }
 }
 
