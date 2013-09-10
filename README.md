@@ -45,6 +45,10 @@ This method applies a blur effect and returns the resultant blurred image withou
 FXBlurView methods
 -----------------------
 
+    + (void)setBlurEnabled:(BOOL)blurEnabled;
+
+This method can be used to globally enable/disable the blur effect on all FXBlurView instances. This is useful for testing, or if you wish to disable blurring on iPhone 4 and below (for consistency with iOS7 blur view behavior). By default blurring is enabled.
+
     + (void)setUpdatesEnabled;
     + (void)setUpdatesDisabled;
     
@@ -57,6 +61,10 @@ Inherited from UIView, this method can be used to trigger a (synchronous) update
 
 FXBlurView properties
 ----------------
+
+    @property (nonatomic, getter = isBlurEnabled) BOOL blurEnabled;
+
+This property toggles blurring on and off for an individual FXBlurView instance. Blurring is enabled by default. Note that if you disable blurring using the `+setBlurEnabled` method then that will override this setting.
 
 	@property (nonatomic, getter = isDynamic) BOOL dynamic;
 	
@@ -77,3 +85,19 @@ This property controls the radius of the blur effect (in points). Defaults to a 
     @property (nonatomic, strong) UIColor *tintColor;
     
 This in an optional tint color to be applied to the FXBlurView. The RGB components of the color will be blended with the blurred image, resulting in a gentle tint. To vary the intensity of the tint effect, use brighter or darker colors. The alpha component of the tintColor is ignored. If you do not wish to apply a tint, set this value to nil or [UIColor clearColor]. Note that if you are using Xcode 5 or above, FXBlurViews created in Interface Builder will have a blue tint by default.
+
+
+FAQ
+----------------
+
+    Q. Why are my views all blue-tinted on iOS 7?
+    A. FXBlurView uses the `UIView` `tintColor` property, which does not exist on iOS 6 and below, but defaults to blue on iOS 7. Just set this property to `[UIColor clearColor]` to disable the tint. To retain iOS 6 compatibility, you can either set this using code, or by using the User Defined Runtime Attributes feature of Interface Builder, which will override the standard `tintColor` value (see the example project nibs for how to do this).
+    
+    Q. FXBlurView makes my whole app run slowly on [old device], what can I do
+    A. To improve performance, try increasing the `updatePeriod` property, reducing the `iterations` property or disabling `dynamic` unless you really need it. If all else fails, set `blurEnabled` to NO on older devices.
+    
+    Q. My SpriteKit/OpenGL/Video/3D transformed content isn't showing up properly when placed underneath an FXBlurView, why not?
+    A. This is a limitation of a the `CALayer` `renderInContext:` method used to capture the superview contents. There is no workaround for this on iOS 6 and earlier. On iOS 7 you can make use of the `UIView` `drawViewHierarchyInRect:afterScreenUpdates:` method to capture an view and apply the blur effect yourself, but this it too slow for realtime use, so FXBlurView does not use this method by default.
+    
+    Q. FXBlurView is not capturing some ordinary view content that is behind it, why not?
+    A. FXBlurView only captures the contents of its immediate superview. If the superview is transparent or partially transparent, content shown behind it will not be captured.

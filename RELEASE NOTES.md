@@ -1,3 +1,9 @@
+Version 1.4
+
+- More intelligent scheduling when multiple dynamic FXBlurView instances are shown on screen at once
+- Added global and individual methods for disabling blur (e.g. so you can disable blur on iPhone 4 and below for consistency with other apps on iOS 7)
+- Added Multiples views example
+
 Version 1.3.3
 
 - Fixed console warning when adding an FXBlurView of zero size to the window

@@ -1,7 +1,7 @@
 //
 //  FXBlurView.m
 //
-//  Version 1.4 beta
+//  Version 1.4
 //
 //  Created by Nick Lockwood on 25/08/2013.
 //  Copyright (c) 2013 Charcoal Design
@@ -94,7 +94,7 @@
                                              CGImageGetBitmapInfo(imageRef));
     
     //apply tint
-    if (tintColor && ![tintColor isEqual:[UIColor clearColor]])
+    if (tintColor && CGColorGetAlpha(tintColor.CGColor) > 0.0f)
     {
         CGContextSetFillColorWithColor(ctx, [tintColor colorWithAlphaComponent:0.25].CGColor);
         CGContextSetBlendMode(ctx, kCGBlendModePlusLighter);
@@ -279,6 +279,7 @@
     if (!_blurRadiusSet) _blurRadius = 40.0f;
     if (!_dynamicSet) _dynamic = YES;
     if (!_blurEnabledSet) _blurEnabled = YES;
+    self.updateInterval = _updateInterval;
     
     int unsigned numberOfMethods;
     Method *methods = class_copyMethodList([UIView class], &numberOfMethods);
@@ -357,6 +358,12 @@
     }
 }
 
+- (void)setUpdateInterval:(NSTimeInterval)updateInterval
+{
+    _updateInterval = updateInterval;
+    if (_updateInterval <= 0) _updateInterval = 1.0/60;
+}
+
 - (void)setTintColor:(UIColor *)tintColor
 {
     _tintColor = tintColor;
@@ -366,7 +373,7 @@
 - (void)didMoveToSuperview
 {
     [super didMoveToSuperview];
-    [self.layer displayIfNeeded];
+    [self.layer setNeedsDisplay];
 }
 
 - (void)didMoveToWindow
