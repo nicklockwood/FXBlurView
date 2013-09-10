@@ -20,6 +20,13 @@
 
 @implementation ViewController
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+
+    self.blurView.userInteractionEnabled = NO;
+}
+
 - (IBAction)toggleDynamic:(UISwitch *)sender
 {
     self.blurView.dynamic = sender.on;
