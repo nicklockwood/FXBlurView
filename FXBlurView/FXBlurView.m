@@ -1,7 +1,7 @@
 //
 //  FXBlurView.m
 //
-//  Version 1.4
+//  Version 1.4.1
 //
 //  Created by Nick Lockwood on 25/08/2013.
 //  Copyright (c) 2013 Charcoal Design
@@ -32,9 +32,8 @@
 
 
 #import "FXBlurView.h"
-#import <objc/message.h>
+#import <objc/runtime.h>
 #import <QuartzCore/QuartzCore.h>
-#import <objc/message.h>
 
 
 #import <Availability.h>
@@ -288,8 +287,10 @@
         if (method_getName(methods[i]) == @selector(tintColor))
         {
             _tintColor = super.tintColor;
+            break;
         }
     }
+    free(methods);
 }
 
 - (id)initWithFrame:(CGRect)frame

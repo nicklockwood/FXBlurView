@@ -35,6 +35,11 @@
     return YES;
 }
 
+- (BOOL)shouldAutorotate
+{
+    return NO;
+}
+
 - (IBAction)toggleModal
 {
     [UIView animateWithDuration:0.5 animations:^{

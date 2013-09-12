@@ -1,3 +1,7 @@
+Version 1.4.1
+
+- Fixed minor memory leak in the setUp method
+
 Version 1.4
 
 - More intelligent scheduling when multiple dynamic FXBlurView instances are shown on screen at once
