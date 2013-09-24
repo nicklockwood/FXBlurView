@@ -34,7 +34,7 @@
 #import "FXBlurView.h"
 #import <objc/runtime.h>
 #import <QuartzCore/QuartzCore.h>
-
+#import <SpriteKit/SpriteKit.h>
 
 #import <Availability.h>
 #if !__has_feature(objc_arc)
@@ -208,7 +208,7 @@
 - (void)updateAsynchronously
 {
     if (self.blurEnabled && !self.updating && self.updatesEnabled > 0 && [self.views count])
-    {        
+    {
         //loop through until we find a view that's ready to be drawn
         self.viewIndex = self.viewIndex % [self.views count];
         for (int i = self.viewIndex; i < [self.views count]; i++)
@@ -291,6 +291,7 @@
         }
     }
     free(methods);
+    
 }
 
 - (id)initWithFrame:(CGRect)frame
@@ -315,6 +316,23 @@
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)willMoveToSuperview:(UIView *)newSuperview
+{
+    // check for an SKView to adjust rendering accordingly
+    self.skView = NO;
+    if ([SKView class])
+    {
+        for (UIView * v in newSuperview.subviews)
+        {
+            if ([v isKindOfClass:[SKView class]])
+            {
+                // we found an SKView class in the hierarchy, mark it so we render appropriately
+                self.skView = YES;
+            }
+        }
+    }
 }
 
 - (void)setIterations:(NSUInteger)iterations
@@ -428,7 +446,14 @@
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextTranslateCTM(context, -self.frame.origin.x, -self.frame.origin.y);
     NSArray *hiddenViews = [self prepareSuperviewForSnapshot:superview];
-    [superview.layer renderInContext:context];
+    if (self.hasSKView)
+    {
+        [superview drawViewHierarchyInRect:superview.bounds afterScreenUpdates:YES];
+    }
+    else
+    {
+        [superview.layer renderInContext:context];
+    }
     [self restoreSuperviewAfterSnapshot:hiddenViews];
     UIImage *snapshot = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
