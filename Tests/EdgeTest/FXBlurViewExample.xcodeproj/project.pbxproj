@@ -16,10 +16,7 @@
 		01F311A617CA5C4600C54664 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F311A517CA5C4600C54664 /* Default.png */; };
 		01F311A817CA5C4600C54664 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F311A717CA5C4600C54664 /* Default@2x.png */; };
 		01F311AA17CA5C4600C54664 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F311A917CA5C4600C54664 /* Default-568h@2x.png */; };
-		01F311AD17CA5C4600C54664 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01F311AC17CA5C4600C54664 /* ViewController.m */; };
 		01F311B017CA5C4600C54664 /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01F311AE17CA5C4600C54664 /* ViewController.xib */; };
-		01F311BA17CA5D7E00C54664 /* Grass@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 01F311B917CA5D7E00C54664 /* Grass@2x.jpg */; };
-		01F311BC17CA5DE600C54664 /* Grass.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 01F311BB17CA5DE600C54664 /* Grass.jpg */; };
 		01F311BF17CA5E5600C54664 /* FXBlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01F311BE17CA5E5600C54664 /* FXBlurView.m */; };
 		01F311C117CA5ECA00C54664 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01F311C017CA5ECA00C54664 /* Accelerate.framework */; };
 /* End PBXBuildFile section */
@@ -38,11 +35,7 @@
 		01F311A517CA5C4600C54664 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		01F311A717CA5C4600C54664 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		01F311A917CA5C4600C54664 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		01F311AB17CA5C4600C54664 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		01F311AC17CA5C4600C54664 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		01F311AF17CA5C4600C54664 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController.xib; sourceTree = "<group>"; };
-		01F311B917CA5D7E00C54664 /* Grass@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Grass@2x.jpg"; sourceTree = "<group>"; };
-		01F311BB17CA5DE600C54664 /* Grass.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Grass.jpg; sourceTree = "<group>"; };
 		01F311BD17CA5E5600C54664 /* FXBlurView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FXBlurView.h; sourceTree = "<group>"; };
 		01F311BE17CA5E5600C54664 /* FXBlurView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FXBlurView.m; sourceTree = "<group>"; };
 		01F311C017CA5ECA00C54664 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
@@ -97,8 +90,6 @@
 			children = (
 				01F311A217CA5C4600C54664 /* AppDelegate.h */,
 				01F311A317CA5C4600C54664 /* AppDelegate.m */,
-				01F311AB17CA5C4600C54664 /* ViewController.h */,
-				01F311AC17CA5C4600C54664 /* ViewController.m */,
 				01F311AE17CA5C4600C54664 /* ViewController.xib */,
 				01F3119A17CA5C4600C54664 /* Supporting Files */,
 			);
@@ -115,8 +106,6 @@
 				01F311A517CA5C4600C54664 /* Default.png */,
 				01F311A717CA5C4600C54664 /* Default@2x.png */,
 				01F311A917CA5C4600C54664 /* Default-568h@2x.png */,
-				01F311B917CA5D7E00C54664 /* Grass@2x.jpg */,
-				01F311BB17CA5DE600C54664 /* Grass.jpg */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -187,8 +176,6 @@
 				01F311A817CA5C4600C54664 /* Default@2x.png in Resources */,
 				01F311AA17CA5C4600C54664 /* Default-568h@2x.png in Resources */,
 				01F311B017CA5C4600C54664 /* ViewController.xib in Resources */,
-				01F311BA17CA5D7E00C54664 /* Grass@2x.jpg in Resources */,
-				01F311BC17CA5DE600C54664 /* Grass.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -201,7 +188,6 @@
 			files = (
 				01F311A017CA5C4600C54664 /* main.m in Sources */,
 				01F311A417CA5C4600C54664 /* AppDelegate.m in Sources */,
-				01F311AD17CA5C4600C54664 /* ViewController.m in Sources */,
 				01F311BF17CA5E5600C54664 /* FXBlurView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -292,14 +278,12 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FXBlurViewExample/FXBlurViewExample-Prefix.pch";
-				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				INFOPLIST_FILE = "FXBlurViewExample/FXBlurViewExample-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				RUN_CLANG_STATIC_ANALYZER = YES;
 				WARNING_CFLAGS = (
-					"-Wall",
 					"-Wextra",
+					"-Wall",
 				);
 				WRAPPER_EXTENSION = app;
 			};
@@ -311,14 +295,12 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FXBlurViewExample/FXBlurViewExample-Prefix.pch";
-				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				INFOPLIST_FILE = "FXBlurViewExample/FXBlurViewExample-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				RUN_CLANG_STATIC_ANALYZER = YES;
 				WARNING_CFLAGS = (
-					"-Wall",
 					"-Wextra",
+					"-Wall",
 				);
 				WRAPPER_EXTENSION = app;
 			};

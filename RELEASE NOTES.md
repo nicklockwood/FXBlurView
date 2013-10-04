@@ -1,3 +1,8 @@
+Version 1.4.2
+
+- Fixed issue where shadow or ghosting could appear at edge of blur view
+- Now conforms to -Wextra warning level
+
 Version 1.4.1
 
 - Fixed minor memory leak in the setUp method

@@ -1,7 +1,7 @@
 //
 //  FXBlurView.m
 //
-//  Version 1.4.1
+//  Version 1.4.2
 //
 //  Created by Nick Lockwood on 25/08/2013.
 //  Copyright (c) 2013 Charcoal Design
@@ -50,7 +50,7 @@
     if (floorf(self.size.width) * floorf(self.size.height) <= 0.0f) return self;
     
     //boxsize must be an odd integer
-    int boxSize = radius * self.scale;
+    uint32_t boxSize = radius * self.scale;
     if (boxSize % 2 == 0) boxSize ++;
     
     //create image buffers
@@ -72,7 +72,7 @@
     memcpy(buffer1.data, CFDataGetBytePtr(dataSource), bytes);
     CFRelease(dataSource);
     
-    for (int i = 0; i < iterations; i++)
+    for (NSUInteger i = 0; i < iterations; i++)
     {
         //perform blur
         vImageBoxConvolve_ARGB8888(&buffer1, &buffer2, tempBuffer, 0, 0, boxSize, boxSize, NULL, kvImageEdgeExtend);
@@ -211,7 +211,7 @@
     {        
         //loop through until we find a view that's ready to be drawn
         self.viewIndex = self.viewIndex % [self.views count];
-        for (int i = self.viewIndex; i < [self.views count]; i++)
+        for (NSUInteger i = self.viewIndex; i < [self.views count]; i++)
         {
             FXBlurView *view = self.views[i];
             if (view.blurEnabled && view.dynamic && view.window &&
@@ -280,9 +280,9 @@
     if (!_blurEnabledSet) _blurEnabled = YES;
     self.updateInterval = _updateInterval;
     
-    int unsigned numberOfMethods;
+    unsigned int numberOfMethods;
     Method *methods = class_copyMethodList([UIView class], &numberOfMethods);
-    for (int i = 0; i < numberOfMethods; i++)
+    for (unsigned int i = 0; i < numberOfMethods; i++)
     {
         if (method_getName(methods[i]) == @selector(tintColor))
         {
@@ -401,7 +401,7 @@
     [self.layer setNeedsDisplay];
 }
 
-- (void)displayLayer:(CALayer *)layer
+- (void)displayLayer:(__unused CALayer *)layer
 {
     if ([FXBlurScheduler sharedInstance].blurEnabled && self.blurEnabled && self.superview &&
         !CGRectIsEmpty(self.bounds) && !CGRectIsEmpty(self.superview.bounds))
@@ -424,9 +424,13 @@
         CGFloat blockSize = 12.0f/self.iterations;
         scale = blockSize/MAX(blockSize * 2, floor(self.blurRadius));
     }
+    CGSize size = self.bounds.size;
+    size.width = floorf(size.width * scale) / scale;
+    size.height = floorf(size.height * scale) / scale;
     UIGraphicsBeginImageContextWithOptions(self.bounds.size, YES, scale);
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextTranslateCTM(context, -self.frame.origin.x, -self.frame.origin.y);
+    CGContextScaleCTM(context, size.width / self.bounds.size.width, size.height / self.bounds.size.height);
     NSArray *hiddenViews = [self prepareSuperviewForSnapshot:superview];
     [superview.layer renderInContext:context];
     [self restoreSuperviewAfterSnapshot:hiddenViews];
@@ -441,7 +445,7 @@
     NSInteger index = [superview.subviews indexOfObject:self];
     if (index != NSNotFound)
     {
-        for (int i = index; i < [superview.subviews count]; i++)
+        for (NSUInteger i = index; i < [superview.subviews count]; i++)
         {
             UIView *view = superview.subviews[i];
             if (!view.hidden)
