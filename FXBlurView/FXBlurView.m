@@ -425,8 +425,8 @@
         scale = blockSize/MAX(blockSize * 2, floor(self.blurRadius));
     }
     CGSize size = self.bounds.size;
-    size.width = floorf(size.width * scale) / scale;
-    size.height = floorf(size.height * scale) / scale;
+    size.width = ceilf(size.width * scale) / scale;
+    size.height = ceilf(size.height * scale) / scale;
     UIGraphicsBeginImageContextWithOptions(self.bounds.size, YES, scale);
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextTranslateCTM(context, -self.frame.origin.x, -self.frame.origin.y);
