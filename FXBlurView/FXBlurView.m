@@ -216,10 +216,10 @@
             FXBlurView *view = self.views[i];
             if (view.blurEnabled && view.dynamic && view.window &&
                 (!view.lastUpdate || [view.lastUpdate timeIntervalSinceNow] < -view.updateInterval) &&
-                !CGRectIsEmpty(view.bounds) && !CGRectIsEmpty(view.superview.bounds))
+                !CGRectIsEmpty(view.bounds) && !CGRectIsEmpty(view.blurredView.bounds))
             {
                 self.updating = YES;
-                UIImage *snapshot = [view snapshotOfSuperview:view.superview];
+                UIImage *snapshot = [view snapshotOfSuperview:view.blurredView];
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
                     
                     UIImage *blurredImage = [snapshot blurredImageWithRadius:view.blurRadius
@@ -256,6 +256,16 @@
 
 
 @implementation FXBlurView
+
+@synthesize blurredView = _blurredView;
+
+- (UIView*)blurredView
+{
+    if (_blurredView == nil) {
+        return self.superview;
+    }
+    return _blurredView;
+}
 
 + (void)setBlurEnabled:(BOOL)blurEnabled
 {
@@ -403,10 +413,10 @@
 
 - (void)displayLayer:(__unused CALayer *)layer
 {
-    if ([FXBlurScheduler sharedInstance].blurEnabled && self.blurEnabled && self.superview &&
-        !CGRectIsEmpty(self.bounds) && !CGRectIsEmpty(self.superview.bounds))
+    if ([FXBlurScheduler sharedInstance].blurEnabled && self.blurEnabled && self.blurredView &&
+        !CGRectIsEmpty(self.bounds) && !CGRectIsEmpty(self.blurredView.bounds))
     {
-        UIImage *snapshot = [self snapshotOfSuperview:self.superview];
+        UIImage *snapshot = [self snapshotOfSuperview:self.blurredView];
         UIImage *blurredImage = [snapshot blurredImageWithRadius:self.blurRadius
                                                       iterations:self.iterations
                                                        tintColor:self.tintColor];
