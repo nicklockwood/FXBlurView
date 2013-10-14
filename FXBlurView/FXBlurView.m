@@ -280,6 +280,7 @@
     if (!_blurEnabledSet) _blurEnabled = YES;
     self.updateInterval = _updateInterval;
     
+#ifdef __IPHONE_7_0
     unsigned int numberOfMethods;
     Method *methods = class_copyMethodList([UIView class], &numberOfMethods);
     for (unsigned int i = 0; i < numberOfMethods; i++)
@@ -291,6 +292,7 @@
         }
     }
     free(methods);
+#endif
 }
 
 - (id)initWithFrame:(CGRect)frame
