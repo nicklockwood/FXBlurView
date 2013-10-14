@@ -217,10 +217,10 @@
             FXBlurView *view = self.views[i];
             if (view.blurEnabled && view.dynamic && view.window &&
                 (!view.lastUpdate || [view.lastUpdate timeIntervalSinceNow] < -view.updateInterval) &&
-                !CGRectIsEmpty(view.bounds) && !CGRectIsEmpty(view.superview.bounds))
+                !CGRectIsEmpty(view.bounds) && !CGRectIsEmpty(view.underlyingView.bounds))
             {
                 self.updating = YES;
-                UIImage *snapshot = [view snapshotOfSuperview:view.superview];
+                UIImage *snapshot = [view snapshotOfSuperview:view.underlyingView];
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
                     
                     UIImage *blurredImage = [snapshot blurredImageWithRadius:view.blurRadius
@@ -362,6 +362,15 @@
     }
 }
 
+- (UIView *)underlyingView
+{
+    if (!_underlyingView) {
+        return self.superview;
+    }
+    
+    return _underlyingView;
+}
+
 - (void)setUpdateInterval:(NSTimeInterval)updateInterval
 {
     _updateInterval = updateInterval;
@@ -406,10 +415,10 @@
 
 - (void)displayLayer:(__unused CALayer *)layer
 {
-    if ([FXBlurScheduler sharedInstance].blurEnabled && self.blurEnabled && self.superview &&
-        !CGRectIsEmpty(self.bounds) && !CGRectIsEmpty(self.superview.bounds))
+    if ([FXBlurScheduler sharedInstance].blurEnabled && self.blurEnabled && self.underlyingView &&
+        !CGRectIsEmpty(self.bounds) && !CGRectIsEmpty(self.underlyingView.bounds))
     {
-        UIImage *snapshot = [self snapshotOfSuperview:self.superview];
+        UIImage *snapshot = [self snapshotOfSuperview:self.underlyingView];
         UIImage *blurredImage = [snapshot blurredImageWithRadius:self.blurRadius
                                                       iterations:self.iterations
                                                        tintColor:self.tintColor];
@@ -432,7 +441,10 @@
     size.height = ceilf(size.height * scale) / scale;
     UIGraphicsBeginImageContextWithOptions(self.bounds.size, YES, scale);
     CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextTranslateCTM(context, -self.frame.origin.x, -self.frame.origin.y);
+    
+    CGRect locatinInUnderView = [self convertRect:self.frame toView:self.underlyingView];
+    
+    CGContextTranslateCTM(context, -locatinInUnderView.origin.x, -locatinInUnderView.origin.y);
     CGContextScaleCTM(context, size.width / self.bounds.size.width, size.height / self.bounds.size.height);
     NSArray *hiddenViews = [self prepareSuperviewForSnapshot:superview];
     [superview.layer renderInContext:context];
