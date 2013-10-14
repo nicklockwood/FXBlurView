@@ -1,7 +1,7 @@
 //
 //  FXBlurView.m
 //
-//  Version 1.4.2
+//  Version 1.4.3
 //
 //  Created by Nick Lockwood on 25/08/2013.
 //  Copyright (c) 2013 Charcoal Design
@@ -33,6 +33,7 @@
 
 #import "FXBlurView.h"
 #import <objc/runtime.h>
+#import <objc/message.h>
 #import <QuartzCore/QuartzCore.h>
 
 
@@ -208,7 +209,7 @@
 - (void)updateAsynchronously
 {
     if (self.blurEnabled && !self.updating && self.updatesEnabled > 0 && [self.views count])
-    {        
+    {
         //loop through until we find a view that's ready to be drawn
         self.viewIndex = self.viewIndex % [self.views count];
         for (NSUInteger i = self.viewIndex; i < [self.views count]; i++)
@@ -284,9 +285,11 @@
     Method *methods = class_copyMethodList([UIView class], &numberOfMethods);
     for (unsigned int i = 0; i < numberOfMethods; i++)
     {
-        if (method_getName(methods[i]) == @selector(tintColor))
+        Method method = methods[i];
+        SEL selector = method_getName(method);
+        if (selector == @selector(tintColor))
         {
-            _tintColor = super.tintColor;
+            _tintColor = ((id (*)(id,SEL))method_getImplementation(method))(self, selector);
             break;
         }
     }

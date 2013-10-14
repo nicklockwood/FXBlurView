@@ -1,3 +1,7 @@
+Version 1.4.3
+
+- Fixed error when compiling for iOS 6.1 SDK using Xcode 5
+
 Version 1.4.2
 
 - Fixed issue where shadow or ghosting could appear at edge of blur view
