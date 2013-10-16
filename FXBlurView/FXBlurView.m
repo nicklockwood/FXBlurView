@@ -432,6 +432,19 @@
     size.height = ceilf(size.height * scale) / scale;
     UIGraphicsBeginImageContextWithOptions(self.bounds.size, YES, scale);
     CGContextRef context = UIGraphicsGetCurrentContext();
+    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+    if (orientation == UIInterfaceOrientationLandscapeRight)
+    {
+        CGContextTranslateCTM(context, 0.5f * size.width, 0.5f * size.height);
+        CGContextRotateCTM(context, -(M_PI / 2.0f));
+        CGContextTranslateCTM(context, -(0.5f * size.height), -(0.5f * size.width));
+    }
+    else if (orientation == UIInterfaceOrientationLandscapeLeft)
+    {
+        CGContextTranslateCTM(context, 0.5f * size.width, 0.5f * size.height);
+        CGContextRotateCTM(context, M_PI / 2.0f);
+        CGContextTranslateCTM(context, -(0.5f * size.height), -(0.5f * size.width));
+    }
     CGContextTranslateCTM(context, -self.frame.origin.x, -self.frame.origin.y);
     CGContextScaleCTM(context, size.width / self.bounds.size.width, size.height / self.bounds.size.height);
     NSArray *hiddenViews = [self prepareSuperviewForSnapshot:superview];
