@@ -115,22 +115,28 @@
 
 @interface FXBlurScheduler : NSObject
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wobjc-missing-property-synthesis"
 @property (nonatomic, strong) NSMutableArray *views;
 @property (nonatomic, assign) NSInteger viewIndex;
 @property (nonatomic, assign) NSInteger updatesEnabled;
 @property (nonatomic, assign) BOOL blurEnabled;
 @property (nonatomic, assign) BOOL updating;
+#pragma clang diagnostic pop
 
 @end
 
 
 @interface FXBlurView ()
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wobjc-missing-property-synthesis"
 @property (nonatomic, assign) BOOL iterationsSet;
 @property (nonatomic, assign) BOOL blurRadiusSet;
 @property (nonatomic, assign) BOOL dynamicSet;
 @property (nonatomic, assign) BOOL blurEnabledSet;
 @property (nonatomic, strong) NSDate *lastUpdate;
+#pragma clang diagnostic pop
 
 - (UIImage *)snapshotOfSuperview:(UIView *)superview;
 
