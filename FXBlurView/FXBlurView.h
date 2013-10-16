@@ -48,14 +48,11 @@
 + (void)setUpdatesEnabled;
 + (void)setUpdatesDisabled;
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wobjc-missing-property-synthesis"
 @property (nonatomic, getter = isBlurEnabled) BOOL blurEnabled;
 @property (nonatomic, getter = isDynamic) BOOL dynamic;
 @property (nonatomic, assign) NSUInteger iterations;
 @property (nonatomic, assign) NSTimeInterval updateInterval;
 @property (nonatomic, assign) CGFloat blurRadius;
 @property (nonatomic, strong) UIColor *tintColor;
-#pragma clang diagnostic pop
 
 @end
