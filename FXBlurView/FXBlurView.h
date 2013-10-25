@@ -56,4 +56,6 @@
 @property (nonatomic, assign) CGFloat blurRadius;
 @property (nonatomic, strong) UIColor *tintColor;
 
+- (void)clearImage;
+
 @end

@@ -389,6 +389,11 @@
     [self setNeedsDisplay];
 }
 
+- (void)clearImage {
+    self.layer.contents = nil;
+    [self setNeedsDisplay];
+}
+
 - (void)didMoveToSuperview
 {
     [super didMoveToSuperview];
