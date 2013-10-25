@@ -34,7 +34,6 @@
 #import "FXBlurView.h"
 #import <objc/runtime.h>
 #import <QuartzCore/QuartzCore.h>
-#import <SpriteKit/SpriteKit.h>
 
 #import <Availability.h>
 #if !__has_feature(objc_arc)
@@ -322,11 +321,12 @@
 {
     // check for an SKView to adjust rendering accordingly
     self.skView = NO;
-    if ([SKView class])
+    id skViewClass = [[NSClassFromString(@"SKView") alloc] init];
+    if (skViewClass)
     {
         for (UIView * v in newSuperview.subviews)
         {
-            if ([v isKindOfClass:[SKView class]])
+            if ([v isKindOfClass:skViewClass])
             {
                 // we found an SKView class in the hierarchy, mark it so we render appropriately
                 self.skView = YES;
