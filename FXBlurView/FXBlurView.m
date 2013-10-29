@@ -133,6 +133,7 @@
 @property (nonatomic, strong) NSDate *lastUpdate;
 
 - (UIImage *)snapshotOfSuperview:(UIView *)superview;
+- (BOOL)shouldUpdate;
 
 @end
 
@@ -210,14 +211,16 @@
 {
     if (self.blurEnabled && !self.updating && self.updatesEnabled > 0 && [self.views count])
     {
+        NSTimeInterval timeUntilNextUpdate = 1.f / 30.f;
         //loop through until we find a view that's ready to be drawn
         self.viewIndex = self.viewIndex % [self.views count];
         for (NSUInteger i = self.viewIndex; i < [self.views count]; i++)
         {
             FXBlurView *view = self.views[i];
-            if (view.blurEnabled && view.dynamic && view.window &&
-                (!view.lastUpdate || [view.lastUpdate timeIntervalSinceNow] < -view.updateInterval) &&
-                !CGRectIsEmpty(view.bounds) && !CGRectIsEmpty(view.underlyingView.bounds))
+            if (!view.dynamic || ![view shouldUpdate]) continue;
+
+            NSTimeInterval nextUpdate = [view.lastUpdate timeIntervalSinceNow] + view.updateInterval;
+            if (!view.lastUpdate || nextUpdate <= 0)
             {
                 self.updating = YES;
                 UIImage *snapshot = [view snapshotOfSuperview:view.underlyingView];
@@ -244,12 +247,18 @@
                 });
                 return;
             }
+            else
+            {
+                timeUntilNextUpdate = MIN(timeUntilNextUpdate, nextUpdate);
+            }
         }
-        
-        //try again
+
+        //try again, delaying until the time when the next view needs an update.
         self.viewIndex = 0;
-        [self performSelectorOnMainThread:@selector(updateAsynchronously) withObject:nil
-                            waitUntilDone:NO modes:@[NSDefaultRunLoopMode, UITrackingRunLoopMode]];
+        [self performSelector:@selector(updateAsynchronously)
+                   withObject:nil
+                   afterDelay:timeUntilNextUpdate
+                      inModes:@[NSDefaultRunLoopMode, UITrackingRunLoopMode]];
     }
 }
 
@@ -413,10 +422,15 @@
     [self.layer setNeedsDisplay];
 }
 
+- (BOOL) shouldUpdate
+{
+    return !self.hidden && self.blurEnabled && self.window &&
+        !CGRectIsEmpty(self.bounds) && !CGRectIsEmpty(self.superview.bounds);
+}
+
 - (void)displayLayer:(__unused CALayer *)layer
 {
-    if ([FXBlurScheduler sharedInstance].blurEnabled && self.blurEnabled && self.underlyingView &&
-        !CGRectIsEmpty(self.bounds) && !CGRectIsEmpty(self.underlyingView.bounds))
+    if ([FXBlurScheduler sharedInstance].blurEnabled && [self shouldUpdate])
     {
         UIImage *snapshot = [self snapshotOfSuperview:self.underlyingView];
         UIImage *blurredImage = [snapshot blurredImageWithRadius:self.blurRadius
