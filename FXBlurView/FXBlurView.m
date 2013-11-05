@@ -326,7 +326,7 @@
     {
         for (UIView * v in newSuperview.subviews)
         {
-            if ([v isKindOfClass:skViewClass])
+            if ([v isKindOfClass:[skViewClass class]])
             {
                 // we found an SKView class in the hierarchy, mark it so we render appropriately
                 self.skView = YES;
