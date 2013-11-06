@@ -1,7 +1,7 @@
 //
 //  FXBlurView.m
 //
-//  Version 1.4.3
+//  Version 1.4.4
 //
 //  Created by Nick Lockwood on 25/08/2013.
 //  Copyright (c) 2013 Charcoal Design
@@ -280,6 +280,7 @@
     if (!_dynamicSet) _dynamic = YES;
     if (!_blurEnabledSet) _blurEnabled = YES;
     self.updateInterval = _updateInterval;
+    self.layer.magnificationFilter = @"linear"; //kCAFilterLinear;
     
     unsigned int numberOfMethods;
     Method *methods = class_copyMethodList([UIView class], &numberOfMethods);
@@ -422,18 +423,15 @@
 {
     self.lastUpdate = [NSDate date];
     CGFloat scale = 0.5;
-    if (self.iterations > 0 && ([UIScreen mainScreen].scale > 1 || self.contentMode == UIViewContentModeScaleAspectFill))
+    if (self.iterations)
     {
         CGFloat blockSize = 12.0f/self.iterations;
-        scale = blockSize/MAX(blockSize * 2, floor(self.blurRadius));
+        scale = blockSize/MAX(blockSize * 2, self.blurRadius);
+        scale = 1.0f/floorf(1.0f/scale);
     }
-    CGSize size = self.bounds.size;
-    size.width = ceilf(size.width * scale) / scale;
-    size.height = ceilf(size.height * scale) / scale;
     UIGraphicsBeginImageContextWithOptions(self.bounds.size, YES, scale);
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextTranslateCTM(context, -self.frame.origin.x, -self.frame.origin.y);
-    CGContextScaleCTM(context, size.width / self.bounds.size.width, size.height / self.bounds.size.height);
     NSArray *hiddenViews = [self prepareSuperviewForSnapshot:superview];
     [superview.layer renderInContext:context];
     [self restoreSuperviewAfterSnapshot:hiddenViews];

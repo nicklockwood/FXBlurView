@@ -1,3 +1,7 @@
+Version 1.4.4
+
+- Fixed pixelation issue on Retina iPads
+
 Version 1.4.3
 
 - Fixed error when compiling for iOS 6.1 SDK using Xcode 5
