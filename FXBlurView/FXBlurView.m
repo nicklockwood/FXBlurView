@@ -321,12 +321,11 @@
 {
     // check for an SKView to adjust rendering accordingly
     self.skView = NO;
-    id skViewClass = [[NSClassFromString(@"SKView") alloc] init];
-    if (skViewClass)
+    if (NSClassFromString(@"SKView"))
     {
         for (UIView * v in newSuperview.subviews)
         {
-            if ([v isKindOfClass:[skViewClass class]])
+            if ([v isKindOfClass:NSClassFromString(@"SKView")])
             {
                 // we found an SKView class in the hierarchy, mark it so we render appropriately
                 self.skView = YES;
