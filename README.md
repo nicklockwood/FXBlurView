@@ -37,7 +37,7 @@ FXBlurView extends UIImage with the following method:
 
     - (UIImage *)blurredImageWithRadius:(CGFloat)radius
                              iterations:(NSUInteger)iterations
-                             tintColor:(UIColor *)tintColor;
+                              tintColor:(UIColor *)tintColor;
 
 This method applies a blur effect and returns the resultant blurred image without modifying the original. The radius property controls the extent of the blur effect. The iterations property controls the number of iterations. More iterations means higher quality. The tintColor is an optional color that will be blended with the resultant image. Note that the alpha component of the tintColor is ignored.
 
@@ -101,7 +101,7 @@ FAQ
     Q. Why are my views all blue-tinted on iOS 7?
     A. FXBlurView uses the `UIView` `tintColor` property, which does not exist on iOS 6 and below, but defaults to blue on iOS 7. Just set this property to `[UIColor clearColor]` to disable the tint. To retain iOS 6 compatibility, you can either set this using code, or by using the User Defined Runtime Attributes feature of Interface Builder, which will override the standard `tintColor` value (see the example project nibs for how to do this).
     
-    Q. FXBlurView makes my whole app run slowly on [old device], what can I do
+    Q. FXBlurView makes my whole app run slowly on [old device], what can I do?
     A. To improve performance, try increasing the `updatePeriod` property, reducing the `iterations` property or disabling `dynamic` unless you really need it. If all else fails, set `blurEnabled` to NO on older devices.
     
     Q. My SpriteKit/OpenGL/Video/3D transformed content isn't showing up properly when placed underneath an FXBlurView, why not?

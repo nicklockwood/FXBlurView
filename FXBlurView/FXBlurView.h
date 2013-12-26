@@ -31,6 +31,14 @@
 //
 
 
+#import <UIKit/UIKit.h>
+#import <Accelerate/Accelerate.h>
+
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wobjc-missing-property-synthesis"
+
+
 #import <Availability.h>
 #undef weak_delegate
 #if __has_feature(objc_arc) && __has_feature(objc_arc_weak)
@@ -38,10 +46,6 @@
 #else
 #define weak_ref unsafe_unretained
 #endif
-
-
-#import <UIKit/UIKit.h>
-#import <Accelerate/Accelerate.h>
 
 
 @interface UIImage (FXBlurView)
@@ -68,3 +72,7 @@
 - (void)updateAsynchronously:(BOOL)async completion:(void (^)())completion;
 
 @end
+
+
+#pragma GCC diagnostic pop
+

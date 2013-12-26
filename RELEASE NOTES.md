@@ -1,6 +1,9 @@
 Version 1.5
 
 - Added underlyingView property to specify source view
+- Added updateAsynchronously:completion: method
+- Fixed glitch with edges on certain views
+- Now conforms to -Weverything warning level
 
 Version 1.4.4
 

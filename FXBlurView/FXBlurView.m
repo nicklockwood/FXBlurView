@@ -37,6 +37,11 @@
 #import <QuartzCore/QuartzCore.h>
 
 
+#pragma GCC diagnostic ignored "-Wobjc-missing-property-synthesis"
+#pragma GCC diagnostic ignored "-Wdirect-ivar-access"
+#pragma GCC diagnostic ignored "-Wgnu"
+
+
 #import <Availability.h>
 #if !__has_feature(objc_arc)
 #error This class requires automatic reference counting
@@ -51,7 +56,7 @@
     if (floorf(self.size.width) * floorf(self.size.height) <= 0.0f) return self;
     
     //boxsize must be an odd integer
-    uint32_t boxSize = radius * self.scale;
+    uint32_t boxSize = (uint32_t)(radius * self.scale);
     if (boxSize % 2 == 0) boxSize ++;
     
     //create image buffers
@@ -60,13 +65,13 @@
     buffer1.width = buffer2.width = CGImageGetWidth(imageRef);
     buffer1.height = buffer2.height = CGImageGetHeight(imageRef);
     buffer1.rowBytes = buffer2.rowBytes = CGImageGetBytesPerRow(imageRef);
-    CFIndex bytes = buffer1.rowBytes * buffer1.height;
+    size_t bytes = buffer1.rowBytes * buffer1.height;
     buffer1.data = malloc(bytes);
     buffer2.data = malloc(bytes);
     
     //create temp buffer
-    void *tempBuffer = malloc(vImageBoxConvolve_ARGB8888(&buffer1, &buffer2, NULL, 0, 0, boxSize, boxSize,
-                                                         NULL, kvImageEdgeExtend + kvImageGetTempBufferSize));
+    void *tempBuffer = malloc((size_t)vImageBoxConvolve_ARGB8888(&buffer1, &buffer2, NULL, 0, 0, boxSize, boxSize,
+                                                                 NULL, kvImageEdgeExtend + kvImageGetTempBufferSize));
     
     //copy image data
     CFDataRef dataSource = CGDataProviderCopyData(CGImageGetDataProvider(imageRef));
@@ -116,8 +121,8 @@
 @interface FXBlurScheduler : NSObject
 
 @property (nonatomic, strong) NSMutableArray *views;
-@property (nonatomic, assign) NSInteger viewIndex;
-@property (nonatomic, assign) NSInteger updatesEnabled;
+@property (nonatomic, assign) NSUInteger viewIndex;
+@property (nonatomic, assign) NSUInteger updatesEnabled;
 @property (nonatomic, assign) BOOL blurEnabled;
 @property (nonatomic, assign) BOOL updating;
 
@@ -152,7 +157,7 @@
 
 - (instancetype)init
 {
-    if (self = [super init])
+    if ((self = [super init]))
     {
         _updatesEnabled = 1;
         _blurEnabled = YES;
@@ -196,7 +201,7 @@
 
 - (void)removeView:(FXBlurView *)view
 {
-    NSInteger index = [self.views indexOfObject:view];
+    NSUInteger index = [self.views indexOfObject:view];
     if (index != NSNotFound)
     {
         if (index <= self.viewIndex)
@@ -211,7 +216,7 @@
 {
     if (self.blurEnabled && !self.updating && self.updatesEnabled > 0 && [self.views count])
     {
-        NSTimeInterval timeUntilNextUpdate = 1.0 / 30;
+        NSTimeInterval timeUntilNextUpdate = 1.0 / 60;
         
         //loop through until we find a view that's ready to be drawn
         self.viewIndex = self.viewIndex % [self.views count];
@@ -408,10 +413,12 @@
 
 - (BOOL)shouldUpdate
 {
+    __strong UIView *underlyingView = [self underlyingView];
+    
     return
-    [self underlyingView] && ![self underlyingView].hidden &&
+    underlyingView && !underlyingView.hidden &&
     self.blurEnabled && [FXBlurScheduler sharedInstance].blurEnabled &&
-    !CGRectIsEmpty(self.bounds) && !CGRectIsEmpty([self underlyingView].bounds);
+    !CGRectIsEmpty(self.bounds) && !CGRectIsEmpty(underlyingView.bounds);
 }
 
 - (void)displayLayer:(__unused CALayer *)layer
@@ -429,29 +436,45 @@
         scale = blockSize/MAX(blockSize * 2, self.blurRadius);
         scale = 1.0f/floorf(1.0f/scale);
     }
-    UIGraphicsBeginImageContextWithOptions(self.bounds.size, YES, scale);
+    CGSize size = self.bounds.size;
+    if (self.contentMode == UIViewContentModeScaleToFill)
+    {
+        //prevents edge artefacts
+        size.width = floorf(size.width * scale) / scale;
+        size.height = floorf(size.height * scale) / scale;
+    }
+    size.width = floorf(size.width * scale) / scale;
+    size.height = floorf(size.height * scale) / scale;
+    UIGraphicsBeginImageContextWithOptions(size, YES, scale);
     CGContextRef context = UIGraphicsGetCurrentContext();
 
-    CGRect locationInUnderlyingView = [self convertRect:self.bounds toView:self.underlyingView];
+    __strong UIView *underlyingView = self.underlyingView;
+    CGRect locationInUnderlyingView = [self convertRect:self.bounds toView:underlyingView];
     CGContextTranslateCTM(context, -locationInUnderlyingView.origin.x, -locationInUnderlyingView.origin.y);
 
-    NSArray *hiddenViews = [self prepareSuperviewForSnapshot];
-    [self.underlyingView.layer renderInContext:context];
+    NSArray *hiddenViews = [self prepareUnderlyingViewForSnapshot];
+    [underlyingView.layer renderInContext:context];
     [self restoreSuperviewAfterSnapshot:hiddenViews];
     UIImage *snapshot = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     return snapshot;
 }
 
-- (NSArray *)prepareSuperviewForSnapshot
+- (NSArray *)prepareUnderlyingViewForSnapshot
 {
+    __strong UIView *underlyingView = self.underlyingView;
+    UIView *blurView = self;
+    while (blurView.superview && blurView.superview != underlyingView)
+    {
+        blurView = blurView.superview;
+    }
     NSMutableArray *views = [NSMutableArray array];
-    NSInteger index = [self.superview.subviews indexOfObject:self];
+    NSUInteger index = [underlyingView.subviews indexOfObject:blurView];
     if (index != NSNotFound)
     {
-        for (NSUInteger i = index; i < [self.superview.subviews count]; i++)
+        for (NSUInteger i = index; i < [underlyingView.subviews count]; i++)
         {
-            UIView *view = self.superview.subviews[i];
+            UIView *view = underlyingView.subviews[i];
             if (!view.hidden)
             {
                 view.hidden = YES;
