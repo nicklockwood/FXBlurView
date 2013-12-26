@@ -1,3 +1,15 @@
+Version 1.5
+
+- Added underlyingView property to specify source view
+
+Version 1.4.4
+
+- Fixed pixelation issue on Retina iPads
+
+Version 1.4.3
+
+- Fixed error when compiling for iOS 6.1 SDK using Xcode 5
+
 Version 1.4.2
 
 - Fixed issue where shadow or ghosting could appear at edge of blur view

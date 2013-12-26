@@ -1,7 +1,7 @@
 //
 //  FXBlurView.h
 //
-//  Version 1.4.2
+//  Version 1.5
 //
 //  Created by Nick Lockwood on 25/08/2013.
 //  Copyright (c) 2013 Charcoal Design
@@ -31,6 +31,15 @@
 //
 
 
+#import <Availability.h>
+#undef weak_delegate
+#if __has_feature(objc_arc) && __has_feature(objc_arc_weak)
+#define weak_ref weak
+#else
+#define weak_ref unsafe_unretained
+#endif
+
+
 #import <UIKit/UIKit.h>
 #import <Accelerate/Accelerate.h>
 
@@ -54,5 +63,8 @@
 @property (nonatomic, assign) NSTimeInterval updateInterval;
 @property (nonatomic, assign) CGFloat blurRadius;
 @property (nonatomic, strong) UIColor *tintColor;
+@property (nonatomic, weak_ref) UIView *underlyingView;
+
+- (void)updateAsynchronously:(BOOL)async completion:(void (^)())completion;
 
 @end
