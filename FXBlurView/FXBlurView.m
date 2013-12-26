@@ -132,7 +132,8 @@
 @property (nonatomic, assign) BOOL blurEnabledSet;
 @property (nonatomic, strong) NSDate *lastUpdate;
 
-- (UIImage *)snapshotOfSuperview:(UIView *)superview;
+- (UIImage *)snapshotOfUnderlyingView;
+- (BOOL)shouldUpdate;
 
 @end
 
@@ -210,17 +211,19 @@
 {
     if (self.blurEnabled && !self.updating && self.updatesEnabled > 0 && [self.views count])
     {
+        NSTimeInterval timeUntilNextUpdate = 1.f / 30.f;
         //loop through until we find a view that's ready to be drawn
         self.viewIndex = self.viewIndex % [self.views count];
         for (NSUInteger i = self.viewIndex; i < [self.views count]; i++)
         {
             FXBlurView *view = self.views[i];
-            if (view.blurEnabled && view.dynamic && view.window &&
-                (!view.lastUpdate || [view.lastUpdate timeIntervalSinceNow] < -view.updateInterval) &&
-                !CGRectIsEmpty(view.bounds) && !CGRectIsEmpty(view.superview.bounds))
+            if (!view.dynamic || ![view shouldUpdate]) continue;
+
+            NSTimeInterval nextUpdate = [view.lastUpdate timeIntervalSinceNow] + view.updateInterval;
+            if (!view.lastUpdate || nextUpdate <= 0)
             {
                 self.updating = YES;
-                UIImage *snapshot = [view snapshotOfSuperview:view.superview];
+                UIImage *snapshot = [view snapshotOfUnderlyingView];
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
                     
                     UIImage *blurredImage = [snapshot blurredImageWithRadius:view.blurRadius
@@ -244,12 +247,18 @@
                 });
                 return;
             }
+            else
+            {
+                timeUntilNextUpdate = MIN(timeUntilNextUpdate, nextUpdate);
+            }
         }
-        
-        //try again
+
+        //try again, delaying until the time when the next view needs an update.
         self.viewIndex = 0;
-        [self performSelectorOnMainThread:@selector(updateAsynchronously) withObject:nil
-                            waitUntilDone:NO modes:@[NSDefaultRunLoopMode, UITrackingRunLoopMode]];
+        [self performSelector:@selector(updateAsynchronously)
+                   withObject:nil
+                   afterDelay:timeUntilNextUpdate
+                      inModes:@[NSDefaultRunLoopMode, UITrackingRunLoopMode]];
     }
 }
 
@@ -363,6 +372,15 @@
     }
 }
 
+- (UIView *)underlyingView
+{
+    if (!_underlyingView) {
+        return self.superview;
+    }
+    
+    return _underlyingView;
+}
+
 - (void)setUpdateInterval:(NSTimeInterval)updateInterval
 {
     _updateInterval = updateInterval;
@@ -405,12 +423,17 @@
     [self.layer setNeedsDisplay];
 }
 
+- (BOOL) shouldUpdate
+{
+    return !self.hidden && self.blurEnabled && self.window &&
+        !CGRectIsEmpty(self.bounds) && !CGRectIsEmpty(self.superview.bounds);
+}
+
 - (void)displayLayer:(__unused CALayer *)layer
 {
-    if ([FXBlurScheduler sharedInstance].blurEnabled && self.blurEnabled && self.superview &&
-        !CGRectIsEmpty(self.bounds) && !CGRectIsEmpty(self.superview.bounds))
+    if ([FXBlurScheduler sharedInstance].blurEnabled && [self shouldUpdate])
     {
-        UIImage *snapshot = [self snapshotOfSuperview:self.superview];
+        UIImage *snapshot = [self snapshotOfUnderlyingView];
         UIImage *blurredImage = [snapshot blurredImageWithRadius:self.blurRadius
                                                       iterations:self.iterations
                                                        tintColor:self.tintColor];
@@ -419,7 +442,7 @@
     }
 }
 
-- (UIImage *)snapshotOfSuperview:(UIView *)superview
+-(UIImage *)snapshotOfUnderlyingView
 {
     self.lastUpdate = [NSDate date];
     CGFloat scale = 0.5;
@@ -431,24 +454,29 @@
     }
     UIGraphicsBeginImageContextWithOptions(self.bounds.size, YES, scale);
     CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextTranslateCTM(context, -self.frame.origin.x, -self.frame.origin.y);
-    NSArray *hiddenViews = [self prepareSuperviewForSnapshot:superview];
-    [superview.layer renderInContext:context];
+
+    CGRect locationInUnderView = [self convertRect:self.bounds
+                                            toView:self.underlyingView];
+
+    CGContextTranslateCTM(context, -locationInUnderView.origin.x, -locationInUnderView.origin.y);
+
+    NSArray *hiddenViews = [self prepareSuperviewForSnapshot];
+    [self.underlyingView.layer renderInContext:context];
     [self restoreSuperviewAfterSnapshot:hiddenViews];
     UIImage *snapshot = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     return snapshot;
 }
 
-- (NSArray *)prepareSuperviewForSnapshot:(UIView *)superview
+- (NSArray *)prepareSuperviewForSnapshot
 {
     NSMutableArray *views = [NSMutableArray array];
-    NSInteger index = [superview.subviews indexOfObject:self];
+    NSInteger index = [self.superview.subviews indexOfObject:self];
     if (index != NSNotFound)
     {
-        for (NSUInteger i = index; i < [superview.subviews count]; i++)
+        for (NSUInteger i = index; i < [self.superview.subviews count]; i++)
         {
-            UIView *view = superview.subviews[i];
+            UIView *view = self.superview.subviews[i];
             if (!view.hidden)
             {
                 view.hidden = YES;
