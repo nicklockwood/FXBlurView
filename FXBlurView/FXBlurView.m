@@ -493,6 +493,21 @@
     }
 }
 
+- (UIImage *)blurredVersionOfSnapshot:(UIImage *)snapshot
+{
+    UIImage *blurredImage = [snapshot blurredImageWithRadius:self.blurRadius
+                                                  iterations:self.iterations
+                                                   tintColor:self.tintColor];
+
+    return blurredImage;
+}
+
+- (void)updateLayerContentsWithImage:(UIImage *)image
+{
+    self.layer.contents = (id)image.CGImage;
+    self.layer.contentsScale = image.scale;
+}
+
 - (void)updateAsynchronously:(BOOL)async completion:(void (^)())completion
 {
     if ([self shouldUpdate])
@@ -502,24 +517,21 @@
         {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
                 
-                UIImage *blurredImage = [snapshot blurredImageWithRadius:self.blurRadius
-                                                              iterations:self.iterations
-                                                               tintColor:self.tintColor];
+                UIImage *blurredImage = [self blurredVersionOfSnapshot:snapshot];
                 dispatch_sync(dispatch_get_main_queue(), ^{
                     
-                    self.layer.contents = (id)blurredImage.CGImage;
-                    self.layer.contentsScale = blurredImage.scale;
+                    [self updateLayerContentsWithImage:blurredImage];
+
                     if (completion) completion();
                 });
             });
         }
         else
         {
-            UIImage *blurredImage = [snapshot blurredImageWithRadius:self.blurRadius
-                                                          iterations:self.iterations
-                                                           tintColor:self.tintColor];
-            self.layer.contents = (id)blurredImage.CGImage;
-            self.layer.contentsScale = blurredImage.scale;
+            UIImage *blurredImage = [self blurredVersionOfSnapshot:snapshot];
+            [self updateLayerContentsWithImage:blurredImage];
+
+            if (completion) completion();
         }
     }
     else if (completion)
