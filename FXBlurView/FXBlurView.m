@@ -530,6 +530,8 @@
         {
             UIImage *blurredImage = [self blurredVersionOfSnapshot:snapshot];
             [self updateLayerContentsWithImage:blurredImage];
+
+            if (completion) completion();
         }
     }
     else if (completion)
