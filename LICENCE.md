@@ -1,6 +1,6 @@
 FXBlurView
 
-Version 1.5, December 26th, 2013
+Version 1.5.1, January 26th, 2013
 
 Copyright (C) 2013 Charcoal Design
 

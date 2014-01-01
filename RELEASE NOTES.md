@@ -1,3 +1,7 @@
+Version 1.5.1
+
+- Fixed bug where completion handler was not called for synchronous blur.
+
 Version 1.5
 
 - Added underlyingView property to specify source view

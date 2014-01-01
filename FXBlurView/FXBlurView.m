@@ -1,7 +1,7 @@
 //
 //  FXBlurView.m
 //
-//  Version 1.5
+//  Version 1.5.1
 //
 //  Created by Nick Lockwood on 25/08/2013.
 //  Copyright (c) 2013 Charcoal Design
@@ -493,16 +493,14 @@
     }
 }
 
-- (UIImage *)blurredVersionOfSnapshot:(UIImage *)snapshot
+- (UIImage *)blurredSnapshot:(UIImage *)snapshot
 {
-    UIImage *blurredImage = [snapshot blurredImageWithRadius:self.blurRadius
-                                                  iterations:self.iterations
-                                                   tintColor:self.tintColor];
-
-    return blurredImage;
+    return [snapshot blurredImageWithRadius:self.blurRadius
+                                 iterations:self.iterations
+                                  tintColor:self.tintColor];
 }
 
-- (void)updateLayerContentsWithImage:(UIImage *)image
+- (void)setLayerContents:(UIImage *)image
 {
     self.layer.contents = (id)image.CGImage;
     self.layer.contentsScale = image.scale;
@@ -517,20 +515,17 @@
         {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
                 
-                UIImage *blurredImage = [self blurredVersionOfSnapshot:snapshot];
+                UIImage *blurredImage = [self blurredSnapshot:snapshot];
                 dispatch_sync(dispatch_get_main_queue(), ^{
                     
-                    [self updateLayerContentsWithImage:blurredImage];
-
+                    [self setLayerContents:blurredImage];
                     if (completion) completion();
                 });
             });
         }
         else
         {
-            UIImage *blurredImage = [self blurredVersionOfSnapshot:snapshot];
-            [self updateLayerContentsWithImage:blurredImage];
-
+            [self setLayerContents:[self blurredSnapshot:snapshot]];
             if (completion) completion();
         }
     }
