@@ -52,6 +52,11 @@
 
 - (UIImage *)blurredImageWithRadius:(CGFloat)radius iterations:(NSUInteger)iterations tintColor:(UIColor *)tintColor
 {
+  return [self blurredImageWithRadius:radius iterations:iterations tintColor:tintColor tintBlendMode:kCGBlendModePlusLighter];
+}
+
+- (UIImage *)blurredImageWithRadius:(CGFloat)radius iterations:(NSUInteger)iterations tintColor:(UIColor *)tintColor tintBlendMode:(NSUInteger)tintBlendMode
+{
     //image must be nonzero size
     if (floorf(self.size.width) * floorf(self.size.height) <= 0.0f) return self;
     
@@ -102,7 +107,7 @@
     if (tintColor && CGColorGetAlpha(tintColor.CGColor) > 0.0f)
     {
         CGContextSetFillColorWithColor(ctx, [tintColor colorWithAlphaComponent:0.25].CGColor);
-        CGContextSetBlendMode(ctx, kCGBlendModePlusLighter);
+        CGContextSetBlendMode(ctx, tintBlendMode);
         CGContextFillRect(ctx, CGRectMake(0, 0, buffer1.width, buffer1.height));
     }
     
@@ -135,6 +140,7 @@
 @property (nonatomic, assign) BOOL blurRadiusSet;
 @property (nonatomic, assign) BOOL dynamicSet;
 @property (nonatomic, assign) BOOL blurEnabledSet;
+@property (nonatomic, assign) BOOL tintBlendModeSet;
 @property (nonatomic, strong) NSDate *lastUpdate;
 
 - (UIImage *)snapshotOfUnderlyingView;
@@ -280,6 +286,7 @@
     if (!_blurRadiusSet) _blurRadius = 40.0f;
     if (!_dynamicSet) _dynamic = YES;
     if (!_blurEnabledSet) _blurEnabled = YES;
+    if (!_tintBlendModeSet) _tintBlendMode = kCGBlendModePlusLighter;
     self.updateInterval = _updateInterval;
     self.layer.magnificationFilter = @"linear"; //kCAFilterLinear;
     
@@ -334,6 +341,14 @@
     _blurRadiusSet = YES;
     _blurRadius = blurRadius;
     [self setNeedsDisplay];
+}
+
+- (void)setTintBlendMode:(NSUInteger)tintBlendMode {
+  _tintBlendModeSet = YES;
+  if (_tintBlendMode != tintBlendMode) {
+    _tintBlendMode = tintBlendMode;
+    [self setNeedsDisplay];
+  }
 }
 
 - (void)setBlurEnabled:(BOOL)blurEnabled
@@ -497,7 +512,8 @@
 {
     return [snapshot blurredImageWithRadius:self.blurRadius
                                  iterations:self.iterations
-                                  tintColor:self.tintColor];
+                                  tintColor:self.tintColor
+                              tintBlendMode:self.tintBlendMode];
 }
 
 - (void)setLayerContents:(UIImage *)image
