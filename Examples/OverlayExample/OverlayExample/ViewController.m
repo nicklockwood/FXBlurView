@@ -8,7 +8,6 @@
 
 #import "ViewController.h"
 #import "FXBlurView.h"
-#import <QuartzCore/QuartzCore.h>
 
 
 @interface ViewController ()
@@ -24,11 +23,15 @@
 {
     [super viewDidLoad];
     
+    //configure blur view
     self.blurView.dynamic = NO;
     self.blurView.tintColor = [UIColor colorWithRed:0 green:0.5 blue:0.5 alpha:1];
-    [self.blurView.layer displayIfNeeded]; //force immediate redraw
     self.blurView.contentMode = UIViewContentModeBottom;
-    self.blurView.frame = CGRectMake(0, 568, 320, 0);
+    
+    //take snapshot, then move off screen once complete
+    [self.blurView updateAsynchronously:YES completion:^{
+        self.blurView.frame = CGRectMake(0, 568, 320, 0);
+    }];
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -44,7 +47,6 @@
 - (IBAction)toggleModal
 {
     [UIView animateWithDuration:0.5 animations:^{
-        
         BOOL open = self.blurView.frame.size.height > 200;
         self.blurView.frame = CGRectMake(0, open? 568: 143, 320, open? 0: 425);
     }];

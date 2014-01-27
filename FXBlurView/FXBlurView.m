@@ -1,7 +1,7 @@
 //
 //  FXBlurView.m
 //
-//  Version 1.5.1
+//  Version 1.5.2
 //
 //  Created by Nick Lockwood on 25/08/2013.
 //  Copyright (c) 2013 Charcoal Design
@@ -437,14 +437,15 @@
         scale = 1.0f/floorf(1.0f/scale);
     }
     CGSize size = self.bounds.size;
-    if (self.contentMode == UIViewContentModeScaleToFill)
+    if (self.contentMode == UIViewContentModeScaleToFill ||
+        self.contentMode == UIViewContentModeScaleAspectFill ||
+        self.contentMode == UIViewContentModeScaleAspectFit ||
+        self.contentMode == UIViewContentModeRedraw)
     {
         //prevents edge artefacts
         size.width = floorf(size.width * scale) / scale;
         size.height = floorf(size.height * scale) / scale;
     }
-    size.width = floorf(size.width * scale) / scale;
-    size.height = floorf(size.height * scale) / scale;
     UIGraphicsBeginImageContextWithOptions(size, YES, scale);
     CGContextRef context = UIGraphicsGetCurrentContext();
 

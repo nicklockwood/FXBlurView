@@ -1,3 +1,7 @@
+Version 1.5.2
+
+- Fixed bug where edge of blur could be cropped short when using content modes other than scale to fit
+
 Version 1.5.1
 
 - Fixed bug where completion handler was not called for synchronous blur.
