@@ -50,7 +50,7 @@
 
 @implementation UIImage (FXBlurView)
 
-- (UIImage *)blurredImageWithRadius:(CGFloat)radius iterations:(NSUInteger)iterations tintColor:(UIColor *)tintColor
+- (UIImage *)blurredImageWithRadius:(CGFloat)radius iterations:(NSUInteger)iterations tintColor:(UIColor *)tintColor isMonochrome:(BOOL)isMonochrome
 {
     //image must be nonzero size
     if (floorf(self.size.width) * floorf(self.size.height) <= 0.0f) return self;
@@ -101,7 +101,18 @@
     //apply tint
     if (tintColor && CGColorGetAlpha(tintColor.CGColor) > 0.0f)
     {
-        CGContextSetFillColorWithColor(ctx, [tintColor colorWithAlphaComponent:0.25].CGColor);
+        if (isMonochrome) {
+            CGImageRef img = CGBitmapContextCreateImage(ctx);
+            CGContextSetFillColorWithColor(ctx, [UIColor whiteColor].CGColor);
+            CGContextSetBlendMode(ctx, kCGBlendModeCopy);
+            CGContextFillRect(ctx, CGRectMake(0, 0, buffer1.width, buffer1.height));
+            CGContextSetBlendMode(ctx, kCGBlendModeLuminosity);
+            CGContextDrawImage(ctx, CGRectMake(0, 0, buffer1.width, buffer1.height), img);
+            CGImageRelease(img);
+        }
+        
+        
+        CGContextSetFillColorWithColor(ctx, tintColor.CGColor);
         CGContextSetBlendMode(ctx, kCGBlendModePlusLighter);
         CGContextFillRect(ctx, CGRectMake(0, 0, buffer1.width, buffer1.height));
     }
@@ -281,6 +292,7 @@
     if (!_dynamicSet) _dynamic = YES;
     if (!_blurEnabledSet) _blurEnabled = YES;
     self.updateInterval = _updateInterval;
+    self.monochrome = NO;
     self.layer.magnificationFilter = @"linear"; //kCAFilterLinear;
     
     unsigned int numberOfMethods;
@@ -498,7 +510,8 @@
 {
     return [snapshot blurredImageWithRadius:self.blurRadius
                                  iterations:self.iterations
-                                  tintColor:self.tintColor];
+                                  tintColor:self.tintColor
+                               isMonochrome:self.isMonochrome];
 }
 
 - (void)setLayerContents:(UIImage *)image
