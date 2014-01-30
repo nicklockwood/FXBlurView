@@ -1,7 +1,7 @@
 //
 //  FXBlurView.m
 //
-//  Version 1.5.2
+//  Version 1.5.3
 //
 //  Created by Nick Lockwood on 25/08/2013.
 //  Copyright (c) 2013 Charcoal Design
@@ -281,7 +281,6 @@
     if (!_dynamicSet) _dynamic = YES;
     if (!_blurEnabledSet) _blurEnabled = YES;
     self.updateInterval = _updateInterval;
-    self.layer.magnificationFilter = @"linear"; //kCAFilterLinear;
     
     unsigned int numberOfMethods;
     Method *methods = class_copyMethodList([UIView class], &numberOfMethods);
@@ -445,6 +444,11 @@
         //prevents edge artefacts
         size.width = floorf(size.width * scale) / scale;
         size.height = floorf(size.height * scale) / scale;
+    }
+    else if ([[UIDevice currentDevice].systemVersion floatValue] < 7.0f && [UIScreen mainScreen].scale == 1.0f)
+    {
+        //prevents pixelation on old devices
+        scale = 1.0f;
     }
     UIGraphicsBeginImageContextWithOptions(size, YES, scale);
     CGContextRef context = UIGraphicsGetCurrentContext();

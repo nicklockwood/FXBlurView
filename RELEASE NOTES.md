@@ -1,3 +1,7 @@
+Version 1.5.3
+
+- Fixed pixelation issue on non-Retina devices running iOS 6 or earlier
+
 Version 1.5.2
 
 - Fixed bug where edge of blur could be cropped short when using content modes other than scale to fit
