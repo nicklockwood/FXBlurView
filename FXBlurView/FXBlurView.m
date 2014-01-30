@@ -110,7 +110,7 @@
         CGContextSetFillColorWithColor(ctx, tintColor.CGColor);
         CGContextFillRect(ctx, CGRectMake(0, 0, buffer1.width, buffer1.height));
 
-        if (isMonochrome) {
+        if (maxBrightness - minBrightness < 1) {
             CGContextSetFillColorWithColor(ctx, [UIColor colorWithWhite:maxBrightness - minBrightness alpha:1].CGColor);
             CGContextSetBlendMode(ctx, kCGBlendModeMultiply);
             CGContextFillRect(ctx, CGRectMake(0, 0, buffer1.width, buffer1.height));
