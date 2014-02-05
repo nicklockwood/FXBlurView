@@ -90,6 +90,10 @@ This property controls the radius of the blur effect (in points). Defaults to a 
     
 This in an optional tint color to be applied to the FXBlurView. The RGB components of the color will be blended with the blurred image, resulting in a gentle tint. To vary the intensity of the tint effect, use brighter or darker colors. The alpha component of the tintColor is ignored. If you do not wish to apply a tint, set this value to nil or [UIColor clearColor]. Note that if you are using Xcode 5 or above, FXBlurViews created in Interface Builder will have a blue tint by default.
 
+    @property (nonatomic, assign) NSUInteger tintBlendMode;
+    
+This in an optional blend mode used when applying `-tintColor`. The default value is kCGBlendModePlusLighter.
+
     @property (nonatomic, weak) UIView *underlyingView;
 
 This property specifies the view that the FXBlurView will sample to create the blur effect. If set to nil (the default), this will be the superview of the blur view itself, but you can override this if you need to.
