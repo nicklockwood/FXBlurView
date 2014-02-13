@@ -41,11 +41,13 @@
 #pragma GCC diagnostic ignored "-Wdirect-ivar-access"
 #pragma GCC diagnostic ignored "-Wgnu"
 
-
+#if kFXUseManualRetainRelease
+#else
 #import <Availability.h>
 #if !__has_feature(objc_arc)
 #error This class requires automatic reference counting
-#endif
+#endif // __has_feature(objc_arc)
+#endif // kFXUseManualRetainRelease
 
 
 @implementation UIImage (FXBlurView)
@@ -320,6 +322,11 @@
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+#if kFXUseManualRetainRelease
+    [_tintColor release];
+    [super dealloc];
+#endif
 }
 
 - (void)setIterations:(NSUInteger)iterations
@@ -377,6 +384,10 @@
 
 - (void)setTintColor:(UIColor *)tintColor
 {
+#if kFXUseManualRetainRelease
+    [tintColor retain];
+    [_tintColor release];
+#endif
     _tintColor = tintColor;
     [self setNeedsDisplay];
 }

@@ -34,6 +34,7 @@
 #import <UIKit/UIKit.h>
 #import <Accelerate/Accelerate.h>
 
+#define kFXUseManualRetainRelease   0
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wobjc-missing-property-synthesis"
