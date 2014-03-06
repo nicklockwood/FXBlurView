@@ -455,7 +455,9 @@
     CGContextRef context = UIGraphicsGetCurrentContext();
 
     __strong UIView *underlyingView = self.underlyingView;
-    CGRect locationInUnderlyingView = [self convertRect:self.bounds toView:underlyingView];
+    CALayer *selfLayer = self.layer.presentationLayer;
+    CGRect selfLayerBounds = selfLayer.bounds;
+    CGRect locationInUnderlyingView = [selfLayer convertRect:selfLayerBounds toLayer:underlyingView.layer.presentationLayer];
     CGContextTranslateCTM(context, -locationInUnderlyingView.origin.x, -locationInUnderlyingView.origin.y);
 
     NSArray *hiddenViews = [self prepareUnderlyingViewForSnapshot];
