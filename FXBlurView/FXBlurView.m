@@ -1,7 +1,7 @@
 //
 //  FXBlurView.m
 //
-//  Version 1.5.3
+//  Version 1.5.4
 //
 //  Created by Nick Lockwood on 25/08/2013.
 //  Copyright (c) 2013 Charcoal Design
@@ -428,6 +428,15 @@
 
 - (UIImage *)snapshotOfUnderlyingView
 {
+    CGRect bounds = self.bounds;
+    __strong UIView *underlyingView = self.underlyingView;
+    if (_dynamic)
+    {
+        //in dynamic mode, use presentation layer instead of model
+        CALayer *layer = self.layer.presentationLayer;
+        bounds = [layer convertRect:layer.bounds toLayer:underlyingView.layer.presentationLayer];
+    }
+    
     self.lastUpdate = [NSDate date];
     CGFloat scale = 0.5;
     if (self.iterations)
@@ -436,7 +445,7 @@
         scale = blockSize/MAX(blockSize * 2, self.blurRadius);
         scale = 1.0f/floorf(1.0f/scale);
     }
-    CGSize size = self.bounds.size;
+    CGSize size = bounds.size;
     if (self.contentMode == UIViewContentModeScaleToFill ||
         self.contentMode == UIViewContentModeScaleAspectFill ||
         self.contentMode == UIViewContentModeScaleAspectFit ||
@@ -453,13 +462,8 @@
     }
     UIGraphicsBeginImageContextWithOptions(size, YES, scale);
     CGContextRef context = UIGraphicsGetCurrentContext();
-
-    __strong UIView *underlyingView = self.underlyingView;
-    CALayer *selfLayer = self.layer.presentationLayer;
-    CGRect selfLayerBounds = selfLayer.bounds;
-    CGRect locationInUnderlyingView = [selfLayer convertRect:selfLayerBounds toLayer:underlyingView.layer.presentationLayer];
-    CGContextTranslateCTM(context, -locationInUnderlyingView.origin.x, -locationInUnderlyingView.origin.y);
-
+    CGContextTranslateCTM(context, -bounds.origin.x, -bounds.origin.y);
+    
     NSArray *hiddenViews = [self prepareUnderlyingViewForSnapshot];
     [underlyingView.layer renderInContext:context];
     [self restoreSuperviewAfterSnapshot:hiddenViews];
