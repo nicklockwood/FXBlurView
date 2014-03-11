@@ -1,7 +1,7 @@
 //
 //  FXBlurView.h
 //
-//  Version 1.5.4
+//  Version 1.5.5
 //
 //  Created by Nick Lockwood on 25/08/2013.
 //  Copyright (c) 2013 Charcoal Design

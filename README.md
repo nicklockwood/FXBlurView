@@ -114,6 +114,10 @@ FAQ
 Release Notes
 -----------------
 
+Version 1.5.5
+
+- Fixed zero-sized context warning in console when view has no presentationLayer
+
 Version 1.5.4
 
 - It is now possible to animate the FXBlurView frame using ordinary UIView animations
