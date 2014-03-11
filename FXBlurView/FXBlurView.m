@@ -430,7 +430,7 @@
 {
     CGRect bounds = self.bounds;
     __strong UIView *underlyingView = self.underlyingView;
-    if (_dynamic)
+    if (_dynamic && self.layer.presentationLayer)
     {
         //in dynamic mode, use presentation layer instead of model
         CALayer *layer = self.layer.presentationLayer;
