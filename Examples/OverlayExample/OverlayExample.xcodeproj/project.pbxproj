@@ -25,14 +25,14 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		012FDED917D13C23003F0236 /* ModalExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ModalExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		012FDED917D13C23003F0236 /* OverlayExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OverlayExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		012FDEDC17D13C23003F0236 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		012FDEDE17D13C23003F0236 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		012FDEE017D13C23003F0236 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		012FDEE417D13C23003F0236 /* ModalExample-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ModalExample-Info.plist"; sourceTree = "<group>"; };
+		012FDEE417D13C23003F0236 /* OverlayExample-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "OverlayExample-Info.plist"; sourceTree = "<group>"; };
 		012FDEE617D13C23003F0236 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		012FDEE817D13C23003F0236 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		012FDEEA17D13C23003F0236 /* ModalExample-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ModalExample-Prefix.pch"; sourceTree = "<group>"; };
+		012FDEEA17D13C23003F0236 /* OverlayExample-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OverlayExample-Prefix.pch"; sourceTree = "<group>"; };
 		012FDEEB17D13C23003F0236 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		012FDEEC17D13C23003F0236 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		012FDEEE17D13C23003F0236 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
@@ -67,7 +67,7 @@
 			isa = PBXGroup;
 			children = (
 				012FDEFF17D13C34003F0236 /* FXBlurView */,
-				012FDEE217D13C23003F0236 /* ModalExample */,
+				012FDEE217D13C23003F0236 /* OverlayExample */,
 				012FDEDB17D13C23003F0236 /* Frameworks */,
 				012FDEDA17D13C23003F0236 /* Products */,
 			);
@@ -76,7 +76,7 @@
 		012FDEDA17D13C23003F0236 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				012FDED917D13C23003F0236 /* ModalExample.app */,
+				012FDED917D13C23003F0236 /* OverlayExample.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -92,7 +92,7 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		012FDEE217D13C23003F0236 /* ModalExample */ = {
+		012FDEE217D13C23003F0236 /* OverlayExample */ = {
 			isa = PBXGroup;
 			children = (
 				012FDEEB17D13C23003F0236 /* AppDelegate.h */,
@@ -102,16 +102,16 @@
 				012FDEF717D13C23003F0236 /* ViewController.xib */,
 				012FDEE317D13C23003F0236 /* Supporting Files */,
 			);
-			path = ModalExample;
+			path = OverlayExample;
 			sourceTree = "<group>";
 		};
 		012FDEE317D13C23003F0236 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				012FDEE417D13C23003F0236 /* ModalExample-Info.plist */,
+				012FDEE417D13C23003F0236 /* OverlayExample-Info.plist */,
 				012FDEE517D13C23003F0236 /* InfoPlist.strings */,
 				012FDEE817D13C23003F0236 /* main.m */,
-				012FDEEA17D13C23003F0236 /* ModalExample-Prefix.pch */,
+				012FDEEA17D13C23003F0236 /* OverlayExample-Prefix.pch */,
 				012FDEEE17D13C23003F0236 /* Default.png */,
 				012FDEF017D13C23003F0236 /* Default@2x.png */,
 				012FDEF217D13C23003F0236 /* Default-568h@2x.png */,
@@ -134,9 +134,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		012FDED817D13C23003F0236 /* ModalExample */ = {
+		012FDED817D13C23003F0236 /* OverlayExample */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 012FDEFC17D13C23003F0236 /* Build configuration list for PBXNativeTarget "ModalExample" */;
+			buildConfigurationList = 012FDEFC17D13C23003F0236 /* Build configuration list for PBXNativeTarget "OverlayExample" */;
 			buildPhases = (
 				012FDED517D13C23003F0236 /* Sources */,
 				012FDED617D13C23003F0236 /* Frameworks */,
@@ -146,9 +146,9 @@
 			);
 			dependencies = (
 			);
-			name = ModalExample;
+			name = OverlayExample;
 			productName = ModalExample;
-			productReference = 012FDED917D13C23003F0236 /* ModalExample.app */;
+			productReference = 012FDED917D13C23003F0236 /* OverlayExample.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -160,7 +160,7 @@
 				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = "Charcoal Design";
 			};
-			buildConfigurationList = 012FDED417D13C23003F0236 /* Build configuration list for PBXProject "ModalExample" */;
+			buildConfigurationList = 012FDED417D13C23003F0236 /* Build configuration list for PBXProject "OverlayExample" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -172,7 +172,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				012FDED817D13C23003F0236 /* ModalExample */,
+				012FDED817D13C23003F0236 /* OverlayExample */,
 			);
 		};
 /* End PBXProject section */
@@ -288,14 +288,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "ModalExample/ModalExample-Prefix.pch";
+				GCC_PREFIX_HEADER = "OverlayExample/OverlayExample-Prefix.pch";
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
-				INFOPLIST_FILE = "ModalExample/ModalExample-Info.plist";
+				INFOPLIST_FILE = "OverlayExample/OverlayExample-Info.plist";
 				OTHER_LDFLAGS = (
 					"-Wall",
 					"-Wextra",
 				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = OverlayExample;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -304,14 +304,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "ModalExample/ModalExample-Prefix.pch";
+				GCC_PREFIX_HEADER = "OverlayExample/OverlayExample-Prefix.pch";
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
-				INFOPLIST_FILE = "ModalExample/ModalExample-Info.plist";
+				INFOPLIST_FILE = "OverlayExample/OverlayExample-Info.plist";
 				OTHER_LDFLAGS = (
 					"-Wall",
 					"-Wextra",
 				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = OverlayExample;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -319,7 +319,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		012FDED417D13C23003F0236 /* Build configuration list for PBXProject "ModalExample" */ = {
+		012FDED417D13C23003F0236 /* Build configuration list for PBXProject "OverlayExample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				012FDEFA17D13C23003F0236 /* Debug */,
@@ -328,7 +328,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		012FDEFC17D13C23003F0236 /* Build configuration list for PBXNativeTarget "ModalExample" */ = {
+		012FDEFC17D13C23003F0236 /* Build configuration list for PBXNativeTarget "OverlayExample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				012FDEFD17D13C23003F0236 /* Debug */,

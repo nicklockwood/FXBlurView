@@ -1,7 +1,7 @@
 //
 //  FXBlurView.m
 //
-//  Version 1.4.3
+//  Version 1.5.5
 //
 //  Created by Nick Lockwood on 25/08/2013.
 //  Copyright (c) 2013 Charcoal Design
@@ -37,6 +37,11 @@
 #import <QuartzCore/QuartzCore.h>
 
 
+#pragma GCC diagnostic ignored "-Wobjc-missing-property-synthesis"
+#pragma GCC diagnostic ignored "-Wdirect-ivar-access"
+#pragma GCC diagnostic ignored "-Wgnu"
+
+
 #import <Availability.h>
 #if !__has_feature(objc_arc)
 #error This class requires automatic reference counting
@@ -51,7 +56,7 @@
     if (floorf(self.size.width) * floorf(self.size.height) <= 0.0f) return self;
     
     //boxsize must be an odd integer
-    uint32_t boxSize = radius * self.scale;
+    uint32_t boxSize = (uint32_t)(radius * self.scale);
     if (boxSize % 2 == 0) boxSize ++;
     
     //create image buffers
@@ -60,13 +65,13 @@
     buffer1.width = buffer2.width = CGImageGetWidth(imageRef);
     buffer1.height = buffer2.height = CGImageGetHeight(imageRef);
     buffer1.rowBytes = buffer2.rowBytes = CGImageGetBytesPerRow(imageRef);
-    CFIndex bytes = buffer1.rowBytes * buffer1.height;
+    size_t bytes = buffer1.rowBytes * buffer1.height;
     buffer1.data = malloc(bytes);
     buffer2.data = malloc(bytes);
     
     //create temp buffer
-    void *tempBuffer = malloc(vImageBoxConvolve_ARGB8888(&buffer1, &buffer2, NULL, 0, 0, boxSize, boxSize,
-                                                         NULL, kvImageEdgeExtend + kvImageGetTempBufferSize));
+    void *tempBuffer = malloc((size_t)vImageBoxConvolve_ARGB8888(&buffer1, &buffer2, NULL, 0, 0, boxSize, boxSize,
+                                                                 NULL, kvImageEdgeExtend + kvImageGetTempBufferSize));
     
     //copy image data
     CFDataRef dataSource = CGDataProviderCopyData(CGImageGetDataProvider(imageRef));
@@ -116,8 +121,8 @@
 @interface FXBlurScheduler : NSObject
 
 @property (nonatomic, strong) NSMutableArray *views;
-@property (nonatomic, assign) NSInteger viewIndex;
-@property (nonatomic, assign) NSInteger updatesEnabled;
+@property (nonatomic, assign) NSUInteger viewIndex;
+@property (nonatomic, assign) NSUInteger updatesEnabled;
 @property (nonatomic, assign) BOOL blurEnabled;
 @property (nonatomic, assign) BOOL updating;
 
@@ -132,7 +137,8 @@
 @property (nonatomic, assign) BOOL blurEnabledSet;
 @property (nonatomic, strong) NSDate *lastUpdate;
 
-- (UIImage *)snapshotOfSuperview:(UIView *)superview;
+- (UIImage *)snapshotOfUnderlyingView;
+- (BOOL)shouldUpdate;
 
 @end
 
@@ -151,7 +157,7 @@
 
 - (instancetype)init
 {
-    if (self = [super init])
+    if ((self = [super init]))
     {
         _updatesEnabled = 1;
         _blurEnabled = YES;
@@ -195,7 +201,7 @@
 
 - (void)removeView:(FXBlurView *)view
 {
-    NSInteger index = [self.views indexOfObject:view];
+    NSUInteger index = [self.views indexOfObject:view];
     if (index != NSNotFound)
     {
         if (index <= self.viewIndex)
@@ -210,46 +216,41 @@
 {
     if (self.blurEnabled && !self.updating && self.updatesEnabled > 0 && [self.views count])
     {
+        NSTimeInterval timeUntilNextUpdate = 1.0 / 60;
+        
         //loop through until we find a view that's ready to be drawn
         self.viewIndex = self.viewIndex % [self.views count];
         for (NSUInteger i = self.viewIndex; i < [self.views count]; i++)
         {
             FXBlurView *view = self.views[i];
-            if (view.blurEnabled && view.dynamic && view.window &&
-                (!view.lastUpdate || [view.lastUpdate timeIntervalSinceNow] < -view.updateInterval) &&
-                !CGRectIsEmpty(view.bounds) && !CGRectIsEmpty(view.superview.bounds))
+            if (view.dynamic && !view.hidden && view.window && [view shouldUpdate])
             {
-                self.updating = YES;
-                UIImage *snapshot = [view snapshotOfSuperview:view.superview];
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-                    
-                    UIImage *blurredImage = [snapshot blurredImageWithRadius:view.blurRadius
-                                                                  iterations:view.iterations
-                                                                   tintColor:view.tintColor];
-                    dispatch_sync(dispatch_get_main_queue(), ^{
-                        
-                        //set image
-                        self.updating = NO;
-                        if (view.dynamic)
-                        {
-                            view.layer.contents = (id)blurredImage.CGImage;
-                            view.layer.contentsScale = blurredImage.scale;
-                        }
+                NSTimeInterval nextUpdate = [view.lastUpdate timeIntervalSinceNow] + view.updateInterval;
+                if (!view.lastUpdate || nextUpdate <= 0)
+                {
+                    self.updating = YES;
+                    [view updateAsynchronously:YES completion:^{
                         
                         //render next view
+                        self.updating = NO;
                         self.viewIndex = i + 1;
-                        [self performSelectorOnMainThread:@selector(updateAsynchronously) withObject:nil
-                                            waitUntilDone:NO modes:@[NSDefaultRunLoopMode, UITrackingRunLoopMode]];
-                    });
-                });
-                return;
+                        [self updateAsynchronously];
+                    }];
+                    return;
+                }
+                else
+                {
+                    timeUntilNextUpdate = MIN(timeUntilNextUpdate, nextUpdate);
+                }
             }
         }
-        
-        //try again
+
+        //try again, delaying until the time when the next view needs an update.
         self.viewIndex = 0;
-        [self performSelectorOnMainThread:@selector(updateAsynchronously) withObject:nil
-                            waitUntilDone:NO modes:@[NSDefaultRunLoopMode, UITrackingRunLoopMode]];
+        [self performSelector:@selector(updateAsynchronously)
+                   withObject:nil
+                   afterDelay:timeUntilNextUpdate
+                      inModes:@[NSDefaultRunLoopMode, UITrackingRunLoopMode]];
     }
 }
 
@@ -280,6 +281,7 @@
     if (!_dynamicSet) _dynamic = YES;
     if (!_blurEnabledSet) _blurEnabled = YES;
     self.updateInterval = _updateInterval;
+    self.layer.magnificationFilter = @"linear"; // kCAFilterLinear
     
     unsigned int numberOfMethods;
     Method *methods = class_copyMethodList([UIView class], &numberOfMethods);
@@ -362,6 +364,11 @@
     }
 }
 
+- (UIView *)underlyingView
+{
+    return _underlyingView ?: self.superview;
+}
+
 - (void)setUpdateInterval:(NSTimeInterval)updateInterval
 {
     _updateInterval = updateInterval;
@@ -404,66 +411,82 @@
     [self.layer setNeedsDisplay];
 }
 
-- (void)displayLayer:(__unused CALayer *)layer
+- (BOOL)shouldUpdate
 {
-    if ([FXBlurScheduler sharedInstance].blurEnabled && self.blurEnabled && self.superview &&
-        !CGRectIsEmpty(self.bounds) && !CGRectIsEmpty(self.superview.bounds))
-    {
-        UIImage *snapshot = [self snapshotOfSuperview:self.superview];
-        UIImage *blurredImage = [snapshot blurredImageWithRadius:self.blurRadius
-                                                      iterations:self.iterations
-                                                       tintColor:self.tintColor];
-        self.layer.contents = (id)blurredImage.CGImage;
-        self.layer.contentsScale = blurredImage.scale;
-    }
+    __strong UIView *underlyingView = [self underlyingView];
+    
+    return
+    underlyingView && !underlyingView.hidden &&
+    self.blurEnabled && [FXBlurScheduler sharedInstance].blurEnabled &&
+    !CGRectIsEmpty(self.bounds) && !CGRectIsEmpty(underlyingView.bounds);
 }
 
-- (UIImage *)snapshotOfSuperview:(UIView *)superview
+- (void)displayLayer:(__unused CALayer *)layer
 {
+    [self updateAsynchronously:NO completion:NULL];
+}
+
+- (UIImage *)snapshotOfUnderlyingView
+{
+    CGRect bounds = self.bounds;
+    __strong UIView *underlyingView = self.underlyingView;
+    if (_dynamic && self.layer.presentationLayer)
+    {
+        //in dynamic mode, use presentation layer instead of model
+        CALayer *layer = self.layer.presentationLayer;
+        bounds = [layer convertRect:layer.bounds toLayer:underlyingView.layer.presentationLayer];
+    }
+    
     self.lastUpdate = [NSDate date];
     CGFloat scale = 0.5;
-    if (self.iterations > 0 && ([UIScreen mainScreen].scale > 1 || self.contentMode == UIViewContentModeScaleAspectFill))
+    if (self.iterations)
     {
         CGFloat blockSize = 12.0f/self.iterations;
-        scale = blockSize/MAX(blockSize * 2, floor(self.blurRadius));
+        scale = blockSize/MAX(blockSize * 2, self.blurRadius);
+        scale = 1.0f/floorf(1.0f/scale);
     }
-    CGSize size = self.bounds.size;
-    size.width = ceilf(size.width * scale) / scale;
-    size.height = ceilf(size.height * scale) / scale;
-    UIGraphicsBeginImageContextWithOptions(self.bounds.size, YES, scale);
+    CGSize size = bounds.size;
+    if (self.contentMode == UIViewContentModeScaleToFill ||
+        self.contentMode == UIViewContentModeScaleAspectFill ||
+        self.contentMode == UIViewContentModeScaleAspectFit ||
+        self.contentMode == UIViewContentModeRedraw)
+    {
+        //prevents edge artefacts
+        size.width = floorf(size.width * scale) / scale;
+        size.height = floorf(size.height * scale) / scale;
+    }
+    else if ([[UIDevice currentDevice].systemVersion floatValue] < 7.0f && [UIScreen mainScreen].scale == 1.0f)
+    {
+        //prevents pixelation on old devices
+        scale = 1.0f;
+    }
+    UIGraphicsBeginImageContextWithOptions(size, YES, scale);
     CGContextRef context = UIGraphicsGetCurrentContext();
-    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
-    if (orientation == UIInterfaceOrientationLandscapeRight)
-    {
-        CGContextTranslateCTM(context, 0.5f * size.width, 0.5f * size.height);
-        CGContextRotateCTM(context, -(M_PI / 2.0f));
-        CGContextTranslateCTM(context, -(0.5f * size.height), -(0.5f * size.width));
-    }
-    else if (orientation == UIInterfaceOrientationLandscapeLeft)
-    {
-        CGContextTranslateCTM(context, 0.5f * size.width, 0.5f * size.height);
-        CGContextRotateCTM(context, M_PI / 2.0f);
-        CGContextTranslateCTM(context, -(0.5f * size.height), -(0.5f * size.width));
-    }
-    CGContextTranslateCTM(context, -self.frame.origin.x, -self.frame.origin.y);
-    CGContextScaleCTM(context, size.width / self.bounds.size.width, size.height / self.bounds.size.height);
-    NSArray *hiddenViews = [self prepareSuperviewForSnapshot:superview];
-    [superview.layer renderInContext:context];
+    CGContextTranslateCTM(context, -bounds.origin.x, -bounds.origin.y);
+    
+    NSArray *hiddenViews = [self prepareUnderlyingViewForSnapshot];
+    [underlyingView.layer renderInContext:context];
     [self restoreSuperviewAfterSnapshot:hiddenViews];
     UIImage *snapshot = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     return snapshot;
 }
 
-- (NSArray *)prepareSuperviewForSnapshot:(UIView *)superview
+- (NSArray *)prepareUnderlyingViewForSnapshot
 {
+    __strong UIView *underlyingView = self.underlyingView;
+    UIView *blurView = self;
+    while (blurView.superview && blurView.superview != underlyingView)
+    {
+        blurView = blurView.superview;
+    }
     NSMutableArray *views = [NSMutableArray array];
-    NSInteger index = [superview.subviews indexOfObject:self];
+    NSUInteger index = [underlyingView.subviews indexOfObject:blurView];
     if (index != NSNotFound)
     {
-        for (NSUInteger i = index; i < [superview.subviews count]; i++)
+        for (NSUInteger i = index; i < [underlyingView.subviews count]; i++)
         {
-            UIView *view = superview.subviews[i];
+            UIView *view = underlyingView.subviews[i];
             if (!view.hidden)
             {
                 view.hidden = YES;
@@ -479,6 +502,48 @@
     for (UIView *view in hiddenViews)
     {
         view.hidden = NO;
+    }
+}
+
+- (UIImage *)blurredSnapshot:(UIImage *)snapshot
+{
+    return [snapshot blurredImageWithRadius:self.blurRadius
+                                 iterations:self.iterations
+                                  tintColor:self.tintColor];
+}
+
+- (void)setLayerContents:(UIImage *)image
+{
+    self.layer.contents = (id)image.CGImage;
+    self.layer.contentsScale = image.scale;
+}
+
+- (void)updateAsynchronously:(BOOL)async completion:(void (^)())completion
+{
+    if ([self shouldUpdate])
+    {
+        UIImage *snapshot = [self snapshotOfUnderlyingView];
+        if (async)
+        {
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+                
+                UIImage *blurredImage = [self blurredSnapshot:snapshot];
+                dispatch_sync(dispatch_get_main_queue(), ^{
+                    
+                    [self setLayerContents:blurredImage];
+                    if (completion) completion();
+                });
+            });
+        }
+        else
+        {
+            [self setLayerContents:[self blurredSnapshot:snapshot]];
+            if (completion) completion();
+        }
+    }
+    else if (completion)
+    {
+        completion();
     }
 }
 
