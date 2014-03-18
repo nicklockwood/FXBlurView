@@ -428,8 +428,8 @@
 
 - (UIImage *)snapshotOfUnderlyingView
 {
-    CGRect bounds = self.bounds;
     __strong UIView *underlyingView = self.underlyingView;
+    CGRect bounds = [underlyingView convertRect:self.bounds fromView:self];
     if (_dynamic && self.layer.presentationLayer)
     {
         //in dynamic mode, use presentation layer instead of model
