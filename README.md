@@ -114,6 +114,10 @@ FAQ
 Release Notes
 -----------------
 
+Version 1.5.6
+
+- Fixed bug introduced in 1.5.4 where snapshot would always be taken from top-left corner of superview
+
 Version 1.5.5
 
 - Fixed zero-sized context warning in console when view has no presentationLayer

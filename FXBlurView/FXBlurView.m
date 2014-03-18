@@ -1,7 +1,7 @@
 //
 //  FXBlurView.m
 //
-//  Version 1.5.5
+//  Version 1.5.6
 //
 //  Created by Nick Lockwood on 25/08/2013.
 //  Copyright (c) 2013 Charcoal Design
@@ -428,8 +428,8 @@
 
 - (UIImage *)snapshotOfUnderlyingView
 {
-    CGRect bounds = self.bounds;
     __strong UIView *underlyingView = self.underlyingView;
+    CGRect bounds = [underlyingView convertRect:self.bounds fromView:self];
     if (_dynamic && self.layer.presentationLayer)
     {
         //in dynamic mode, use presentation layer instead of model
