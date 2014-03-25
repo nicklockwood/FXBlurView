@@ -22,6 +22,7 @@
 		012FDF0517D13D4F003F0236 /* iOS7.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 012FDF0317D13D4F003F0236 /* iOS7.jpg */; };
 		012FDF0617D13D4F003F0236 /* overlay.png in Resources */ = {isa = PBXBuildFile; fileRef = 012FDF0417D13D4F003F0236 /* overlay.png */; };
 		012FDF0817D13F1D003F0236 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 012FDF0717D13F1D003F0236 /* Accelerate.framework */; };
+		0178251218E1EE17004C3815 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0178251118E1EE17004C3815 /* QuartzCore.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +47,7 @@
 		012FDF0317D13D4F003F0236 /* iOS7.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = iOS7.jpg; sourceTree = "<group>"; };
 		012FDF0417D13D4F003F0236 /* overlay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = overlay.png; sourceTree = "<group>"; };
 		012FDF0717D13F1D003F0236 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		0178251118E1EE17004C3815 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +55,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0178251218E1EE17004C3815 /* QuartzCore.framework in Frameworks */,
 				012FDF0817D13F1D003F0236 /* Accelerate.framework in Frameworks */,
 				012FDEDD17D13C23003F0236 /* UIKit.framework in Frameworks */,
 				012FDEDF17D13C23003F0236 /* Foundation.framework in Frameworks */,
@@ -84,6 +87,7 @@
 		012FDEDB17D13C23003F0236 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0178251118E1EE17004C3815 /* QuartzCore.framework */,
 				012FDF0717D13F1D003F0236 /* Accelerate.framework */,
 				012FDEDC17D13C23003F0236 /* UIKit.framework */,
 				012FDEDE17D13C23003F0236 /* Foundation.framework */,
