@@ -101,8 +101,8 @@
     //apply tint
     if (tintColor && CGColorGetAlpha(tintColor.CGColor) > 0.0f)
     {
-        CGContextSetFillColorWithColor(ctx, [tintColor colorWithAlphaComponent:0.25].CGColor);
-        CGContextSetBlendMode(ctx, kCGBlendModePlusLighter);
+        CGContextSetFillColorWithColor(ctx, [tintColor colorWithAlphaComponent:CGColorGetAlpha(tintColor.CGColor)].CGColor);
+        CGContextSetBlendMode(ctx, kCGBlendModeNormal);
         CGContextFillRect(ctx, CGRectMake(0, 0, buffer1.width, buffer1.height));
     }
     
