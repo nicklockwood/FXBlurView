@@ -552,7 +552,7 @@
     NSArray *hiddenViews = [self prepareUnderlyingViewForSnapshot];
     if (self.hasSKView)
     {
-        [superview drawViewHierarchyInRect:superview.bounds afterScreenUpdates:YES];
+        [_underlyingView drawViewHierarchyInRect:_underlyingView.bounds afterScreenUpdates:YES];
     }
     else
     {
