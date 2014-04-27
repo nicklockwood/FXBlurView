@@ -26,8 +26,6 @@
     {
         [UIView animateWithDuration:0.5 animations:^{
             self.blurView.blurRadius = 40;
-        } completion:^(__unused BOOL finished) {
-            NSLog(@"finished");
         }];
     }
     else

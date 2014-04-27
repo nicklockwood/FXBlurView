@@ -114,6 +114,10 @@ FAQ
 Release Notes
 -----------------
 
+Version 1.6.1
+
+- Fixed issue with animation completion block not firing
+
 Version 1.6
 
 - It is now possible to animate blurRadius
