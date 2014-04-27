@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>AA66B166-188D-4795-88D4-ECC87DEE3772</string>
+	<key>IDESourceControlProjectName</key>
+	<string>FXBlurViewExample</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>E69A25C4-E035-43D9-8819-6E7D488663E1</key>
+		<string>https://github.com/three-tall-guys/FXBlurView.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>Tests/EdgeTest/FXBlurViewExample.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>E69A25C4-E035-43D9-8819-6E7D488663E1</key>
+		<string>../../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/three-tall-guys/FXBlurView.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>E69A25C4-E035-43D9-8819-6E7D488663E1</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>E69A25C4-E035-43D9-8819-6E7D488663E1</string>
+			<key>IDESourceControlWCCName</key>
+			<string>FXBlurView</string>
+		</dict>
+	</array>
+</dict>
+</plist>

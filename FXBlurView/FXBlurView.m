@@ -49,8 +49,10 @@
 
 
 @implementation UIImage (FXBlurView)
-
-- (UIImage *)blurredImageWithRadius:(CGFloat)radius iterations:(NSUInteger)iterations tintColor:(UIColor *)tintColor
+- (UIImage *)blurredImageWithRadius:(CGFloat)radius iterations:(NSUInteger)iterations tintColor:(UIColor *)tintColor {
+    return [self blurredImageWithRadius:radius iterations:iterations tintColor:tintColor isMonochrome:NO minBrightness:0 maxBrightness:1 overrideAlpha:YES];
+}
+- (UIImage *)blurredImageWithRadius:(CGFloat)radius iterations:(NSUInteger)iterations tintColor:(UIColor *)tintColor isMonochrome:(BOOL)isMonochrome minBrightness:(CGFloat)minBrightness maxBrightness:(CGFloat)maxBrightness overrideAlpha:(BOOL)overrideAlpha
 {
     //image must be nonzero size
     if (floorf(self.size.width) * floorf(self.size.height) <= 0.0f) return self;
@@ -101,9 +103,26 @@
     //apply tint
     if (tintColor && CGColorGetAlpha(tintColor.CGColor) > 0.0f)
     {
-        CGContextSetFillColorWithColor(ctx, [tintColor colorWithAlphaComponent:0.25].CGColor);
-        CGContextSetBlendMode(ctx, kCGBlendModePlusLighter);
+        if (isMonochrome) {
+            CGContextSetBlendMode(ctx, kCGBlendModeColor);
+        } else {
+            CGContextSetBlendMode(ctx, kCGBlendModePlusLighter);
+        }
+        if (overrideAlpha) {
+            tintColor = [tintColor colorWithAlphaComponent:0.25];
+        }
+        CGContextSetFillColorWithColor(ctx, tintColor.CGColor);
         CGContextFillRect(ctx, CGRectMake(0, 0, buffer1.width, buffer1.height));
+        
+        if (maxBrightness - minBrightness < 1) {
+            CGContextSetFillColorWithColor(ctx, [UIColor colorWithWhite:maxBrightness - minBrightness alpha:1].CGColor);
+            CGContextSetBlendMode(ctx, kCGBlendModeMultiply);
+            CGContextFillRect(ctx, CGRectMake(0, 0, buffer1.width, buffer1.height));
+            
+            CGContextSetFillColorWithColor(ctx, [UIColor colorWithWhite:minBrightness alpha:1].CGColor);
+            CGContextSetBlendMode(ctx, kCGBlendModePlusLighter);
+            CGContextFillRect(ctx, CGRectMake(0, 0, buffer1.width, buffer1.height));
+        }
     }
     
     //create image from context
@@ -309,6 +328,11 @@
     if (!_dynamicSet) _dynamic = YES;
     if (!_blurEnabledSet) _blurEnabled = YES;
     self.updateInterval = _updateInterval;
+    self.minBrightness = 0;
+    self.maxBrightness = 1;
+    self.monochrome = NO;
+    self.overrideAlpha = YES;
+    
     self.layer.magnificationFilter = @"linear"; // kCAFilterLinear
     
     unsigned int numberOfMethods;
@@ -571,7 +595,11 @@
 {
     return [snapshot blurredImageWithRadius:blurRadius
                                  iterations:self.iterations
-                                  tintColor:self.tintColor];
+                                  tintColor:self.tintColor
+                               isMonochrome:self.isMonochrome
+                              minBrightness:self.minBrightness
+                              maxBrightness:self.maxBrightness
+                              overrideAlpha:self.isOverridingAlpha];
 }
 
 - (void)setLayerContents:(UIImage *)image
