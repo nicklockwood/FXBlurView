@@ -72,7 +72,7 @@ This property toggles blurring on and off for an individual FXBlurView instance.
 
 	@property (nonatomic, getter = isDynamic) BOOL dynamic;
 	
-This property controls whether the FXBlurView updates dynamically, or only once when the view is added to its superview. Defaults to YES. Note that is dynamic is set to NO, you can still force the view to update by calling `setNeedsDisplay` or `updateAsynchronously:completion:`. Dynamic blurring is extremely cpu-intensive, so you should always disable dynamic views immediately prior to performing an animation to avoid stuttering. However, if you have multiple FXBlurViews on screen then it is simpler to disable updates using the `setUpdatesDisabled` method rather than setting the `dynamic` property to NO.
+This property controls whether the FXBlurView updates dynamically, or only once when the view is added to its superview. Defaults to YES. Note that if dynamic is set to NO, you can still force the view to update by calling `setNeedsDisplay` or `updateAsynchronously:completion:`. Dynamic blurring is extremely cpu-intensive, so you should always disable dynamic views immediately prior to performing an animation to avoid stuttering. However, if you have multiple FXBlurViews on screen then it is simpler to disable updates using the `setUpdatesDisabled` method rather than setting the `dynamic` property to NO.
 
     @property (nonatomic, assign) NSUInteger iterations;
 
