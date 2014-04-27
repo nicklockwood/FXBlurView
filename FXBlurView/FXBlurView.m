@@ -1,7 +1,7 @@
 //
 //  FXBlurView.m
 //
-//  Version 1.6
+//  Version 1.6.1
 //
 //  Created by Nick Lockwood on 25/08/2013.
 //  Copyright (c) 2013 Charcoal Design
@@ -487,6 +487,7 @@
             animation.duration = action.duration;
             animation.timingFunction = action.timingFunction;
             animation.timeOffset = action.timeOffset;
+            animation.delegate = action.delegate;
             return animation;
         }
     }
