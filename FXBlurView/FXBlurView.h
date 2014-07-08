@@ -32,7 +32,6 @@
 
 
 #import <UIKit/UIKit.h>
-#import <Accelerate/Accelerate.h>
 
 
 #pragma GCC diagnostic push
