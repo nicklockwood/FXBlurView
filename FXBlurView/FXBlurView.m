@@ -1,7 +1,7 @@
 //
 //  FXBlurView.m
 //
-//  Version 1.6.1
+//  Version 1.6.2
 //
 //  Created by Nick Lockwood on 25/08/2013.
 //  Copyright (c) 2013 Charcoal Design
@@ -35,6 +35,7 @@
 #import <objc/runtime.h>
 #import <objc/message.h>
 #import <QuartzCore/QuartzCore.h>
+#import <Accelerate/Accelerate.h>
 
 
 #pragma GCC diagnostic ignored "-Wobjc-missing-property-synthesis"
@@ -479,15 +480,26 @@
     if ([key isEqualToString:@"blurRadius"])
     {
         //animations are enabled
-        CAAnimation *action = (CAAnimation *)[super actionForLayer:layer forKey:@"bounds"];
+        CAAnimation *action = (CAAnimation *)[super actionForLayer:layer forKey:@"backgroundColor"];
         if ((NSNull *)action != [NSNull null])
         {
             CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:key];
             animation.fromValue = [layer.presentationLayer valueForKey:key];
+    
+            //CAMediatiming attributes
+            animation.beginTime = action.beginTime;
             animation.duration = action.duration;
-            animation.timingFunction = action.timingFunction;
+            animation.speed = action.speed;
             animation.timeOffset = action.timeOffset;
+            animation.repeatCount = action.repeatCount;
+            animation.repeatDuration = action.repeatDuration;
+            animation.autoreverses = action.autoreverses;
+            animation.fillMode = action.fillMode;
+            
+            //CAAnimation attributes
+            animation.timingFunction = action.timingFunction;
             animation.delegate = action.delegate;
+            
             return animation;
         }
     }
