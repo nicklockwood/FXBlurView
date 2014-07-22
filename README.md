@@ -7,8 +7,8 @@ FXBlurView is a UIView subclass that replicates the iOS 7 realtime background bl
 Supported iOS & SDK Versions
 -----------------------------
 
-* Supported build target - iOS 7.0 (Xcode 5.0, Apple LLVM compiler 5.0)
-* Earliest supported deployment target - iOS 5.0
+* Supported build target - iOS 8.0 (Xcode 6.0, Apple LLVM compiler 6.0)
+* Earliest supported deployment target - iOS 6.0
 * Earliest compatible deployment target - iOS 4.3
 
 NOTE: 'Supported' means that the library has been tested with this version. 'Compatible' means that the library should work on this iOS version (i.e. it doesn't rely on any unavailable SDK features) but is no longer being tested for compatibility and may require tweaking or bug fixes to run correctly.
@@ -52,7 +52,7 @@ This method can be used to globally enable/disable the blur effect on all FXBlur
     + (void)setUpdatesEnabled;
     + (void)setUpdatesDisabled;
     
-These methods can be used to enable and disable updates for all dynamic FXBlurView instances with a single command. Useful for disabling updates immediately before performing an animation so that the FXBlurView updates don't cuase the animation to stutter. Calls can be nested, but ensure that the enabled/disabled calls are balanced, or the updates will be left permantently enabled or disabled.
+These methods can be used to enable and disable updates for all dynamic FXBlurView instances with a single command. Useful for disabling updates immediately before performing an animation so that the FXBlurView updates don't cause the animation to stutter. Calls can be nested, but ensure that the enabled/disabled calls are balanced, or the updates will be left permanently enabled or disabled.
 
     - (void)updateAsynchronously:(BOOL)async completion:(void (^)())completion;
 
@@ -72,7 +72,7 @@ This property toggles blurring on and off for an individual FXBlurView instance.
 
 	@property (nonatomic, getter = isDynamic) BOOL dynamic;
 	
-This property controls whether the FXBlurView updates dynamically, or only once when the view is added to its superview. Defaults to YES. Note that is dynamic is set to NO, you can still force the view to update by calling `setNeedsDisplay` or `updateAsynchronously:completion:`. Dynamic blurring is extremely cpu-intensive, so you should always disable dynamic views immediately prior to performing an animation to avoid stuttering. However, if you have mutliple FXBlurViews on screen then it is simpler to disable updates using the `setUpdatesDisabled` method rather than setting the `dynamic` property to NO.
+This property controls whether the FXBlurView updates dynamically, or only once when the view is added to its superview. Defaults to YES. Note that if dynamic is set to NO, you can still force the view to update by calling `setNeedsDisplay` or `updateAsynchronously:completion:`. Dynamic blurring is extremely cpu-intensive, so you should always disable dynamic views immediately prior to performing an animation to avoid stuttering. However, if you have multiple FXBlurViews on screen then it is simpler to disable updates using the `setUpdatesDisabled` method rather than setting the `dynamic` property to NO.
 
     @property (nonatomic, assign) NSUInteger iterations;
 
@@ -113,6 +113,24 @@ FAQ
     
 Release Notes
 -----------------
+
+Version 1.6.2
+
+- Fixed crash on iOS 8 when animating blur
+- Fixed issue when using FXBlurView with Swift
+
+Version 1.6.1
+
+- Fixed issue with animation completion block not firing
+
+Version 1.6
+
+- It is now possible to animate blurRadius
+- Now requires QuartzCore framework
+
+Version 1.5.6
+
+- Fixed bug introduced in 1.5.4 where snapshot would always be taken from top-left corner of superview
 
 Version 1.5.5
 
@@ -189,7 +207,7 @@ Version 1.3
 Version 1.2
 
 - Added +setUpdatesEnabled and +setUpdatesDisabled methods to globally enable/disable dynamic blur updates (e.g. when performing an animation)
-- Added -updateIterval method to control CPU load when updating
+- Added -updateInterval method to control CPU load when updating
 - Changed runloop mode to reduce interference with scrolling, etc
 
 Version 1.1
