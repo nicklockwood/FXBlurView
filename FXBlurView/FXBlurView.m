@@ -591,6 +591,11 @@
 {
     self.layer.contents = (id)image.CGImage;
     self.layer.contentsScale = image.scale;
+    if (self.layerCornerRadius) 
+    {
+        self.layer.cornerRadius = self.layerCornerRadius;
+        self.layer.masksToBounds = YES;
+    }
 }
 
 - (void)updateAsynchronously:(BOOL)async completion:(void (^)())completion
