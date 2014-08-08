@@ -67,6 +67,7 @@
 @property (nonatomic, assign) CGFloat blurRadius;
 @property (nonatomic, strong) UIColor *tintColor;
 @property (nonatomic, weak_ref) UIView *underlyingView;
+@property (nonatomic, assign) CGFloat layerCornerRadius;
 
 - (void)updateAsynchronously:(BOOL)async completion:(void (^)())completion;
 
