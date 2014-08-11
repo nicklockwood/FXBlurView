@@ -7,8 +7,8 @@ FXBlurView is a UIView subclass that replicates the iOS 7 realtime background bl
 Supported iOS & SDK Versions
 -----------------------------
 
-* Supported build target - iOS 7.1 (Xcode 5.1, Apple LLVM compiler 5.1)
-* Earliest supported deployment target - iOS 5.0
+* Supported build target - iOS 8.0 (Xcode 6.0, Apple LLVM compiler 6.0)
+* Earliest supported deployment target - iOS 6.0
 * Earliest compatible deployment target - iOS 4.3
 
 NOTE: 'Supported' means that the library has been tested with this version. 'Compatible' means that the library should work on this iOS version (i.e. it doesn't rely on any unavailable SDK features) but is no longer being tested for compatibility and may require tweaking or bug fixes to run correctly.
@@ -72,7 +72,7 @@ This property toggles blurring on and off for an individual FXBlurView instance.
 
 	@property (nonatomic, getter = isDynamic) BOOL dynamic;
 	
-This property controls whether the FXBlurView updates dynamically, or only once when the view is added to its superview. Defaults to YES. Note that is dynamic is set to NO, you can still force the view to update by calling `setNeedsDisplay` or `updateAsynchronously:completion:`. Dynamic blurring is extremely cpu-intensive, so you should always disable dynamic views immediately prior to performing an animation to avoid stuttering. However, if you have multiple FXBlurViews on screen then it is simpler to disable updates using the `setUpdatesDisabled` method rather than setting the `dynamic` property to NO.
+This property controls whether the FXBlurView updates dynamically, or only once when the view is added to its superview. Defaults to YES. Note that if dynamic is set to NO, you can still force the view to update by calling `setNeedsDisplay` or `updateAsynchronously:completion:`. Dynamic blurring is extremely cpu-intensive, so you should always disable dynamic views immediately prior to performing an animation to avoid stuttering. However, if you have multiple FXBlurViews on screen then it is simpler to disable updates using the `setUpdatesDisabled` method rather than setting the `dynamic` property to NO.
 
     @property (nonatomic, assign) NSUInteger iterations;
 
@@ -113,6 +113,15 @@ FAQ
     
 Release Notes
 -----------------
+
+Version 1.6.2
+
+- Fixed crash on iOS 8 when animating blur
+- Fixed issue when using FXBlurView with Swift
+
+Version 1.6.1
+
+- Fixed issue with animation completion block not firing
 
 Version 1.6
 
