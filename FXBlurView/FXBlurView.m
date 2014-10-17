@@ -510,7 +510,7 @@
 {
     __strong FXBlurLayer *blurLayer = [self blurPresentationLayer];
     __strong CALayer *underlyingLayer = [self underlyingLayer];
-    CGRect bounds = [blurLayer convertRect:blurLayer.bounds toLayer:underlyingLayer];
+    CGRect bounds = [self convertRect:self.bounds toView:self.underlyingView];
     
     self.lastUpdate = [NSDate date];
     CGFloat scale = 0.5;
