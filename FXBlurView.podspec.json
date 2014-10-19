@@ -1,16 +1,17 @@
 {
-  "name": "FXBlurView",
-  "version": "1.6.2",
+  "name": "FXBlurView Gradient",
+  "version": "1.0",
   "license": "zlib",
-  "summary": "UIView subclass that replicates the iOS 7 realtime background blur effect, but works on iOS 5 and above.",
+  "summary": "UIView subclass that replicates the iOS 7 realtime background blur effect with ability to add a gradient, but works on iOS 5 and above.",
   "authors": {
-    "Nick Lockwood": "http://charcoaldesign.co.uk/"
+    "Nick Lockwood": "http://charcoaldesign.co.uk/",
+    "Luís Portela Afonso": "http://about.me/meligaletiko"
   },
   "source": {
-    "git": "https://github.com/nicklockwood/FXBlurView.git",
-    "tag": "1.6.2"
+    "git": "https://github.com/Baaam/FXBlurView.git",
+    "tag": "1.0"
   },
-  "homepage": "http://github.com/nicklockwood/FXBlurView",
+  "homepage": "https://github.com/Baaam/FXBlurView",
   "platforms": {
     "ios": "4.3"
   },
