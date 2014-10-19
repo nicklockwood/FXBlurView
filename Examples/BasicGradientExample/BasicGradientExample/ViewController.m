@@ -18,6 +18,16 @@
 
 @implementation ViewController
 
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    self.blurView.gradientLocations = @[@(0.0f), @(1.0f)];
+    self.blurView.gradientColors = @[
+        (id)[[UIColor blueColor] colorWithAlphaComponent:0.4f].CGColor,
+        (id)[[UIColor blueColor] colorWithAlphaComponent:0.2f].CGColor
+    ];
+}
+
 #pragma mark - Action Methods
 
 - (IBAction)toggleDynamic:(UISwitch *)sender {

@@ -68,6 +68,9 @@
 @property (nonatomic, strong) UIColor *tintColor;
 @property (nonatomic, weak_ref) UIView *underlyingView;
 
+@property(nonatomic, copy) NSArray *gradientColors;
+@property(nonatomic, copy) NSArray *gradientLocations;
+
 - (void)updateAsynchronously:(BOOL)async completion:(void (^)())completion;
 
 @end
