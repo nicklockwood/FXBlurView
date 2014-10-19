@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vHG-X5-KUQ">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <subviews>
+                                    <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" fixedFrame="YES" image="Grass" translatesAutoresizingMaskIntoConstraints="NO" id="L3E-pq-b0F">
+                                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1024"/>
+                                    </imageView>
+                                </subviews>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="size" keyPath="contentSize">
+                                        <size key="value" width="1024" height="1024"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </scrollView>
+                            <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kcm-LH-xfV" customClass="FXBlurView">
+                                <rect key="frame" x="200" y="200" width="200" height="200"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="200" id="1tg-Tr-RLq"/>
+                                    <constraint firstAttribute="height" constant="200" id="Auh-er-2vb"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
+                                        <color key="value" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Dynamic" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yyc-uU-1ws">
+                                <rect key="frame" x="256" y="30" width="87" height="20.5"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="87" id="94v-Du-SLI"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <switch opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="df3-lW-K9H">
+                                <rect key="frame" x="376" y="24" width="51" height="31"/>
+                                <connections>
+                                    <action selector="toggleDynamic:" destination="BYZ-38-t0r" eventType="valueChanged" id="NGw-hr-0vT"/>
+                                </connections>
+                            </switch>
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="40" minValue="1" maxValue="80" translatesAutoresizingMaskIntoConstraints="NO" id="tuV-wx-Mi0">
+                                <rect key="frame" x="14" y="501" width="572" height="31"/>
+                                <connections>
+                                    <action selector="updateBlur:" destination="BYZ-38-t0r" eventType="valueChanged" id="fQ7-hX-y79"/>
+                                </connections>
+                            </slider>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="vHG-X5-KUQ" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Hva-US-vXc"/>
+                            <constraint firstItem="df3-lW-K9H" firstAttribute="leading" secondItem="yyc-uU-1ws" secondAttribute="trailing" constant="33" id="Jno-RD-K8x"/>
+                            <constraint firstAttribute="trailing" secondItem="vHG-X5-KUQ" secondAttribute="trailing" id="PJp-Nj-4nD"/>
+                            <constraint firstItem="yyc-uU-1ws" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" constant="18" id="PLW-ic-tVJ"/>
+                            <constraint firstItem="vHG-X5-KUQ" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="TTb-Ur-mPT"/>
+                            <constraint firstAttribute="centerX" secondItem="kcm-LH-xfV" secondAttribute="centerX" id="X0K-Zt-DrA"/>
+                            <constraint firstItem="df3-lW-K9H" firstAttribute="centerY" secondItem="yyc-uU-1ws" secondAttribute="centerY" id="ZF1-3Q-ato"/>
+                            <constraint firstItem="tuV-wx-Mi0" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="afX-Os-olA"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="vHG-X5-KUQ" secondAttribute="bottom" id="hTk-CA-Fw7"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="tuV-wx-Mi0" secondAttribute="bottom" constant="69" id="mEP-Pv-J1J"/>
+                            <constraint firstItem="tuV-wx-Mi0" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="o0B-af-tbg"/>
+                            <constraint firstAttribute="centerX" secondItem="yyc-uU-1ws" secondAttribute="centerX" id="rCI-gh-qr2"/>
+                            <constraint firstItem="yyc-uU-1ws" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" constant="30" id="vlR-I5-Qut"/>
+                            <constraint firstAttribute="centerY" secondItem="kcm-LH-xfV" secondAttribute="centerY" id="yLe-dk-6hL"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="PLW-ic-tVJ"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <connections>
+                        <outlet property="blurView" destination="kcm-LH-xfV" id="P7O-pE-aEh"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="Grass" width="1024" height="1024"/>
+    </resources>
+</document>

@@ -161,8 +161,14 @@
 @property (nonatomic, assign) BOOL blurEnabledSet;
 @property (nonatomic, strong) NSDate *lastUpdate;
 
+@property(nonatomic, assign) BOOL gradientEnabled;
+@property (nonatomic, assign) BOOL gradientColorsSet;
+@property (nonatomic, assign) BOOL gradientLocationsSet;
+
 - (UIImage *)snapshotOfUnderlyingView;
 - (BOOL)shouldUpdate;
+
+- (UIImage *)applyGradientOnImage:(UIImage *)image;
 
 @end
 
@@ -430,6 +436,20 @@
     [self setNeedsDisplay];
 }
 
+- (void)setGradientColors:(NSArray *)gradientColors {
+    _gradientColorsSet = YES;
+    _gradientColors = gradientColors;
+}
+
+- (void)setGradientLocations:(NSArray *)gradientLocations {
+    _gradientLocationsSet = YES;
+    _gradientLocations = gradientLocations;
+}
+
+- (BOOL)gradientEnabled {
+    return self.gradientColorsSet && self.gradientLocationsSet;
+}
+
 - (void)didMoveToSuperview
 {
     [super didMoveToSuperview];
@@ -597,10 +617,14 @@
 {
     if ([self shouldUpdate])
     {
-        UIImage *snapshot = [self snapshotOfUnderlyingView];
+        __block UIImage *snapshot = [self snapshotOfUnderlyingView];
         if (async)
         {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+                
+                if (self.gradientEnabled) {
+                    snapshot = [self applyGradientOnImage:snapshot];
+                }
                 
                 UIImage *blurredImage = [self blurredSnapshot:snapshot radius:self.blurRadius];
                 dispatch_sync(dispatch_get_main_queue(), ^{
@@ -612,6 +636,10 @@
         }
         else
         {
+            if (self.gradientEnabled) {
+                snapshot = [self applyGradientOnImage:snapshot];
+            }
+            
             [self setLayerContents:[self blurredSnapshot:snapshot radius:[self blurPresentationLayer].blurRadius]];
             if (completion) completion();
         }
@@ -620,6 +648,36 @@
     {
         completion();
     }
+}
+
+- (UIImage *)applyGradientOnImage:(UIImage *)image {
+    CGSize size = image.size;
+    UIGraphicsBeginImageContextWithOptions(size, NO, 0);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGRect frame = CGRectZero;
+    frame.size = image.size;
+    CGContextDrawImage(context, frame, image.CGImage);
+    
+    CGColorSpaceRef colorspace = CGColorSpaceCreateDeviceRGB();
+    
+    CGFloat *gradientLocations = malloc([self.gradientLocations count] * sizeof(CGFloat));
+    
+    for (NSUInteger i = 0; i < [self.gradientLocations count]; i++) {
+        gradientLocations[i] = [self.gradientLocations[i] floatValue];
+    }
+    
+    CGGradientRef gradient = CGGradientCreateWithColors(colorspace, (CFArrayRef)self.gradientColors, gradientLocations);
+    
+    CGContextDrawLinearGradient(context, gradient, CGPointMake(0, 0), CGPointMake(0, size.height), 0);
+    
+    UIImage *finalImage = UIGraphicsGetImageFromCurrentImageContext();
+    
+    free(gradientLocations);
+    CGGradientRelease(gradient);
+    CGColorSpaceRelease(colorspace);
+    UIGraphicsEndImageContext();
+    
+    return finalImage;
 }
 
 @end
