@@ -7,7 +7,7 @@ FXBlurView is a UIView subclass that replicates the iOS 7 realtime background bl
 Supported iOS & SDK Versions
 -----------------------------
 
-* Supported build target - iOS 8.0 (Xcode 6.0, Apple LLVM compiler 6.0)
+* Supported build target - iOS 8.1 (Xcode 6.1, Apple LLVM compiler 6.0)
 * Earliest supported deployment target - iOS 6.0
 * Earliest compatible deployment target - iOS 4.3
 
@@ -113,6 +113,11 @@ FAQ
     
 Release Notes
 -----------------
+
+Version 1.6.3
+
+- FXBlurView image background is no longer opaque/black, so it can be used as a translucent overlay
+- underlyingView property is now an IBOutlet, so it can be connected in Interface Builder
 
 Version 1.6.2
 

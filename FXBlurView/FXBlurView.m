@@ -1,7 +1,7 @@
 //
 //  FXBlurView.m
 //
-//  Version 1.6.2
+//  Version 1.6.3
 //
 //  Created by Nick Lockwood on 25/08/2013.
 //  Copyright (c) 2013 Charcoal Design
@@ -535,7 +535,7 @@
         //prevents pixelation on old devices
         scale = 1.0f;
     }
-    UIGraphicsBeginImageContextWithOptions(size, YES, scale);
+    UIGraphicsBeginImageContextWithOptions(size, NO, scale);
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextTranslateCTM(context, -bounds.origin.x, -bounds.origin.y);
     
