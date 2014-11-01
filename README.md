@@ -118,6 +118,7 @@ Version 1.6.3
 
 - FXBlurView image background is no longer opaque/black, so it can be used as a translucent overlay
 - underlyingView property is now an IBOutlet, so it can be connected in Interface Builder
+- Moved imports into header for better Swift compatibility
 
 Version 1.6.2
 

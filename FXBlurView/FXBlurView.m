@@ -33,9 +33,6 @@
 
 #import "FXBlurView.h"
 #import <objc/runtime.h>
-#import <objc/message.h>
-#import <QuartzCore/QuartzCore.h>
-#import <Accelerate/Accelerate.h>
 
 
 #pragma GCC diagnostic ignored "-Wobjc-missing-property-synthesis"
@@ -600,7 +597,7 @@
         UIImage *snapshot = [self snapshotOfUnderlyingView];
         if (async)
         {
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                 
                 UIImage *blurredImage = [self blurredSnapshot:snapshot radius:self.blurRadius];
                 dispatch_sync(dispatch_get_main_queue(), ^{
