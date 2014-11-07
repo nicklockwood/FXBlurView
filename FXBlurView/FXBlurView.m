@@ -507,7 +507,7 @@
 {
     __strong FXBlurLayer *blurLayer = [self blurPresentationLayer];
     __strong CALayer *underlyingLayer = [self underlyingLayer];
-    CGRect bounds = [blurLayer convertRect:blurLayer.bounds toLayer:underlyingLayer];
+    CGRect bounds = [self convertRect:self.bounds toView:self.underlyingView];
     
     self.lastUpdate = [NSDate date];
     CGFloat scale = 0.5;
@@ -548,23 +548,28 @@
 {
     __strong CALayer *blurlayer = [self blurLayer];
     __strong CALayer *underlyingLayer = [self underlyingLayer];
+    NSMutableArray *layers = [NSMutableArray array];
+    
+    blurlayer.hidden = YES;
+    [layers addObject:blurlayer];
+    
     while (blurlayer.superlayer && blurlayer.superlayer != underlyingLayer)
     {
-        blurlayer = blurlayer.superlayer;
-    }
-    NSMutableArray *layers = [NSMutableArray array];
-    NSUInteger index = [underlyingLayer.sublayers indexOfObject:blurlayer];
-    if (index != NSNotFound)
-    {
-        for (NSUInteger i = index; i < [underlyingLayer.sublayers count]; i++)
+        CALayer *superLayer = blurlayer.superlayer;
+        NSUInteger index = [superLayer.sublayers indexOfObject:blurlayer];
+        if (index != NSNotFound)
         {
-            CALayer *layer = underlyingLayer.sublayers[i];
-            if (!layer.hidden)
+            for (NSUInteger i = index + 1; i < [superLayer.sublayers count]; i++)
             {
-                layer.hidden = YES;
-                [layers addObject:layer];
+                CALayer *layer = superLayer.sublayers[i];
+                if (!layer.hidden)
+                {
+                    layer.hidden = YES;
+                    [layers addObject:layer];
+                }
             }
         }
+        blurlayer = blurlayer.superlayer;
     }
     return layers;
 }
