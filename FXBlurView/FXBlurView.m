@@ -533,14 +533,20 @@
         scale = 1.0f;
     }
     UIGraphicsBeginImageContextWithOptions(size, NO, scale);
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextTranslateCTM(context, -bounds.origin.x, -bounds.origin.y);
     
-    NSArray *hiddenViews = [self prepareUnderlyingViewForSnapshot];
-    [underlyingLayer renderInContext:context];
-    [self restoreSuperviewAfterSnapshot:hiddenViews];
-    UIImage *snapshot = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
+    UIImage *snapshot = nil;
+    
+    if (context)
+    {
+        CGContextRef context = UIGraphicsGetCurrentContext();
+        CGContextTranslateCTM(context, -bounds.origin.x, -bounds.origin.y);
+        
+        NSArray *hiddenViews = [self prepareUnderlyingViewForSnapshot];
+        [underlyingLayer renderInContext:context];
+        [self restoreSuperviewAfterSnapshot:hiddenViews];
+        snapshot = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+    }
     return snapshot;
 }
 
