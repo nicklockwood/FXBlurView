@@ -532,13 +532,13 @@
         //prevents pixelation on old devices
         scale = 1.0f;
     }
-    UIGraphicsBeginImageContextWithOptions(size, NO, scale);
     
+    UIGraphicsBeginImageContextWithOptions(size, NO, scale);
+    CGContextRef context = UIGraphicsGetCurrentContext();
     UIImage *snapshot = nil;
     
     if (context)
     {
-        CGContextRef context = UIGraphicsGetCurrentContext();
         CGContextTranslateCTM(context, -bounds.origin.x, -bounds.origin.y);
         
         NSArray *hiddenViews = [self prepareUnderlyingViewForSnapshot];
