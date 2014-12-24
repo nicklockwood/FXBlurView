@@ -118,6 +118,7 @@
     }
     
     //create image from context
+    UIGraphicsPushContext(ctx);
     imageRef = CGBitmapContextCreateImage(ctx);
     UIImage *image = [UIImage imageWithCGImage:imageRef scale:self.scale orientation:self.imageOrientation];
     CGImageRelease(imageRef);
