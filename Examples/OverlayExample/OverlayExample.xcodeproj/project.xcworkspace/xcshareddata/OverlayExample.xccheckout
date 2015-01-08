@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>9019AF7B-AAF2-42AA-9F94-BC3C5C9B6552</string>
+	<key>IDESourceControlProjectName</key>
+	<string>OverlayExample</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>22D544D9B3EAA35CDDFE6ABB228157E6043DA9A8</key>
+		<string>https://github.com/adate/FXBlurView</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>Examples/OverlayExample/OverlayExample.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>22D544D9B3EAA35CDDFE6ABB228157E6043DA9A8</key>
+		<string>../../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/adate/FXBlurView</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>22D544D9B3EAA35CDDFE6ABB228157E6043DA9A8</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>22D544D9B3EAA35CDDFE6ABB228157E6043DA9A8</string>
+			<key>IDESourceControlWCCName</key>
+			<string>FXBlurView</string>
+		</dict>
+	</array>
+</dict>
+</plist>
