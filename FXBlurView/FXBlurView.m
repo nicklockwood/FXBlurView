@@ -510,29 +510,8 @@
     CGRect bounds = [blurLayer convertRect:blurLayer.bounds toLayer:underlyingLayer];
     
     self.lastUpdate = [NSDate date];
-    CGFloat scale = 0.5;
-    if (self.iterations)
-    {
-        CGFloat blockSize = 12.0f/self.iterations;
-        scale = blockSize/MAX(blockSize * 2, blurLayer.blurRadius);
-        scale = 1.0f/floorf(1.0f/scale);
-    }
-    CGSize size = bounds.size;
-    if (self.contentMode == UIViewContentModeScaleToFill ||
-        self.contentMode == UIViewContentModeScaleAspectFill ||
-        self.contentMode == UIViewContentModeScaleAspectFit ||
-        self.contentMode == UIViewContentModeRedraw)
-    {
-        //prevents edge artefacts
-        size.width = floorf(size.width * scale) / scale;
-        size.height = floorf(size.height * scale) / scale;
-    }
-    else if ([[UIDevice currentDevice].systemVersion floatValue] < 7.0f && [UIScreen mainScreen].scale == 1.0f)
-    {
-        //prevents pixelation on old devices
-        scale = 1.0f;
-    }
-    UIGraphicsBeginImageContextWithOptions(size, NO, scale);
+
+    UIGraphicsBeginImageContextWithOptions([UIScreen mainScreen].bounds.size, NO, 1);
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextTranslateCTM(context, -bounds.origin.x, -bounds.origin.y);
     
