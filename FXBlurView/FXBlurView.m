@@ -511,7 +511,7 @@
     
     self.lastUpdate = [NSDate date];
 
-    UIGraphicsBeginImageContextWithOptions([UIScreen mainScreen].bounds.size, NO, 1);
+    UIGraphicsBeginImageContextWithOptions([UIScreen mainScreen].bounds.size, NO, 1.0/[UIScreen mainScreen].scale);
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextTranslateCTM(context, -bounds.origin.x, -bounds.origin.y);
     
