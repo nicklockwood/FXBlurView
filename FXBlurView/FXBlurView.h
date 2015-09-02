@@ -62,6 +62,7 @@
 + (void)setUpdatesEnabled;
 + (void)setUpdatesDisabled;
 
+@property (nonatomic, getter = hasSKView) BOOL skView;
 @property (nonatomic, getter = isBlurEnabled) BOOL blurEnabled;
 @property (nonatomic, getter = isDynamic) BOOL dynamic;
 @property (nonatomic, assign) NSUInteger iterations;
@@ -71,6 +72,8 @@
 @property (nonatomic, weak_ref) IBOutlet UIView *underlyingView;
 
 - (void)updateAsynchronously:(BOOL)async completion:(void (^)())completion;
+
+- (void)clearImage;
 
 @end
 

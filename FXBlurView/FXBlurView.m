@@ -322,6 +322,7 @@
         }
     }
     free(methods);
+    
 }
 
 - (id)initWithFrame:(CGRect)frame
@@ -346,6 +347,23 @@
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)willMoveToSuperview:(UIView *)newSuperview
+{
+    // check for an SKView to adjust rendering accordingly
+    self.skView = NO;
+    if (NSClassFromString(@"SKView"))
+    {
+        for (UIView * v in newSuperview.subviews)
+        {
+            if ([v isKindOfClass:NSClassFromString(@"SKView")])
+            {
+                // we found an SKView class in the hierarchy, mark it so we render appropriately
+                self.skView = YES;
+            }
+        }
+    }
 }
 
 - (void)setIterations:(NSUInteger)iterations
@@ -424,6 +442,11 @@
 - (void)setTintColor:(UIColor *)tintColor
 {
     _tintColor = tintColor;
+    [self setNeedsDisplay];
+}
+
+- (void)clearImage {
+    self.layer.contents = nil;
     [self setNeedsDisplay];
 }
 
@@ -537,7 +560,14 @@
     CGContextTranslateCTM(context, -bounds.origin.x, -bounds.origin.y);
     
     NSArray *hiddenViews = [self prepareUnderlyingViewForSnapshot];
-    [underlyingLayer renderInContext:context];
+    if (self.hasSKView)
+    {
+        [_underlyingView drawViewHierarchyInRect:_underlyingView.bounds afterScreenUpdates:YES];
+    }
+    else
+    {
+        [underlyingLayer renderInContext:context];
+    }
     [self restoreSuperviewAfterSnapshot:hiddenViews];
     UIImage *snapshot = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
