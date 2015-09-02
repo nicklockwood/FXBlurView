@@ -1,7 +1,7 @@
 //
 //  FXBlurView.h
 //
-//  Version 1.6.3
+//  Version 1.6.4
 //
 //  Created by Nick Lockwood on 25/08/2013.
 //  Copyright (c) 2013 Charcoal Design
@@ -62,7 +62,6 @@
 + (void)setUpdatesEnabled;
 + (void)setUpdatesDisabled;
 
-@property (nonatomic, getter = hasSKView) BOOL skView;
 @property (nonatomic, getter = isBlurEnabled) BOOL blurEnabled;
 @property (nonatomic, getter = isDynamic) BOOL dynamic;
 @property (nonatomic, assign) NSUInteger iterations;

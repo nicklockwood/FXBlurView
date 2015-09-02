@@ -74,7 +74,9 @@
 				012FDEDB17D13C23003F0236 /* Frameworks */,
 				012FDEDA17D13C23003F0236 /* Products */,
 			);
+			indentWidth = 4;
 			sourceTree = "<group>";
+			tabWidth = 4;
 		};
 		012FDEDA17D13C23003F0236 /* Products */ = {
 			isa = PBXGroup;

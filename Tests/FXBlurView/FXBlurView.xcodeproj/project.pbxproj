@@ -430,6 +430,16 @@
 				);
 				INFOPLIST_FILE = "FXBlurViewTests/FXBlurViewTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				WARNING_CFLAGS = (
+					"-Weverything",
+					"-Wno-variadic-macros",
+					"-Wno-gnu-zero-variadic-macro-arguments",
+					"-Wno-gnu-statement-expression",
+					"-Wno-objc-missing-property-synthesis",
+					"-Wno-sign-compare",
+					"-Wno-auto-import",
+					"-Wno-documentation-unknown-command",
+				);
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Debug;
@@ -445,6 +455,16 @@
 				);
 				INFOPLIST_FILE = "FXBlurViewTests/FXBlurViewTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				WARNING_CFLAGS = (
+					"-Weverything",
+					"-Wno-variadic-macros",
+					"-Wno-gnu-zero-variadic-macro-arguments",
+					"-Wno-gnu-statement-expression",
+					"-Wno-objc-missing-property-synthesis",
+					"-Wno-sign-compare",
+					"-Wno-auto-import",
+					"-Wno-documentation-unknown-command",
+				);
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Release;

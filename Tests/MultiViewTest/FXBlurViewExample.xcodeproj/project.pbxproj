@@ -31,7 +31,6 @@
 		01F3119B17CA5C4600C54664 /* FXBlurViewExample-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "FXBlurViewExample-Info.plist"; sourceTree = "<group>"; };
 		01F3119D17CA5C4600C54664 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		01F3119F17CA5C4600C54664 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		01F311A117CA5C4600C54664 /* FXBlurViewExample-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FXBlurViewExample-Prefix.pch"; sourceTree = "<group>"; };
 		01F311A217CA5C4600C54664 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		01F311A317CA5C4600C54664 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		01F311A517CA5C4600C54664 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
@@ -68,7 +67,9 @@
 				01F3119217CA5C4600C54664 /* Frameworks */,
 				01F3119117CA5C4600C54664 /* Products */,
 			);
+			indentWidth = 4;
 			sourceTree = "<group>";
+			tabWidth = 4;
 		};
 		01F3119117CA5C4600C54664 /* Products */ = {
 			isa = PBXGroup;
@@ -106,7 +107,6 @@
 				01F3119B17CA5C4600C54664 /* FXBlurViewExample-Info.plist */,
 				01F3119C17CA5C4600C54664 /* InfoPlist.strings */,
 				01F3119F17CA5C4600C54664 /* main.m */,
-				01F311A117CA5C4600C54664 /* FXBlurViewExample-Prefix.pch */,
 				01F311A517CA5C4600C54664 /* Default.png */,
 				01F311A717CA5C4600C54664 /* Default@2x.png */,
 				01F311A917CA5C4600C54664 /* Default-568h@2x.png */,
@@ -228,6 +228,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
@@ -296,6 +297,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
@@ -357,7 +359,7 @@
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "FXBlurViewExample/FXBlurViewExample-Prefix.pch";
+				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = "FXBlurViewExample/FXBlurViewExample-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
@@ -370,7 +372,7 @@
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "FXBlurViewExample/FXBlurViewExample-Prefix.pch";
+				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = "FXBlurViewExample/FXBlurViewExample-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
