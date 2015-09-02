@@ -575,6 +575,19 @@
     return snapshot;
 }
 
+- (NSArray *)hideEmptyLayers:(CALayer *)layer
+{
+    NSMutableArray *layers = [NSMutableArray array];
+    if (CGRectIsEmpty(layer.bounds)) {
+        layer.hidden = YES;
+        [layers addObject:layer];
+    }
+    for (CALayer *sublayer in layer.sublayers) {
+        [layers addObjectsFromArray:[self hideEmptyLayers:sublayer]];
+    }
+    return layers;
+}
+
 - (NSArray *)prepareUnderlyingViewForSnapshot
 {
     __strong CALayer *blurlayer = [self blurLayer];
@@ -597,6 +610,10 @@
             }
         }
     }
+
+    // Also hide any sublayers with empty bounds to prevent a crash on iOS 8
+    [layers addObjectsFromArray:[self hideEmptyLayers:underlyingLayer]];
+
     return layers;
 }
 
