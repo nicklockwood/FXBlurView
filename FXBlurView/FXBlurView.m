@@ -48,7 +48,7 @@
 
 @implementation UIImage (FXBlurView)
 
-- (UIImage *)blurredImageWithRadius:(CGFloat)radius iterations:(NSUInteger)iterations tintColor:(UIColor *)tintColor
+- (UIImage *)blurredImageWithRadius:(CGFloat)radius iterations:(NSUInteger)iterations tintColor:(UIColor *)tintColor tintBlendMode:(CGBlendMode)tintBlendMode
 {
     //image must be nonzero size
     if (floorf(self.size.width) * floorf(self.size.height) <= 0.0f) return self;
@@ -99,8 +99,14 @@
     //apply tint
     if (tintColor && CGColorGetAlpha(tintColor.CGColor) > 0.0f)
     {
-        CGContextSetFillColorWithColor(ctx, [tintColor colorWithAlphaComponent:0.25].CGColor);
-        CGContextSetBlendMode(ctx, kCGBlendModePlusLighter);
+        CGFloat tintAlpha = CGColorGetAlpha(tintColor.CGColor);
+        
+        if (tintAlpha == 1.0f) {
+            tintAlpha = 0.25f;
+        }
+        
+        CGContextSetFillColorWithColor(ctx, [tintColor colorWithAlphaComponent:CGColorGetAlpha(tintColor.CGColor)].CGColor);
+        CGContextSetBlendMode(ctx, tintBlendMode);
         CGContextFillRect(ctx, CGRectMake(0, 0, buffer1.width, buffer1.height));
     }
     
@@ -157,6 +163,7 @@
 @property (nonatomic, assign) BOOL blurRadiusSet;
 @property (nonatomic, assign) BOOL dynamicSet;
 @property (nonatomic, assign) BOOL blurEnabledSet;
+@property (nonatomic, assign) BOOL tintBlendModeSet;
 @property (nonatomic, strong) NSDate *lastUpdate;
 
 - (UIImage *)snapshotOfUnderlyingView;
@@ -266,7 +273,7 @@
                 }
             }
         }
-
+        
         //try again, delaying until the time when the next view needs an update.
         self.viewIndex = 0;
         [self performSelector:@selector(updateAsynchronously)
@@ -307,6 +314,7 @@
     if (!_blurRadiusSet) [self blurLayer].blurRadius = 40;
     if (!_dynamicSet) _dynamic = YES;
     if (!_blurEnabledSet) _blurEnabled = YES;
+    if (!_tintBlendModeSet) _tintBlendMode = kCGBlendModePlusLighter;
     self.updateInterval = _updateInterval;
     self.layer.magnificationFilter = @"linear"; // kCAFilterLinear
     
@@ -506,7 +514,7 @@
         {
             CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:key];
             animation.fromValue = [layer.presentationLayer valueForKey:key];
-    
+            
             //CAMediatiming attributes
             animation.beginTime = action.beginTime;
             animation.duration = action.duration;
@@ -629,7 +637,8 @@
 {
     return [snapshot blurredImageWithRadius:blurRadius
                                  iterations:self.iterations
-                                  tintColor:self.tintColor];
+                                  tintColor:self.tintColor
+                              tintBlendMode:self.tintBlendMode];
 }
 
 - (void)setLayerContents:(UIImage *)image
