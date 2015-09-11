@@ -64,6 +64,7 @@
 
 @property (nonatomic, getter = isBlurEnabled) BOOL blurEnabled;
 @property (nonatomic, getter = isDynamic) BOOL dynamic;
+@property (nonatomic, getter = isAutoOptim) BOOL autoOptim;
 @property (nonatomic, assign) NSUInteger iterations;
 @property (nonatomic, assign) NSTimeInterval updateInterval;
 @property (nonatomic, assign) CGFloat blurRadius;

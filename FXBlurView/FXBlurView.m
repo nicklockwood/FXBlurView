@@ -156,6 +156,8 @@
 @property (nonatomic, assign) BOOL blurRadiusSet;
 @property (nonatomic, assign) BOOL dynamicSet;
 @property (nonatomic, assign) BOOL blurEnabledSet;
+@property (nonatomic, assign) BOOL autoOptimSet;
+
 @property (nonatomic, strong) NSDate *lastUpdate;
 
 - (UIImage *)snapshotOfUnderlyingView;
@@ -305,6 +307,7 @@
     if (!_iterationsSet) _iterations = 3;
     if (!_blurRadiusSet) [self blurLayer].blurRadius = 40;
     if (!_dynamicSet) _dynamic = YES;
+    if (!_autoOptimSet) _autoOptim = NO;
     if (!_blurEnabledSet) _blurEnabled = YES;
     self.updateInterval = _updateInterval;
     self.layer.magnificationFilter = @"linear"; // kCAFilterLinear
@@ -377,6 +380,14 @@
         {
             [self setNeedsDisplay];
         }
+    }
+}
+
+-(void)setAutoOptim:(BOOL)autoOptim{
+    _autoOptimSet=YES;
+    _autoOptim=autoOptim;
+    if (_autoOptim) {
+        [self setNeedsDisplay];
     }
 }
 
@@ -511,7 +522,35 @@
     
     self.lastUpdate = [NSDate date];
 
-    UIGraphicsBeginImageContextWithOptions([UIScreen mainScreen].bounds.size, NO, 1.0/[UIScreen mainScreen].scale);
+    if (_autoOptim) {
+        CGFloat scale = 0.5;
+        if (self.iterations)
+        {
+            CGFloat blockSize = 12.0f/self.iterations;
+            scale = blockSize/MAX(blockSize * 2, blurLayer.blurRadius);
+            scale = 1.0f/floorf(1.0f/scale);
+        }
+        CGSize size = bounds.size;
+        if (self.contentMode == UIViewContentModeScaleToFill ||
+            self.contentMode == UIViewContentModeScaleAspectFill ||
+            self.contentMode == UIViewContentModeScaleAspectFit ||
+            self.contentMode == UIViewContentModeRedraw)
+        {
+            //prevents edge artefacts
+            size.width = floorf(size.width * scale) / scale;
+            size.height = floorf(size.height * scale) / scale;
+        }
+        else if ([[UIDevice currentDevice].systemVersion floatValue] < 7.0f && [UIScreen mainScreen].scale == 1.0f)
+        {
+            //prevents pixelation on old devices
+            scale = 1.0f;
+        }
+        UIGraphicsBeginImageContextWithOptions(size, NO, scale);
+
+    }
+    else{
+        UIGraphicsBeginImageContextWithOptions([UIScreen mainScreen].bounds.size, NO, 1.0/[UIScreen mainScreen].scale);
+    }
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextTranslateCTM(context, -bounds.origin.x, -bounds.origin.y);
     
