@@ -173,6 +173,9 @@
 @property (nonatomic, strong) NSDate *lastUpdate;
 @property (nonatomic, assign) BOOL needsDrawViewHierarchy;
 
+@property (nonatomic, strong) NSMutableArray *hiddenArrs;
+@property (nonatomic, strong) NSMutableArray *hiddenLayers;
+
 - (UIImage *)snapshotOfUnderlyingView;
 - (BOOL)shouldUpdate;
 
@@ -366,6 +369,7 @@
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self revertSuperviewAfterSnapshot:_hiddenLayers];
 }
 
 
@@ -677,9 +681,19 @@
 
 - (void)restoreSuperviewAfterSnapshot:(NSArray *)hiddenLayers
 {
-    for (CALayer *layer in hiddenLayers)
-    {
-        layer.hidden = NO;
+    _hiddenArrs=[[NSMutableArray alloc] init];
+    _hiddenLayers=[NSMutableArray arrayWithArray:hiddenLayers];
+    for (NSInteger i=0; i<hiddenLayers.count; i++) {
+        CALayer *layer=hiddenLayers[i];
+        [_hiddenArrs addObject:[NSNumber numberWithBool:layer.hidden]];
+        layer.hidden=NO;
+    }
+}
+
+-(void)revertSuperviewAfterSnapshot:(NSArray*)hiddenLayers{
+    for (NSInteger i=0; i<hiddenLayers.count; i++) {
+        CALayer *layer=hiddenLayers[i];
+        layer.hidden=[_hiddenArrs[i] boolValue];
     }
 }
 
