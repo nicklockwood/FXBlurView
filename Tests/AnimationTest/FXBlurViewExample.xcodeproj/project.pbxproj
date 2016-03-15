@@ -74,7 +74,9 @@
 				01F3119217CA5C4600C54664 /* Frameworks */,
 				01F3119117CA5C4600C54664 /* Products */,
 			);
+			indentWidth = 4;
 			sourceTree = "<group>";
+			tabWidth = 4;
 		};
 		01F3119117CA5C4600C54664 /* Products */ = {
 			isa = PBXGroup;

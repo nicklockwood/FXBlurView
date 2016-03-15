@@ -1,0 +1,505 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2D66632A190F71E4003A9E04 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D666329190F71E4003A9E04 /* Foundation.framework */; };
+		2D66632F190F71E4003A9E04 /* FXBlurView.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2D66632E190F71E4003A9E04 /* FXBlurView.h */; };
+		2D666331190F71E4003A9E04 /* FXBlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D666330190F71E4003A9E04 /* FXBlurView.m */; };
+		2D666338190F71E4003A9E04 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D666337190F71E4003A9E04 /* XCTest.framework */; };
+		2D666339190F71E4003A9E04 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D666329190F71E4003A9E04 /* Foundation.framework */; };
+		2D66633E190F71E5003A9E04 /* libFXBlurView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D666326190F71E4003A9E04 /* libFXBlurView.a */; };
+		2D666344190F71E5003A9E04 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2D666342190F71E5003A9E04 /* InfoPlist.strings */; };
+		2D666346190F71E5003A9E04 /* FXBlurViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D666345190F71E5003A9E04 /* FXBlurViewTests.m */; };
+		2D666350190F7429003A9E04 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D66634F190F7429003A9E04 /* UIKit.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		2D66633C190F71E5003A9E04 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2D66631E190F71E4003A9E04 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2D666325190F71E4003A9E04;
+			remoteInfo = FXBlurView;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		2D666324190F71E4003A9E04 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+				2D66632F190F71E4003A9E04 /* FXBlurView.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		2D666326190F71E4003A9E04 /* libFXBlurView.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libFXBlurView.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		2D666329190F71E4003A9E04 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		2D66632E190F71E4003A9E04 /* FXBlurView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FXBlurView.h; sourceTree = "<group>"; };
+		2D666330190F71E4003A9E04 /* FXBlurView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FXBlurView.m; sourceTree = "<group>"; };
+		2D666336190F71E4003A9E04 /* FXBlurViewTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FXBlurViewTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		2D666337190F71E4003A9E04 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		2D666341190F71E5003A9E04 /* FXBlurViewTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "FXBlurViewTests-Info.plist"; sourceTree = "<group>"; };
+		2D666343190F71E5003A9E04 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		2D666345190F71E5003A9E04 /* FXBlurViewTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FXBlurViewTests.m; sourceTree = "<group>"; };
+		2D66634F190F7429003A9E04 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		2D666323190F71E4003A9E04 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2D66632A190F71E4003A9E04 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2D666333190F71E4003A9E04 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2D666350190F7429003A9E04 /* UIKit.framework in Frameworks */,
+				2D666338190F71E4003A9E04 /* XCTest.framework in Frameworks */,
+				2D666339190F71E4003A9E04 /* Foundation.framework in Frameworks */,
+				2D66633E190F71E5003A9E04 /* libFXBlurView.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2D66631D190F71E4003A9E04 = {
+			isa = PBXGroup;
+			children = (
+				2D66632B190F71E4003A9E04 /* FXBlurView */,
+				2D66633F190F71E5003A9E04 /* FXBlurViewTests */,
+				2D666328190F71E4003A9E04 /* Frameworks */,
+				2D666327190F71E4003A9E04 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		2D666327190F71E4003A9E04 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2D666326190F71E4003A9E04 /* libFXBlurView.a */,
+				2D666336190F71E4003A9E04 /* FXBlurViewTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		2D666328190F71E4003A9E04 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2D66634F190F7429003A9E04 /* UIKit.framework */,
+				2D666329190F71E4003A9E04 /* Foundation.framework */,
+				2D666337190F71E4003A9E04 /* XCTest.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		2D66632B190F71E4003A9E04 /* FXBlurView */ = {
+			isa = PBXGroup;
+			children = (
+				2D66632E190F71E4003A9E04 /* FXBlurView.h */,
+				2D666330190F71E4003A9E04 /* FXBlurView.m */,
+			);
+			name = FXBlurView;
+			path = ../../FXBlurView;
+			sourceTree = "<group>";
+		};
+		2D66633F190F71E5003A9E04 /* FXBlurViewTests */ = {
+			isa = PBXGroup;
+			children = (
+				2D666345190F71E5003A9E04 /* FXBlurViewTests.m */,
+				2D666340190F71E5003A9E04 /* Supporting Files */,
+			);
+			path = FXBlurViewTests;
+			sourceTree = "<group>";
+		};
+		2D666340190F71E5003A9E04 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				2D666341190F71E5003A9E04 /* FXBlurViewTests-Info.plist */,
+				2D666342190F71E5003A9E04 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		2D666325190F71E4003A9E04 /* FXBlurView */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2D666349190F71E5003A9E04 /* Build configuration list for PBXNativeTarget "FXBlurView" */;
+			buildPhases = (
+				2D666322190F71E4003A9E04 /* Sources */,
+				2D666323190F71E4003A9E04 /* Frameworks */,
+				2D666324190F71E4003A9E04 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FXBlurView;
+			productName = FXBlurView;
+			productReference = 2D666326190F71E4003A9E04 /* libFXBlurView.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		2D666335190F71E4003A9E04 /* FXBlurViewTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2D66634C190F71E5003A9E04 /* Build configuration list for PBXNativeTarget "FXBlurViewTests" */;
+			buildPhases = (
+				2D666332190F71E4003A9E04 /* Sources */,
+				2D666333190F71E4003A9E04 /* Frameworks */,
+				2D666334190F71E4003A9E04 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2D66633D190F71E5003A9E04 /* PBXTargetDependency */,
+			);
+			name = FXBlurViewTests;
+			productName = FXBlurViewTests;
+			productReference = 2D666336190F71E4003A9E04 /* FXBlurViewTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		2D66631E190F71E4003A9E04 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0510;
+				ORGANIZATIONNAME = "Charcoal Design";
+			};
+			buildConfigurationList = 2D666321190F71E4003A9E04 /* Build configuration list for PBXProject "FXBlurView" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 2D66631D190F71E4003A9E04;
+			productRefGroup = 2D666327190F71E4003A9E04 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				2D666325190F71E4003A9E04 /* FXBlurView */,
+				2D666335190F71E4003A9E04 /* FXBlurViewTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		2D666334190F71E4003A9E04 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2D666344190F71E5003A9E04 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2D666322190F71E4003A9E04 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2D666331190F71E4003A9E04 /* FXBlurView.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2D666332190F71E4003A9E04 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2D666346190F71E5003A9E04 /* FXBlurViewTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		2D66633D190F71E5003A9E04 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2D666325190F71E4003A9E04 /* FXBlurView */;
+			targetProxy = 2D66633C190F71E5003A9E04 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		2D666342190F71E5003A9E04 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2D666343190F71E5003A9E04 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		2D666347190F71E5003A9E04 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_SECURITY_FLOATLOOPCOUNTER = YES;
+				CLANG_ANALYZER_SECURITY_INSECUREAPI_RAND = YES;
+				CLANG_ANALYZER_SECURITY_INSECUREAPI_STRCPY = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_CXX0X_EXTENSIONS = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_ATOMIC_PROPERTIES = YES;
+				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = NO;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CLANG_WARN__EXIT_TIME_DESTRUCTORS = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
+				GCC_TREAT_INCOMPATIBLE_POINTER_TYPE_WARNINGS_AS_ERRORS = YES;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = YES;
+				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
+				GCC_WARN_MULTIPLE_DEFINITION_TYPES_FOR_SELECTOR = NO;
+				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
+				GCC_WARN_PEDANTIC = YES;
+				GCC_WARN_SHADOW = YES;
+				GCC_WARN_SIGN_COMPARE = YES;
+				GCC_WARN_STRICT_SELECTOR_MATCH = NO;
+				GCC_WARN_UNDECLARED_SELECTOR = NO;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNKNOWN_PRAGMAS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_PARAMETER = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				ONLY_ACTIVE_ARCH = YES;
+				RUN_CLANG_STATIC_ANALYZER = YES;
+				SDKROOT = iphoneos;
+				WARNING_CFLAGS = (
+					"-Weverything",
+					"-Wno-variadic-macros",
+					"-Wno-gnu-zero-variadic-macro-arguments",
+					"-Wno-gnu-statement-expression",
+					"-Wno-objc-missing-property-synthesis",
+					"-Wno-sign-compare",
+					"-Wno-auto-import",
+				);
+			};
+			name = Debug;
+		};
+		2D666348190F71E5003A9E04 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_SECURITY_FLOATLOOPCOUNTER = YES;
+				CLANG_ANALYZER_SECURITY_INSECUREAPI_RAND = YES;
+				CLANG_ANALYZER_SECURITY_INSECUREAPI_STRCPY = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_CXX0X_EXTENSIONS = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_ATOMIC_PROPERTIES = YES;
+				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = NO;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CLANG_WARN__EXIT_TIME_DESTRUCTORS = YES;
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
+				GCC_TREAT_INCOMPATIBLE_POINTER_TYPE_WARNINGS_AS_ERRORS = YES;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = YES;
+				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
+				GCC_WARN_MULTIPLE_DEFINITION_TYPES_FOR_SELECTOR = NO;
+				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
+				GCC_WARN_PEDANTIC = YES;
+				GCC_WARN_SHADOW = YES;
+				GCC_WARN_SIGN_COMPARE = YES;
+				GCC_WARN_STRICT_SELECTOR_MATCH = NO;
+				GCC_WARN_UNDECLARED_SELECTOR = NO;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNKNOWN_PRAGMAS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_PARAMETER = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				RUN_CLANG_STATIC_ANALYZER = YES;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+				WARNING_CFLAGS = (
+					"-Weverything",
+					"-Wno-variadic-macros",
+					"-Wno-gnu-zero-variadic-macro-arguments",
+					"-Wno-gnu-statement-expression",
+					"-Wno-objc-missing-property-synthesis",
+					"-Wno-sign-compare",
+					"-Wno-auto-import",
+				);
+			};
+			name = Release;
+		};
+		2D66634A190F71E5003A9E04 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/FXBlurView.dst;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		2D66634B190F71E5003A9E04 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/FXBlurView.dst;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		2D66634D190F71E5003A9E04 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "FXBlurViewTests/FXBlurViewTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WARNING_CFLAGS = (
+					"-Weverything",
+					"-Wno-variadic-macros",
+					"-Wno-gnu-zero-variadic-macro-arguments",
+					"-Wno-gnu-statement-expression",
+					"-Wno-objc-missing-property-synthesis",
+					"-Wno-sign-compare",
+					"-Wno-auto-import",
+					"-Wno-documentation-unknown-command",
+				);
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		2D66634E190F71E5003A9E04 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				INFOPLIST_FILE = "FXBlurViewTests/FXBlurViewTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WARNING_CFLAGS = (
+					"-Weverything",
+					"-Wno-variadic-macros",
+					"-Wno-gnu-zero-variadic-macro-arguments",
+					"-Wno-gnu-statement-expression",
+					"-Wno-objc-missing-property-synthesis",
+					"-Wno-sign-compare",
+					"-Wno-auto-import",
+					"-Wno-documentation-unknown-command",
+				);
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2D666321190F71E4003A9E04 /* Build configuration list for PBXProject "FXBlurView" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2D666347190F71E5003A9E04 /* Debug */,
+				2D666348190F71E5003A9E04 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2D666349190F71E5003A9E04 /* Build configuration list for PBXNativeTarget "FXBlurView" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2D66634A190F71E5003A9E04 /* Debug */,
+				2D66634B190F71E5003A9E04 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2D66634C190F71E5003A9E04 /* Build configuration list for PBXNativeTarget "FXBlurViewTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2D66634D190F71E5003A9E04 /* Debug */,
+				2D66634E190F71E5003A9E04 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 2D66631E190F71E4003A9E04 /* Project object */;
+}

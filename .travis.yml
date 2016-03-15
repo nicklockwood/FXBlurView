@@ -1,0 +1,7 @@
+language: objective-c
+xcode_project: Tests/FXBlurView/FXBlurView.xcodeproj
+xcode_scheme: FXBlurView
+xcode_sdk: iphonesimulator7.0
+before_script:
+  - brew update
+  - brew upgrade xctool
