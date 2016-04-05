@@ -78,18 +78,16 @@
     size_t bytes = buffer1.rowBytes * buffer1.height;
     buffer1.data = malloc(bytes);
     buffer2.data = malloc(bytes);
-
+  
     if (NULL == buffer1.data || NULL == buffer2.data) {
-       return nil;
+        free(buffer1.data);
+        free(buffer2.data);
+        return nil;
     }
 
     //create temp buffer
     void *tempBuffer = malloc((size_t)vImageBoxConvolve_ARGB8888(&buffer1, &buffer2, NULL, 0, 0, boxSize, boxSize,
                                                                  NULL, kvImageEdgeExtend + kvImageGetTempBufferSize));
-
-    if (NULL == tempBuffer) {
-        return nil;
-    }
 
     //copy image data
     CFDataRef dataSource = CGDataProviderCopyData(CGImageGetDataProvider(imageRef));
