@@ -80,7 +80,7 @@
     buffer2.data = malloc(bytes);
 
     if (NULL == buffer1.data || NULL == buffer2.data) {
-      return nil;
+       return nil;
     }
 
     //create temp buffer
@@ -88,7 +88,7 @@
                                                                  NULL, kvImageEdgeExtend + kvImageGetTempBufferSize));
 
     if (NULL == tempBuffer) {
-      return nil;
+        return nil;
     }
 
     //copy image data
