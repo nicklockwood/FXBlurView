@@ -169,6 +169,7 @@
 @property (nonatomic, assign) BOOL dynamicSet;
 @property (nonatomic, assign) BOOL blurEnabledSet;
 @property (nonatomic, assign) BOOL autoOptimSet;
+@property (nonatomic, assign) BOOL isRevertSet;
 
 @property (nonatomic, strong) NSDate *lastUpdate;
 @property (nonatomic, assign) BOOL needsDrawViewHierarchy;
@@ -327,6 +328,7 @@
     if (!_dynamicSet) _dynamic = YES;
     if (!_blurEnabledSet) _blurEnabled = YES;
     if (!_autoOptimSet) _autoOptim = NO;
+    if (!_isRevertSet) _isRevert=YES;
 
     self.updateInterval = _updateInterval;
     self.layer.magnificationFilter = @"linear"; // kCAFilterLinear
@@ -369,7 +371,9 @@
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [self revertSuperviewAfterSnapshot:_hiddenLayers];
+    if (_isRevert) {
+        [self revertSuperviewAfterSnapshot:_hiddenLayers];
+    }
 }
 
 
@@ -431,6 +435,11 @@
             [self setNeedsDisplay];
         }
     }
+}
+
+-(void)setIsRevert:(BOOL)isRevert{
+    _isRevertSet=YES;
+    _isRevert=isRevert;
 }
 
 -(void)setAutoOptim:(BOOL)autoOptim{
