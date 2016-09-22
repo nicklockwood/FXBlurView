@@ -82,7 +82,7 @@
     if (NULL == buffer1.data || NULL == buffer2.data) {
         free(buffer1.data);
         free(buffer2.data);
-        return nil;
+        return self;
     }
 
     //create temp buffer
@@ -93,7 +93,7 @@
     CGDataProviderRef provider = CGImageGetDataProvider(imageRef);
     CFDataRef dataSource = CGDataProviderCopyData(provider);
     if (NULL == dataSource) {
-      return nil;
+      return self;
     }
     const UInt8 *dataSourceData = CFDataGetBytePtr(dataSource);
     memcpy(buffer1.data, dataSourceData, bytes);
