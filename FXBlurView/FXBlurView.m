@@ -91,6 +91,9 @@
 
     //copy image data
     CFDataRef dataSource = CGDataProviderCopyData(CGImageGetDataProvider(imageRef));
+    if (NULL == dataSource) {
+      return nil;
+    }
     memcpy(buffer1.data, CFDataGetBytePtr(dataSource), bytes);
     CFRelease(dataSource);
 
