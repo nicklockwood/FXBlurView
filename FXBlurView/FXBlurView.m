@@ -90,11 +90,13 @@
                                                                  NULL, kvImageEdgeExtend + kvImageGetTempBufferSize));
 
     //copy image data
-    CFDataRef dataSource = CGDataProviderCopyData(CGImageGetDataProvider(imageRef));
+    CGDataProviderRef provider = CGImageGetDataProvider(imageRef);
+    CFDataRef dataSource = CGDataProviderCopyData(provider);
     if (NULL == dataSource) {
       return nil;
     }
-    memcpy(buffer1.data, CFDataGetBytePtr(dataSource), bytes);
+    const UInt8 *dataSourceData = CFDataGetBytePtr(dataSource);
+    memcpy(buffer1.data, dataSourceData, bytes);
     CFRelease(dataSource);
 
     for (NSUInteger i = 0; i < iterations; i++)
