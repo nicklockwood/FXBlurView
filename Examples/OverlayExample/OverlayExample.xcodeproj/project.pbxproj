@@ -18,12 +18,44 @@
 		012FDEF317D13C23003F0236 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 012FDEF217D13C23003F0236 /* Default-568h@2x.png */; };
 		012FDEF617D13C23003F0236 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 012FDEF517D13C23003F0236 /* ViewController.m */; };
 		012FDEF917D13C23003F0236 /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 012FDEF717D13C23003F0236 /* ViewController.xib */; };
-		012FDF0217D13C34003F0236 /* FXBlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = 012FDF0117D13C34003F0236 /* FXBlurView.m */; };
 		012FDF0517D13D4F003F0236 /* iOS7.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 012FDF0317D13D4F003F0236 /* iOS7.jpg */; };
 		012FDF0617D13D4F003F0236 /* overlay.png in Resources */ = {isa = PBXBuildFile; fileRef = 012FDF0417D13D4F003F0236 /* overlay.png */; };
 		012FDF0817D13F1D003F0236 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 012FDF0717D13F1D003F0236 /* Accelerate.framework */; };
 		0178251218E1EE17004C3815 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0178251118E1EE17004C3815 /* QuartzCore.framework */; };
+		F0CE38D31DBCC7C5005B8C50 /* FXBlurView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0CE38D21DBCC781005B8C50 /* FXBlurView.framework */; };
+		F0CE38D41DBCC7C5005B8C50 /* FXBlurView.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F0CE38D21DBCC781005B8C50 /* FXBlurView.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		F0CE38D11DBCC781005B8C50 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F0CE38CD1DBCC781005B8C50 /* FXBlurView.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = F0CE387D1DBCB02C005B8C50;
+			remoteInfo = "FXBlurView iOS";
+		};
+		F0CE38D51DBCC7C5005B8C50 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F0CE38CD1DBCC781005B8C50 /* FXBlurView.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = F0CE387C1DBCB02C005B8C50;
+			remoteInfo = "FXBlurView iOS";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		F0CE38D71DBCC7C5005B8C50 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				F0CE38D41DBCC7C5005B8C50 /* FXBlurView.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		012FDED917D13C23003F0236 /* OverlayExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OverlayExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -42,12 +74,11 @@
 		012FDEF417D13C23003F0236 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		012FDEF517D13C23003F0236 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		012FDEF817D13C23003F0236 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController.xib; sourceTree = "<group>"; };
-		012FDF0017D13C34003F0236 /* FXBlurView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FXBlurView.h; sourceTree = "<group>"; };
-		012FDF0117D13C34003F0236 /* FXBlurView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FXBlurView.m; sourceTree = "<group>"; };
 		012FDF0317D13D4F003F0236 /* iOS7.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = iOS7.jpg; sourceTree = "<group>"; };
 		012FDF0417D13D4F003F0236 /* overlay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = overlay.png; sourceTree = "<group>"; };
 		012FDF0717D13F1D003F0236 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		0178251118E1EE17004C3815 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		F0CE38CD1DBCC781005B8C50 /* FXBlurView.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FXBlurView.xcodeproj; path = ../../FXBlurView/FXBlurView.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,6 +88,7 @@
 			files = (
 				0178251218E1EE17004C3815 /* QuartzCore.framework in Frameworks */,
 				012FDF0817D13F1D003F0236 /* Accelerate.framework in Frameworks */,
+				F0CE38D31DBCC7C5005B8C50 /* FXBlurView.framework in Frameworks */,
 				012FDEDD17D13C23003F0236 /* UIKit.framework in Frameworks */,
 				012FDEDF17D13C23003F0236 /* Foundation.framework in Frameworks */,
 				012FDEE117D13C23003F0236 /* CoreGraphics.framework in Frameworks */,
@@ -69,7 +101,7 @@
 		012FDED017D13C23003F0236 = {
 			isa = PBXGroup;
 			children = (
-				012FDEFF17D13C34003F0236 /* FXBlurView */,
+				F0CE38CD1DBCC781005B8C50 /* FXBlurView.xcodeproj */,
 				012FDEE217D13C23003F0236 /* OverlayExample */,
 				012FDEDB17D13C23003F0236 /* Frameworks */,
 				012FDEDA17D13C23003F0236 /* Products */,
@@ -127,14 +159,12 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		012FDEFF17D13C34003F0236 /* FXBlurView */ = {
+		F0CE38CE1DBCC781005B8C50 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				012FDF0017D13C34003F0236 /* FXBlurView.h */,
-				012FDF0117D13C34003F0236 /* FXBlurView.m */,
+				F0CE38D21DBCC781005B8C50 /* FXBlurView.framework */,
 			);
-			name = FXBlurView;
-			path = ../../FXBlurView;
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -147,10 +177,12 @@
 				012FDED517D13C23003F0236 /* Sources */,
 				012FDED617D13C23003F0236 /* Frameworks */,
 				012FDED717D13C23003F0236 /* Resources */,
+				F0CE38D71DBCC7C5005B8C50 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				F0CE38D61DBCC7C5005B8C50 /* PBXTargetDependency */,
 			);
 			name = OverlayExample;
 			productName = ModalExample;
@@ -176,12 +208,28 @@
 			mainGroup = 012FDED017D13C23003F0236;
 			productRefGroup = 012FDEDA17D13C23003F0236 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = F0CE38CE1DBCC781005B8C50 /* Products */;
+					ProjectRef = F0CE38CD1DBCC781005B8C50 /* FXBlurView.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				012FDED817D13C23003F0236 /* OverlayExample */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		F0CE38D21DBCC781005B8C50 /* FXBlurView.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = FXBlurView.framework;
+			remoteRef = F0CE38D11DBCC781005B8C50 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		012FDED717D13C23003F0236 /* Resources */ = {
@@ -208,11 +256,18 @@
 				012FDEE917D13C23003F0236 /* main.m in Sources */,
 				012FDEED17D13C23003F0236 /* AppDelegate.m in Sources */,
 				012FDEF617D13C23003F0236 /* ViewController.m in Sources */,
-				012FDF0217D13C34003F0236 /* FXBlurView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F0CE38D61DBCC7C5005B8C50 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "FXBlurView iOS";
+			targetProxy = F0CE38D51DBCC7C5005B8C50 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		012FDEE517D13C23003F0236 /* InfoPlist.strings */ = {
@@ -293,10 +348,13 @@
 		012FDEFD17D13C23003F0236 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "OverlayExample/OverlayExample-Prefix.pch";
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				INFOPLIST_FILE = "OverlayExample/OverlayExample-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"-Wall",
 					"-Wextra",
@@ -309,10 +367,13 @@
 		012FDEFE17D13C23003F0236 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "OverlayExample/OverlayExample-Prefix.pch";
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				INFOPLIST_FILE = "OverlayExample/OverlayExample-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"-Wall",
 					"-Wextra",

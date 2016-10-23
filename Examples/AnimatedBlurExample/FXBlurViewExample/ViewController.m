@@ -7,8 +7,8 @@
 //
 
 #import "ViewController.h"
-#import "FXBlurView.h"
-#import <QuartzCore/QuartzCore.h>
+@import QuartzCore;
+@import FXBlurView;
 
 
 @interface ViewController ()

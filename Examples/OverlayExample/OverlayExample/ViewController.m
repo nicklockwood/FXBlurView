@@ -7,7 +7,7 @@
 //
 
 #import "ViewController.h"
-#import "FXBlurView.h"
+@import FXBlurView;
 
 
 @interface ViewController ()
