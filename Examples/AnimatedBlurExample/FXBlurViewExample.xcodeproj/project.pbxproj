@@ -20,8 +20,8 @@
 		01F311AA17CA5C4600C54664 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F311A917CA5C4600C54664 /* Default-568h@2x.png */; };
 		01F311AD17CA5C4600C54664 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01F311AC17CA5C4600C54664 /* ViewController.m */; };
 		01F311B017CA5C4600C54664 /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01F311AE17CA5C4600C54664 /* ViewController.xib */; };
-		01F311BF17CA5E5600C54664 /* FXBlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01F311BE17CA5E5600C54664 /* FXBlurView.m */; };
 		01F311C117CA5ECA00C54664 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01F311C017CA5ECA00C54664 /* Accelerate.framework */; };
+		F0CE38041DBC9BD3005B8C50 /* FXBlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0CE38031DBC9BD3005B8C50 /* FXBlurView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,9 +43,9 @@
 		01F311AB17CA5C4600C54664 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		01F311AC17CA5C4600C54664 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		01F311AF17CA5C4600C54664 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController.xib; sourceTree = "<group>"; };
-		01F311BD17CA5E5600C54664 /* FXBlurView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FXBlurView.h; sourceTree = "<group>"; };
-		01F311BE17CA5E5600C54664 /* FXBlurView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FXBlurView.m; sourceTree = "<group>"; };
 		01F311C017CA5ECA00C54664 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		F0CE38021DBC9BD3005B8C50 /* FXBlurView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FXBlurView.h; sourceTree = "<group>"; };
+		F0CE38031DBC9BD3005B8C50 /* FXBlurView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FXBlurView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,7 +67,7 @@
 		01F3118717CA5C4600C54664 = {
 			isa = PBXGroup;
 			children = (
-				01F311B617CA5C7300C54664 /* FXBlurView */,
+				F0CE38011DBC9BD3005B8C50 /* Sources */,
 				01F3119917CA5C4600C54664 /* FXBlurViewExample */,
 				01F3119217CA5C4600C54664 /* Frameworks */,
 				01F3119117CA5C4600C54664 /* Products */,
@@ -122,14 +122,14 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		01F311B617CA5C7300C54664 /* FXBlurView */ = {
+		F0CE38011DBC9BD3005B8C50 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				01F311BD17CA5E5600C54664 /* FXBlurView.h */,
-				01F311BE17CA5E5600C54664 /* FXBlurView.m */,
+				F0CE38021DBC9BD3005B8C50 /* FXBlurView.h */,
+				F0CE38031DBC9BD3005B8C50 /* FXBlurView.m */,
 			);
-			name = FXBlurView;
-			path = ../../FXBlurView;
+			name = Sources;
+			path = ../../Sources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -200,9 +200,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				01F311A017CA5C4600C54664 /* main.m in Sources */,
+				F0CE38041DBC9BD3005B8C50 /* FXBlurView.m in Sources */,
 				01F311A417CA5C4600C54664 /* AppDelegate.m in Sources */,
 				01F311AD17CA5C4600C54664 /* ViewController.m in Sources */,
-				01F311BF17CA5E5600C54664 /* FXBlurView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

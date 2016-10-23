@@ -18,11 +18,11 @@
 		012FDEF317D13C23003F0236 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 012FDEF217D13C23003F0236 /* Default-568h@2x.png */; };
 		012FDEF617D13C23003F0236 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 012FDEF517D13C23003F0236 /* ViewController.m */; };
 		012FDEF917D13C23003F0236 /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 012FDEF717D13C23003F0236 /* ViewController.xib */; };
-		012FDF0217D13C34003F0236 /* FXBlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = 012FDF0117D13C34003F0236 /* FXBlurView.m */; };
 		012FDF0517D13D4F003F0236 /* iOS7.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 012FDF0317D13D4F003F0236 /* iOS7.jpg */; };
 		012FDF0617D13D4F003F0236 /* overlay.png in Resources */ = {isa = PBXBuildFile; fileRef = 012FDF0417D13D4F003F0236 /* overlay.png */; };
 		012FDF0817D13F1D003F0236 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 012FDF0717D13F1D003F0236 /* Accelerate.framework */; };
 		0178251218E1EE17004C3815 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0178251118E1EE17004C3815 /* QuartzCore.framework */; };
+		F0CE380C1DBC9C04005B8C50 /* FXBlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0CE380B1DBC9C04005B8C50 /* FXBlurView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,12 +42,12 @@
 		012FDEF417D13C23003F0236 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		012FDEF517D13C23003F0236 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		012FDEF817D13C23003F0236 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController.xib; sourceTree = "<group>"; };
-		012FDF0017D13C34003F0236 /* FXBlurView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FXBlurView.h; sourceTree = "<group>"; };
-		012FDF0117D13C34003F0236 /* FXBlurView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FXBlurView.m; sourceTree = "<group>"; };
 		012FDF0317D13D4F003F0236 /* iOS7.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = iOS7.jpg; sourceTree = "<group>"; };
 		012FDF0417D13D4F003F0236 /* overlay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = overlay.png; sourceTree = "<group>"; };
 		012FDF0717D13F1D003F0236 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		0178251118E1EE17004C3815 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		F0CE380A1DBC9C04005B8C50 /* FXBlurView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FXBlurView.h; sourceTree = "<group>"; };
+		F0CE380B1DBC9C04005B8C50 /* FXBlurView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FXBlurView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,7 +69,7 @@
 		012FDED017D13C23003F0236 = {
 			isa = PBXGroup;
 			children = (
-				012FDEFF17D13C34003F0236 /* FXBlurView */,
+				F0CE38091DBC9C04005B8C50 /* Sources */,
 				012FDEE217D13C23003F0236 /* OverlayExample */,
 				012FDEDB17D13C23003F0236 /* Frameworks */,
 				012FDEDA17D13C23003F0236 /* Products */,
@@ -127,14 +127,14 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		012FDEFF17D13C34003F0236 /* FXBlurView */ = {
+		F0CE38091DBC9C04005B8C50 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				012FDF0017D13C34003F0236 /* FXBlurView.h */,
-				012FDF0117D13C34003F0236 /* FXBlurView.m */,
+				F0CE380A1DBC9C04005B8C50 /* FXBlurView.h */,
+				F0CE380B1DBC9C04005B8C50 /* FXBlurView.m */,
 			);
-			name = FXBlurView;
-			path = ../../FXBlurView;
+			name = Sources;
+			path = ../../Sources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -206,9 +206,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				012FDEE917D13C23003F0236 /* main.m in Sources */,
+				F0CE380C1DBC9C04005B8C50 /* FXBlurView.m in Sources */,
 				012FDEED17D13C23003F0236 /* AppDelegate.m in Sources */,
 				012FDEF617D13C23003F0236 /* ViewController.m in Sources */,
-				012FDF0217D13C34003F0236 /* FXBlurView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
