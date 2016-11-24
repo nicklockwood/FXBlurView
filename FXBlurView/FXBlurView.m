@@ -78,14 +78,28 @@
     size_t bytes = buffer1.rowBytes * buffer1.height;
     buffer1.data = malloc(bytes);
     buffer2.data = malloc(bytes);
+  
+    if (NULL == buffer1.data || NULL == buffer2.data) 
+    {
+        free(buffer1.data);
+        free(buffer2.data);
+        return self;
+    }
 
     //create temp buffer
     void *tempBuffer = malloc((size_t)vImageBoxConvolve_ARGB8888(&buffer1, &buffer2, NULL, 0, 0, boxSize, boxSize,
                                                                  NULL, kvImageEdgeExtend + kvImageGetTempBufferSize));
 
     //copy image data
-    CFDataRef dataSource = CGDataProviderCopyData(CGImageGetDataProvider(imageRef));
-    memcpy(buffer1.data, CFDataGetBytePtr(dataSource), bytes);
+    CGDataProviderRef provider = CGImageGetDataProvider(imageRef);
+    CFDataRef dataSource = CGDataProviderCopyData(provider);
+    if (NULL == dataSource) 
+    {
+        return self;
+    }
+    const UInt8 *dataSourceData = CFDataGetBytePtr(dataSource);
+    CFIndex dataSourceLength = CFDataGetLength(dataSource);
+    memcpy(buffer1.data, dataSourceData, MIN(bytes, dataSourceLength));
     CFRelease(dataSource);
 
     for (NSUInteger i = 0; i < iterations; i++)
