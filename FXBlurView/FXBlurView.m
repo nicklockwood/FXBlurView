@@ -96,7 +96,8 @@
       return self;
     }
     const UInt8 *dataSourceData = CFDataGetBytePtr(dataSource);
-    memcpy(buffer1.data, dataSourceData, bytes);
+    CFIndex dataSourceLength = CFDataGetLength(dataSource);
+    memcpy(buffer1.data, dataSourceData, MIN(bytes, dataSourceLength));
     CFRelease(dataSource);
 
     for (NSUInteger i = 0; i < iterations; i++)
