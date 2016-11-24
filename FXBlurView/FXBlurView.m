@@ -79,7 +79,8 @@
     buffer1.data = malloc(bytes);
     buffer2.data = malloc(bytes);
   
-    if (NULL == buffer1.data || NULL == buffer2.data) {
+    if (NULL == buffer1.data || NULL == buffer2.data) 
+    {
         free(buffer1.data);
         free(buffer2.data);
         return self;
@@ -92,8 +93,9 @@
     //copy image data
     CGDataProviderRef provider = CGImageGetDataProvider(imageRef);
     CFDataRef dataSource = CGDataProviderCopyData(provider);
-    if (NULL == dataSource) {
-      return self;
+    if (NULL == dataSource) 
+    {
+        return self;
     }
     const UInt8 *dataSourceData = CFDataGetBytePtr(dataSource);
     CFIndex dataSourceLength = CFDataGetLength(dataSource);
