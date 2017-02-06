@@ -125,8 +125,7 @@
     //apply tint
     if (tintColor && CGColorGetAlpha(tintColor.CGColor) > 0.0f)
     {
-        CGContextSetFillColorWithColor(ctx, [tintColor colorWithAlphaComponent:0.25].CGColor);
-        CGContextSetBlendMode(ctx, kCGBlendModePlusLighter);
+        CGContextSetFillColorWithColor(ctx, tintColor.CGColor);
         CGContextFillRect(ctx, CGRectMake(0, 0, buffer1.width, buffer1.height));
     }
 
@@ -576,7 +575,7 @@
 
 - (UIImage *)snapshotOfUnderlyingView
 {
-    __strong FXBlurLayer *blurLayer = [self blurPresentationLayer];
+    __strong FXBlurLayer *blurLayer = [self blurLayer];
     __strong CALayer *underlyingLayer = [self underlyingLayer];
     CGRect bounds = [blurLayer convertRect:blurLayer.bounds toLayer:underlyingLayer];
 
@@ -630,7 +629,7 @@
 - (NSArray *)hideEmptyLayers:(CALayer *)layer
 {
     NSMutableArray *layers = [NSMutableArray array];
-    if (CGRectIsEmpty(layer.bounds))
+    if (CGRectIsEmpty(layer.bounds) && !layer.hidden)
     {
         layer.hidden = YES;
         [layers addObject:layer];
