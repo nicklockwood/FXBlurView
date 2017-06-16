@@ -87,14 +87,24 @@
     }
 
     //create temp buffer
-    void *tempBuffer = malloc((size_t)vImageBoxConvolve_ARGB8888(&buffer1, &buffer2, NULL, 0, 0, boxSize, boxSize,
-                                                                 NULL, kvImageEdgeExtend + kvImageGetTempBufferSize));
+    vImage_Error result = vImageBoxConvolve_ARGB8888(&buffer1, &buffer2, NULL, 0, 0, boxSize, boxSize,
+                                                                 NULL, kvImageEdgeExtend + kvImageGetTempBufferSize);
+    if (result < kvImageNoError)
+    {
+        free(buffer1.data);
+        free(buffer2.data);
+        return self;
+    }
+    void *tempBuffer = malloc((size_t)result);
 
     //copy image data
     CGDataProviderRef provider = CGImageGetDataProvider(imageRef);
     CFDataRef dataSource = CGDataProviderCopyData(provider);
     if (NULL == dataSource) 
     {
+        free(buffer1.data);
+        free(buffer2.data);
+        free(tempBuffer);
         return self;
     }
     const UInt8 *dataSourceData = CFDataGetBytePtr(dataSource);
