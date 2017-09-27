@@ -700,9 +700,8 @@
         {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 
-                UIImage *blurredImage = [self blurredSnapshot:snapshot radius:self.blurRadius];
                 dispatch_sync(dispatch_get_main_queue(), ^{
-
+                    UIImage *blurredImage = [self blurredSnapshot:snapshot radius:self.blurRadius];
                     [self setLayerContents:blurredImage];
                     if (completion) completion();
                 });
