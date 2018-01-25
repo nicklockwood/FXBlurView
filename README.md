@@ -32,6 +32,23 @@ If you wish to convert your whole project to ARC, comment out the #error line in
 Installation
 ---------------
 
+### Using [CocoaPods](http://cocoapods.org)
+1. Add the pod `FXBlurView` to your [Podfile](http://guides.cocoapods.org/using/the-podfile.html).
+
+  ```ruby
+  pod 'FXBlurView'
+  ```
+  
+2. Add the framework to your project
+  * With `use_frameworks!` in your Podfile
+    * Swift: `import FXBlurView`
+    * Objective-C: `#import <FXBlurView/FXBlurView.h>` (or with Modules enabled: `@import FXBlurView;`)
+  * Without `use_frameworks!` in your Podfile
+    * Swift: Add `#import "FXBlurView.h"` to your bridging header.
+    * Objective-C: `#import "FXBlurView.h"`
+
+### Manually from GitHub
+
 To use FXBlurView, just drag the class files into your project and add the Accelerate framework. You can create FXBlurView instances programatically, or create them in Interface Builder by dragging an ordinary UIView into your view and setting its class to FXBlurView.
 
 If you are using Interface Builder, to set the custom properties of FXBlurView (ones that are not supported by regular UIViews) either create an IBOutlet for your view and set the properties in code, or use the User Defined Runtime Attributes feature in Interface Builder (introduced in Xcode 4.2 for iOS 5+).
