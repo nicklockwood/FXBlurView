@@ -87,7 +87,7 @@ The number of blur iterations. More iterations improves the quality but reduces 
 
     @property (nonatomic, assign) NSTimeInterval updateInterval;
     
-This controls the interval (in seconds) between successive updates when the FXBlurView is operating in dynamic mode. This defaults to zero, which means that the FXBlurView will update as fast as possible. This yields the best frame rate, but is also extremely CPU intensive and may cause the rest of your app's performance to degrade, especially on older devices. To alleviate this, try increasing the `updateInterval` value.
+This controls the interval (in seconds) between successive updates when the FXBlurView is operating in dynamic mode. This defaults to 1 / 60. This yields the best frame rate, but is also extremely CPU intensive and may cause the rest of your app's performance to degrade, especially on older devices. To alleviate this, try increasing the `updateInterval` value.
 
     @property (nonatomic, assign) CGFloat blurRadius;	
 
