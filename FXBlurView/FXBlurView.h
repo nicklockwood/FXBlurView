@@ -52,6 +52,7 @@
 @interface UIImage (FXBlurView)
 
 - (UIImage *)blurredImageWithRadius:(CGFloat)radius iterations:(NSUInteger)iterations tintColor:(UIColor *)tintColor;
+- (UIImage *)blurredImageWithRadius:(CGFloat)radius iterations:(NSUInteger)iterations tintColor:(UIColor *)tintColor isMonochrome:(BOOL)isMonochrome minBrightness:(CGFloat)minBrightness maxBrightness:(CGFloat)maxBrightness overrideAlpha:(BOOL)overrideAlpha;
 
 @end
 
@@ -64,6 +65,10 @@
 
 @property (nonatomic, getter = isBlurEnabled) BOOL blurEnabled;
 @property (nonatomic, getter = isDynamic) BOOL dynamic;
+@property (nonatomic, getter = isMonochrome) BOOL monochrome;
+@property (nonatomic, getter = isOverridingAlpha) BOOL overrideAlpha;
+@property (nonatomic, assign) CGFloat minBrightness;
+@property (nonatomic, assign) CGFloat maxBrightness;
 @property (nonatomic, assign) NSUInteger iterations;
 @property (nonatomic, assign) NSTimeInterval updateInterval;
 @property (nonatomic, assign) CGFloat blurRadius;
